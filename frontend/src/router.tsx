@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/home";
-import ProviderWrapper from "./ProviderWrapper";
+import ProviderCheckpoint from "./checkpoints/ProviderCheckpoint";
 
 const router = createBrowserRouter([
   {
-    element: <ProviderWrapper />,
+    element: <ProviderCheckpoint />,
     children: [
       {
         path: "/",
