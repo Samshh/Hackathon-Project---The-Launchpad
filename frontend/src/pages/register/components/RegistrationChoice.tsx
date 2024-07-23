@@ -30,22 +30,22 @@ export default function RegistrationChoice() {
         <p className="text-lg font-light">Step 1 of 3</p>
       </div>
       <div className="flex flex-col">
-        <p className="text-lg">Creating an account</p>
-        <p className="font-semibold text-3xl">What type of account do you want to create?</p>
-        <div className="flex flex-col gap-[1rem] pt-[1rem] pb-[4rem]">
+        <h6 className="font-normal">Creating an account</h6>
+        <h4 className="font-semibold">What type of account do you want to create?</h4>
+        <div className="flex flex-col gap-[1rem] pt-[1rem] pb-[2rem]">
           <div
             className={`w-full h-[12.5rem] border-2 border-gray-100 rounded-[1rem] px-[4rem] py-[2rem] cursor-pointer ${activeToggle === 'doctor' ? 'bg-accent' : ''}`}
             onClick={() => handleToggleClick('doctor')}
           >
-            <p className={`text-2xl font-semibold text-start ${activeToggle === 'doctor' ? 'text-white' : ''}`}>Doctor</p>
-            <p className={`text-xl text-start text-gray-600 ${activeToggle === 'doctor' ? 'text-white' : ''}`}>Handle schedule and provide diagnosis to patients</p>
+            <h5 className={`font-semibold text-start ${activeToggle === 'doctor' ? 'text-white' : ''}`}>Doctor</h5>
+            <h6 className={`font-normal text-start text-gray-600 ${activeToggle === 'doctor' ? 'text-white' : ''}`}>Handle schedule and provide diagnosis to patients</h6>
           </div>
           <div
             className={`w-full h-[12.5rem] border-2 border-gray-100 rounded-[1rem] px-[4rem] py-[2rem] cursor-pointer ${activeToggle === 'patient' ? 'bg-accent text-white' : ''}`}
             onClick={() => handleToggleClick('patient')}
           >
-            <p className={`text-2xl font-semibold text-start ${activeToggle === 'patient' ? 'text-white' : ''}`}>Patient</p>
-            <p className={`text-xl text-start text-gray-600 ${activeToggle === 'patient' ? 'text-white' : ''}`}>Find clinics of doctors and schedule appointments</p>
+            <h5 className={`font-semibold text-start ${activeToggle === 'patient' ? 'text-white' : ''}`}>Patient</h5>
+            <h6 className={`font-normal text-start text-gray-600 ${activeToggle === 'patient' ? 'text-white' : ''}`}>Find clinics of doctors and schedule appointments</h6>
           </div>
         </div>
         <div className="flex justify-end gap-[1rem]">

@@ -27,9 +27,9 @@ export default function HomePage() {
       </nav>
       <section className="flex items-center min-h-[33.75rem] h-full">
         <div className="w-1/2">
-          <h1 className="text-6xl font-bold text-black">Schedule appointments with doctors in a safe and secure way.</h1>
-          <p className="text-2xl text-gray-600 pt-8">ChainMed Connect is an online doctor appointment scheduling app that uses the power of blockchain to keep your medical data encrypted.</p>
-          <Button onClick={toRegister} className="mt-[1rem]">
+          <h1 className="font-bold text-black">Schedule appointments with doctors in a safe and secure way.</h1>
+          <h5 className="font-normal text-gray-600 pt-[1rem]">ChainMed Connect is an online doctor appointment scheduling app that uses the power of blockchain to keep your medical data encrypted.</h5>
+          <Button onClick={toRegister} className="mt-[4rem]">
             Get Started
           </Button>
         </div>

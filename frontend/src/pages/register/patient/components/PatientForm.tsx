@@ -36,7 +36,7 @@ export default function PatientForm() {
       <div className="flex flex-col gap-[1rem]">
         <div className="flex flex-col">
           <p className="text-lg">Filling up basic information</p>
-          <p className="font-semibold text-3xl">What are your personal details?</p>
+          <h3 className="font-semibold">What are your personal details?</h3>
         </div>
         <div className="flex flex-col gap-[1rem]">
           <div className="flex flex-col gap-[.25rem]">
