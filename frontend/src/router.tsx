@@ -3,10 +3,14 @@ import HomePage from "./pages/home";
 import ProviderCheckpoint from "./checkpoints/ProviderCheckpoint";
 import AuthCheckpoint from "./checkpoints/AuthCheckpoint";
 import DefaultLayout from "./layouts/DefaultLayout";
+import LoginLayout from "./layouts/LoginLayout";
+import RegisterLayout from "./layouts/RegisterLayout";
 import PatientLayout from "./layouts/PatientLayout";
 import DoctorLayout from "./layouts/DoctorLayout";
 import PatientDashboardPage from "./pages/patient";
 import DoctorDashboardPage from "./pages/doctor";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +26,26 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <HomePage />
+              }
+            ]
+          },
+          {
+            path: "login",
+            element: <LoginLayout />,
+            children: [
+              {
+                index: true,
+                element: <LoginPage />
+              }
+            ]
+          },
+          {
+            path: "register",
+            element: <RegisterLayout />,
+            children: [
+              {
+                index: true,
+                element: <RegisterPage />
               }
             ]
           },
