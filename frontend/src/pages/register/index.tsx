@@ -1,4 +1,4 @@
-import HomeBtn from "../../components/HomeBtn";
+import HomeBtn from "../../components/HomeLogo";
 import RegistrationChoice from "./components/RegistrationChoice";
 export default function RegisterPage() {
   return (
