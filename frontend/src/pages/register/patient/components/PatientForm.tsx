@@ -33,12 +33,12 @@ export default function PatientForm() {
         <p className="text-lg font-semibold">Registration</p>
         <p className="text-lg font-light">Step 2 of 3</p>
       </div>
-      <div className="flex flex-col gap-[1rem]">
-        <div className="flex flex-col">
-          <p className="text-lg">Filling up basic information</p>
-          <h3 className="font-semibold">What are your personal details?</h3>
-        </div>
-        <div className="flex flex-col gap-[1rem]">
+      <div className="flex flex-col gap-[1rem] h-full pt-[2rem]">
+        <div className="flex flex-col justify-center gap-[1rem] h-full">
+          <div className="flex flex-col">
+            <p className="text-lg">Filling up basic information</p>
+            <h3 className="font-semibold">What are your personal details?</h3>
+          </div>
           <div className="flex flex-col gap-[.25rem]">
             <p>First Name:</p>
             <Input placeholder="Sam" />
@@ -51,7 +51,7 @@ export default function PatientForm() {
             <p>Gender:</p>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button variant={"outline"} className="w-full flex justify-start">
+                <Button variant={"gender"} className="w-full flex justify-start">
                   {selectedGender ? selectedGender : "Gender"}
                 </Button>
               </DropdownMenuTrigger>
@@ -83,11 +83,11 @@ export default function PatientForm() {
             <Input placeholder="September 4, 2003" />
           </div>
         </div>
-        <div className="flex justify-end gap-[1rem] bottom-0">
-          <Button variant={"outline"} onClick={returnPrev}>
+        <div className="flex justify-end gap-[1rem] mt-auto">
+          <Button variant={"outline"} size={"lg"} onClick={returnPrev}>
             Back
           </Button>
-          <Button onClick={toNext}>
+          <Button size={"lg"} onClick={toNext}>
             Next
           </Button>
         </div>
