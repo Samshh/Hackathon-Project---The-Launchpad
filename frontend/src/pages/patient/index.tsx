@@ -5,7 +5,7 @@ import YourDoctorsSection from '../../components/patient/dashboard/YourDoctorsSe
 
 export default function PatientDashboardPage() {
   return (
-    <main className="grid flex-1 grid-cols-8 gap-x-6 gap-y-6">
+    <main className="grid flex-1 h-screen grid-cols-8 overflow-y-hidden gap-x-6 gap-y-6">
       <CurrentAppointmentSection />
       <PastAppointmentsSection />
       <YourDoctorsSection />

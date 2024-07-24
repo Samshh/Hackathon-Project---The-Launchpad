@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import PatientHeader from "../components/patient/dashboard/PatientHeader";
+import PatientHeader from "./PatientHeader";
 
 export default function PatientLayout() {
   return (
