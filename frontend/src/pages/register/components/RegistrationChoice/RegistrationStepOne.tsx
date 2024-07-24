@@ -13,10 +13,10 @@ export default function RegistrationStepOne() {
   );
 
   return (
-    <div className="flex flex-col justify-center gap-[1rem] h-full">
+    <div className="flex flex-col flex-grow justify-start gap-[1rem] pt-[2rem]">
       <div className="flex flex-col">
         <h6 className="font-normal">Creating an account</h6>
-        <h4 className="font-semibold">What type of account do you want to create?</h4>
+        <h3 className="font-semibold">What type of account do you want to create?</h3>
       </div>
       <div
         className={`w-full h-[12.5rem] border-2 border-gray-100 rounded-[1rem] px-[4rem] py-[2rem] cursor-pointer ${accountType === 'doctor' ? 'bg-accent' : ''}`}
