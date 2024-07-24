@@ -2,17 +2,15 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomePage from "./pages/home";
 import ProviderCheckpoint from "./checkpoints/ProviderCheckpoint";
 import AuthCheckpoint from "./checkpoints/AuthCheckpoint";
-import DefaultLayout from "./layouts/DefaultLayout";
-import LoginLayout from "./layouts/LoginLayout";
-import RegisterLayout from "./layouts/RegisterLayout";
-import PatientLayout from "./layouts/PatientLayout";
-import DoctorLayout from "./layouts/DoctorLayout";
+import DefaultLayout from "./layouts/default";
+import LoginLayout from "./layouts/login";
+import RegisterLayout from "./layouts/register";
+import PatientLayout from "./layouts/patient";
+import DoctorLayout from "./layouts/doctor";
 import PatientDashboardPage from "./pages/patient";
 import DoctorDashboardPage from "./pages/doctor";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import RegisterDoctorStep2 from "./pages/register/doctor/step2";
-import RegisterPatientStep2 from "./pages/register/patient/step2";
 
 const router = createBrowserRouter([
   {
@@ -48,14 +46,6 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <RegisterPage />
-              },
-              {
-                path: "register-doctor",
-                element: <RegisterDoctorStep2 />
-              },
-              {
-                path: "register-patient",
-                element: <RegisterPatientStep2 />
               }
             ]
           },
