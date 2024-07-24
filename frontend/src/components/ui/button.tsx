@@ -14,7 +14,7 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background font-normal hover:bg-accent hover:text-white",
-        gender:
+        dropdown:
           "border border-input bg-background font-normal hover:bg-accent hover:text-white px-[0.75rem] py-[0.5rem]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
