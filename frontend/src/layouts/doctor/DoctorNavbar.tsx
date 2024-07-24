@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 interface DoctorNavLink {
   to: string;
@@ -21,6 +21,8 @@ const primaryNavLinks: DoctorNavLink[] = [
 ];
 
 export default function DoctorNavbar() {
+  const navigate = useNavigate();
+
   return (
     <nav className="flex flex-row justify-center items-stretch p-2">
       <div className="flex flex-col justify-between items-center rounded-md shadow-md p-4 bg-white gap-6">
@@ -28,6 +30,7 @@ export default function DoctorNavbar() {
           {primaryNavLinks.map((link) => (
             <NavLink
               to={link.to}
+              end={link.to === "/doctor"}
               className={({ isActive }) => `
                 size-12 flex justify-center items-center rounded-md 
                 ${isActive ? 'bg-accent' : ''}
@@ -42,7 +45,10 @@ export default function DoctorNavbar() {
         <div className="flex flex-col justify-end items-center gap-6">
           <button 
             className="size-12 flex justify-center items-center"
-            onClick={() => console.log("logout")} // TODO: Implement this
+            onClick={() => {
+              // TODO: Implement logout
+              navigate("/");
+            }}
           >
             <div className="size-8 bg-gray-400 rounded-full"/> {/* icon */}
           </button>
