@@ -1,12 +1,11 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from 'react';
-import useRegistrationChoiceStore from "./store";
+import useRegistrationChoiceStore from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import RegistrationStepOne from "./RegistrationStepOne";
 import RegistrationStepTwo from "./RegistrationStepTwo";
-import RegistrationStepThreePatient from "./RegistrationStepThreePatient";
-import RegistrationStepThreeDoctor from "./RegistrationStepThreeDoctor";
+import RegistrationStepThree from "./RegistrationStepThree";
 
 export default function RegistrationChoice() {
   const [
@@ -48,15 +47,13 @@ export default function RegistrationChoice() {
             <RegistrationStepOne />
           ) : currentStep === 1 ? (
             <RegistrationStepTwo />
-          ) : accountType === 'patient' ? (
-            <RegistrationStepThreePatient />
-          ) : accountType === 'doctor' ? (
-            <RegistrationStepThreeDoctor />
+          ) : currentStep === 2 ? (
+            <RegistrationStepThree />
           ) : (
             <Navigate to={'/register'} />
           )
         }
-        <div className="flex justify-end gap-[1rem]">
+        <div className="flex justify-end gap-[1rem] mt-[1rem]">
           <Button 
             variant={"outline"} 
             size={"lg"} 

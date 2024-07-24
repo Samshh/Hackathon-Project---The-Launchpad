@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface RegistrationChoiceStoreValues {
   step: number;
@@ -18,7 +18,7 @@ type RegistrationChoiceStore = RegistrationChoiceStoreValues & RegistrationChoic
 const defaultValues: RegistrationChoiceStoreValues = {
   step: 0,
   accountType: null,
-}
+};
 
 const useRegistrationChoiceStore = create<RegistrationChoiceStore>((set, get) => ({
   ...defaultValues,
@@ -40,7 +40,7 @@ const useRegistrationChoiceStore = create<RegistrationChoiceStore>((set, get) =>
   },
 
   setAccountType: (newAccountType: 'patient' | 'doctor' | null) => set({ accountType: newAccountType }),
-  
+
   reset: () => set(defaultValues),
 }));
 

@@ -1,4 +1,4 @@
-import useRegistrationChoiceStore from "./store";
+import useRegistrationChoiceStore from "../../store";
 import { useShallow } from "zustand/react/shallow";
 
 export default function RegistrationStepOne() {

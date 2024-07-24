@@ -1,9 +1,10 @@
 import { useShallow } from "zustand/react/shallow";
 import useRegistrationChoiceStore from "../../store";
-import RegistrationFormDoctor from "../RegistrationForms/RegistrationFormDoctor";
-import RegistrationFormPatient from "../RegistrationForms/RegistrationFormPatient";
+import DoctorFinal from "../RegistrationFinal/DoctorFinal";
+import PatientFinal from "../RegistrationFinal/PatientFinal";
 
-export default function RegistrationStepTwo() {
+
+export default function RegistrationStepThree() {
   const [
     accountType
   ] = useRegistrationChoiceStore(
@@ -16,12 +17,12 @@ export default function RegistrationStepTwo() {
     <div>
       {accountType === 'doctor' && (
         <>
-          <RegistrationFormDoctor />
+          <DoctorFinal />
         </>
       )}
       {accountType === 'patient' && (
         <>
-          <RegistrationFormPatient />
+          <PatientFinal />
         </>
       )}
     </div>
