@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import HomeBtn from "../../components/HomeLogo";
-import { Button } from "../../components/ui/button";
+import { useNavigate } from 'react-router-dom';
+import HomeBtn from '../../components/HomeLogo';
+import { Button } from '../../components/ui/button';
 export default function HomePage() {
   const navigate = useNavigate();
 
@@ -17,19 +17,22 @@ export default function HomePage() {
       <nav className="sticky top-0 flex items-center justify-between">
         <HomeBtn />
         <div className="flex items-center justify-center gap-[1rem]">
-          <Button size={"lg"} variant={"outline"} onClick={toLogin}>
+          <Button size={'lg'} variant={'outline'} onClick={toLogin}>
             Login
-            </Button>
-          <Button size={"lg"} onClick={toRegister}>
+          </Button>
+          <Button size={'lg'} onClick={toRegister}>
             Register
-            </Button>
+          </Button>
         </div>
       </nav>
       <div className="flex items-center min-h-[33.75rem] h-full">
         <div className="flex flex-col w-1/2 gap-[1rem]">
           <h1 className="font-bold text-black">Schedule appointments with doctors in a safe and secure way.</h1>
-          <h5 className="font-normal text-gray-600">ChainMed Connect is an online doctor appointment scheduling app that uses the power of blockchain to keep your medical data encrypted.</h5>
-          <Button size={"lg"} onClick={toRegister} className="w-min">
+          <h5 className="font-normal text-gray-600">
+            ChainMed Connect is an online doctor appointment scheduling app that uses the power of blockchain to keep
+            your medical data encrypted.
+          </h5>
+          <Button size={'lg'} onClick={toRegister} className="w-min">
             Get Started
           </Button>
         </div>
