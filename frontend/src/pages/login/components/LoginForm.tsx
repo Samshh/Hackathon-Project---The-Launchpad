@@ -1,14 +1,46 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [accountType, setAccountType] = useState<string>('Select');
   const toRegister = () => {
     navigate('/register');
   };
 
+  const accountDropdown = (type: string) => {
+    setAccountType(type);
+  };
+  const emailInput = (email: string) => {
+    setEmail(email);
+  };
+  const passwordInput = (pass: string) => {
+    setPassword(pass);
+  };
 
+  const toLogin = () => {
+    if (accountType === 'Doctor') {
+      navigate('/doctor');
+      console.log(email);
+      console.log(password);
+    } else if (accountType === 'Patient') {
+      navigate('/patient');
+      console.log(email);
+      console.log(password);
+    }
+  };
   return (
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">
@@ -16,14 +48,39 @@ export default function LoginForm() {
           <h6 className="font-normal">Login</h6>
           <h3>Welcome back!</h3>
         </div>
-        <div className="flex flex-col justify-start items-start w-full">
-          <p>Email:</p>
-          <Input />
-          <p>Password:</p>
-          <Input type="password" />
+        <div className="flex flex-col justify-start items-start w-full gap-[0.5rem]">
+          <div className="flex flex-col w-full items-start">
+            <p>Email:</p>
+            <Input onChange={(e) => emailInput(e.target.value)} />
+          </div>
+          <div className="flex flex-col w-full items-start">
+            <p>Password:</p>
+            <Input type="password" onChange={(e) => passwordInput(e.target.value)} />
+          </div>
+          <div className="flex flex-col w-full">
+            <p>Account Type:</p>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant={'dropdown'} className="w-full flex justify-start">
+                  {accountType}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Account Type</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => accountDropdown('Doctor')}>Doctor</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => accountDropdown('Patient')}>Patient</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
         <div className="flex items-center justify-center w-full gap-[2rem]">
-          <Button onClick={toRegister} size={'lg'} className="w-full font-semibold">
+          <Button
+            disabled={!email || !password || !accountType || accountType == 'Select'}
+            onClick={toLogin}
+            size={'lg'}
+            className="w-full font-semibold"
+          >
             Log in
           </Button>
           <Button onClick={toRegister} variant={'outline'} size={'lg'} className="w-full font-semibold">
