@@ -115,7 +115,7 @@ export default function RegistrationChoice() {
             size={'lg'}
             onClick={() => {
               if (currentStep === 0) {
-                toLogin();
+                returnHome();
               } else {
                 goToPrevStep();
               }
@@ -129,7 +129,7 @@ export default function RegistrationChoice() {
             onClick={() => {
               if (currentStep === 2) {
                 console.log('Finish registration');
-                returnHome();
+                toLogin();
               } else {
                 goToNextStep();
               }
