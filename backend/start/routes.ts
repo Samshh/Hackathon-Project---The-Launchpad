@@ -1,11 +1,6 @@
 import { Router } from 'express';
-
-// import ApisController from 'App/Controllers/Http/ApisController';
 import UsersController from 'App/Controllers/Http/UsersController';
-
 import authenticateJWT from 'App/Middleware/Auth';
-// import EventsController from 'App/Controllers/Http/EventsController';
-// import GuestsController from 'App/Controllers/Http/GuestsController';
 
 const Route = Router();
 
@@ -18,15 +13,11 @@ const Route = Router();
 // USER
 Route.post('/user/doctor/register', UsersController.docRegister);
 Route.post('/user/patient/register', UsersController.patRegister);
-
-
-Route.get('/test', authenticateJWT, UsersController.test);
-
-Route.get('/get/all/pat', UsersController.get_all_doctors);
-Route.get('/get/all/doct', UsersController.get_all_patients);
-
-
 Route.post('/user/login', UsersController.doctorlogin)
+Route.get('/test', authenticateJWT, UsersController.test);
+Route.get('/get/all/doctor', UsersController.get_all_doctors);
+Route.get('/get/all/patient', UsersController.get_all_patients);
+
 // Route.post('/user/update', isAuth, UsersController.update);
 
 // // EVENT

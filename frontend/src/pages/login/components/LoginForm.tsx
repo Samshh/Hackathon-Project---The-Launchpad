@@ -7,6 +7,8 @@ export default function LoginForm() {
   const toRegister = () => {
     navigate('/register');
   };
+
+
   return (
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">
@@ -21,7 +23,7 @@ export default function LoginForm() {
           <Input type="password" />
         </div>
         <div className="flex items-center justify-center w-full gap-[2rem]">
-          <Button size={'lg'} className="w-full font-semibold">
+          <Button onClick={toRegister} size={'lg'} className="w-full font-semibold">
             Log in
           </Button>
           <Button onClick={toRegister} variant={'outline'} size={'lg'} className="w-full font-semibold">
