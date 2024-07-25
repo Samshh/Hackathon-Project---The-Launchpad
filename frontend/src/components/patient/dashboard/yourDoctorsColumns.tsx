@@ -9,11 +9,12 @@ type Doctor = {
 export type YourDoctor = {
   doctor: Doctor;
   contact: string;
-  lastAppointment: string;
+  email: string;
   address: string;
 };
 
 export const yourDoctorsColumns: ColumnDef<YourDoctor>[] = [
+
   {
     accessorKey: 'doctor',
     header: () => <p className="font-semibold text-black">Doctor</p>,
@@ -32,8 +33,8 @@ export const yourDoctorsColumns: ColumnDef<YourDoctor>[] = [
     header: () => <p className="font-semibold text-black">Contact</p>,
   },
   {
-    accessorKey: 'lastAppointment',
-    header: () => <p className="font-semibold text-black">Last Appointment</p>,
+    accessorKey: 'email',
+    header: () => <p className="font-semibold text-black">E-mail</p>,
   },
   {
     accessorKey: 'address',
