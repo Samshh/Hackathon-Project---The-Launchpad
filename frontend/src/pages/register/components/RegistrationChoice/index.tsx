@@ -56,7 +56,7 @@ export default function RegistrationChoice() {
       Sex: sex,
       Email: email,
       Contact: contactNumber,
-      Birthday : birthday,
+      BirthDate : birthday,
       Password: password,
     };
 

@@ -5,7 +5,6 @@ export default class UserRegisterValidator {
   static schema = z.object({
     Fname: z.string().min(1),
     Lname: z.string().min(1),
-    Address: z.string().min(1),
     Sex: z.string().min(1),
     Email: z.string().email(),
     BirthDate: z.string().min(1),
