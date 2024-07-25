@@ -1,14 +1,30 @@
-import { ic } from 'azle';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import njwt from 'njwt';
 
-export default function isAuth(request: Request, response: Response, next: NextFunction) {
-  if (ic.caller().isAnonymous()) {
-    response.status(401);
-    return response.json({
+const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
+
+export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.header('Authorization');
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({
       status: 0,
-      message: 'Unauthorized user!',
+      message: 'Access denied. No token provided.',
     });
-  } else {
-    next();
   }
-}
+
+  njwt.verify(token, JWT_SECRET, (err, verifiedJwt) => {
+    if (err) {
+      return res.status(400).json({
+        status: 0,
+        message: 'Invalid token.',
+      });
+    } else {
+      (req as any).user = verifiedJwt.body;
+      next();
+    }
+  });
+};
+
+export default authenticateJWT;
