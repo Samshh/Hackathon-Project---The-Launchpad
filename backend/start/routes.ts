@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UsersController from 'App/Controllers/Http/UsersController';
+import AppointmentsController from 'App/Controllers/Http/AppointmentsController';
 import authenticateJWT from 'App/Middleware/Auth';
 
 const Route = Router();
@@ -18,6 +19,10 @@ Route.get('/test', authenticateJWT, UsersController.test);
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
 
+
+
+Route.post('/patient/appointment/create', AppointmentsController.patientCreateAppointment);
+Route.post('/doctor/appointments', AppointmentsController.getAppointments);
 // Route.post('/user/update', isAuth, UsersController.update);
 
 // // EVENT

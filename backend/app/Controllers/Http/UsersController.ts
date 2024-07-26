@@ -16,7 +16,12 @@ export default class UsersController {
     });
   }
 
-  //register doctor function
+  /*
+  |--------------------------------------------------------------------------
+  | CREATE NEW USER
+  |--------------------------------------------------------------------------
+  */
+
   static async docRegister(request: Request, response: Response) {
     const { Fname, Lname, Address, Specialization, Sex, Email, Contact, Password } = request.body;
 
@@ -66,7 +71,6 @@ export default class UsersController {
       });
     }
   }
-
   static async patRegister(request: Request, response: Response) {
     const { Fname, Lname, BirthDate, Sex, Email, Contact, Password } = request.body;
 
@@ -115,41 +119,7 @@ export default class UsersController {
       });
     }
   }
-  // Get all doctors function 
-  static async get_all_doctors(request: Request, response: Response) {
-    try {
-      const users = await Doctor.find();
-
-      return response.json({
-        status: 1,
-        data: users,
-      });
-    } catch (error: any) {
-      response.status(400);
-      return response.json({
-        status: 0,
-        message: error.message,
-      });
-    }
-  }
-
-  static async get_all_patients(request: Request, response: Response) {
-    try {
-      const users = await Patient.find();
-
-      return response.json({
-        status: 1,
-        data: users,
-      });
-    } catch (error: any) {
-      response.status(400);
-      return response.json({
-        status: 0,
-        message: error.message,
-      });
-    }
-  }
-  
+  // LOGIN
   static async doctorlogin(request: Request, response: Response) {
     try {
       const { Email, Password } = request.body;
@@ -175,9 +145,9 @@ export default class UsersController {
 
       const claims = { id: user.DoctorID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
-      token.setExpiration(new Date().getTime() + 60 * 60 * 1000); 
+      token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
-      
+
       response.cookie('token', jwt, {
         httpOnly: true,
         secure: false,
@@ -187,7 +157,7 @@ export default class UsersController {
         status: 1,
         data: {
           user,
-          token : jwt,
+          token: jwt,
         },
       });
     } catch (error: any) {
@@ -198,7 +168,6 @@ export default class UsersController {
       });
     }
   }
-
   static async patientlogin(request: Request, response: Response) {
     try {
       const { Email, Password } = request.body;
@@ -247,4 +216,108 @@ export default class UsersController {
       });
     }
   }
+
+  /*
+  |--------------------------------------------------------------------------
+  | READ USER
+  |--------------------------------------------------------------------------
+  */
+
+  static async get_all_doctors(request: Request, response: Response) {
+    try {
+      const users = await Doctor.find();
+
+      return response.json({
+        status: 1,
+        data: users,
+      });
+    } catch (error: any) {
+      response.status(400);
+      return response.json({
+        status: 0,
+        message: error.message,
+      });
+    }
+  }
+  static async get_all_patients(request: Request, response: Response) {
+    try {
+      const users = await Patient.find();
+
+      return response.json({
+        status: 1,
+        data: users,
+      });
+    } catch (error: any) {
+      response.status(400);
+      return response.json({
+        status: 0,
+        message: error.message,
+      });
+    }
+  }
+  static async get_doctor_by_id(request: Request, response: Response) {
+    try {
+      const { DoctorID } = request.params;
+      const parsedDoctorID = parseInt(DoctorID, 10); // Convert DoctorID to a number
+  
+      const user = await Doctor.findOne({
+        where: [{ DoctorID: parsedDoctorID }], // Use parsedDoctorID instead of DoctorID
+      });
+  
+      if (!user) {
+        response.status(404);
+        return response.json({
+          status: 0,
+          message: 'User not found.',
+        });
+      }
+  
+      return response.json({
+        status: 1,
+        data: user,
+      });
+    } catch (error: any) {
+      response.status(400);
+      return response.json({
+        status: 0,
+        message: error.message,
+      });
+    }
+  }
+  static async get_patient_by_id(request: Request, response: Response) {
+    try {
+      const { PatientID } = request.params;
+      const parsedPatientID = parseInt(PatientID, 10); 
+  
+      const user = await Patient.findOne({
+        where: [{ PatientID: parsedPatientID }], 
+      });
+  
+      if (!user) {
+        response.status(404);
+        return response.json({
+          status: 0,
+          message: 'User not found.',
+        });
+      }
+  
+      return response.json({
+        status: 1,
+        data: user,
+      });
+    } catch (error: any) {
+      response.status(400);
+      return response.json({
+        status: 0,
+        message: error.message,
+      });
+    }
+  }
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE USER
+|--------------------------------------------------------------------------
+*/
+  
 }
