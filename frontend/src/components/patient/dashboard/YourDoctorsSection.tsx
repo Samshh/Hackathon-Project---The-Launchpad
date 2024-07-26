@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
-import { DashboardDataTable } from './DashboardTable';
+import { DataTable } from '../../DataTable';
 import { yourDoctorsColumns } from './yourDoctorsColumns';
 import { yourDoctorsMockData } from './yourDoctorsMockData';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,7 @@ export default function YourDoctorsSection() {
         </Button>
       </header>
       <section className="flex-grow h-1 overflow-y-auto shrink-0">
-        <DashboardDataTable data={yourDoctorsMockData} columns={yourDoctorsColumns} />
+        <DataTable data={yourDoctorsMockData} columns={yourDoctorsColumns} />
       </section>
     </section>
   );

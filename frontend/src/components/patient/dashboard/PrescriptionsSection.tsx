@@ -8,15 +8,16 @@ export default function PrescriptionsSection() {
         <div className="grid grid-cols-2 gap-x-4 gap-y-4">
           {Array.from({ length: 20 }).map((_, i) => {
             return (
-              <button>
-                <div key={i} className="rounded-lg text-start bg-[#FDF6C0]/90 border border-[#FDF6C0] flex p-3 items-start gap-3 group hover:bg-accent">
-                  <p className="line-clamp-2 text-ellipsis group-hover:text-white">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque, perferendis delectus. Blanditiis
-                    temporibus perspiciatis sequi ipsum possimus in eaque porro.
-                  </p>
-                  <ChevronRight className="self-end w-28 group-hover:stroke-white" preserveAspectRatio="xMaxYMax" />
-                </div>
-              </button>
+              <div
+                key={i}
+                className="rounded-lg text-start bg-[#FDF6C0]/90 border border-[#FDF6C0] flex p-3 items-start gap-3 group hover:bg-accent"
+              >
+                <p className="line-clamp-2 text-ellipsis group-hover:text-white">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque, perferendis delectus. Blanditiis
+                  temporibus perspiciatis sequi ipsum possimus in eaque porro.
+                </p>
+                <ChevronRight className="self-end w-28 group-hover:stroke-white" preserveAspectRatio="xMaxYMax" />
+              </div>
             );
           })}
         </div>
