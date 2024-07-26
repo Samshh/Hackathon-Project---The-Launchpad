@@ -45,8 +45,8 @@ export default function LoginForm() {
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">
         <div className="flex flex-col justify-start items-start pt-[5rem]">
-          <h6 className="font-normal">Login</h6>
-          <h3>Welcome back!</h3>
+          <h6 className="font-normal">Good to See You Again!</h6>
+          <h3>Your health journey continues here. Please log in to proceed.</h3>
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-[0.5rem]">
           <div className="flex flex-col w-full items-start">
