@@ -9,7 +9,7 @@ export type PastAppointment = {
   doctor: Doctor;
   status: 0 | 1;
   note: string;
-  ETA: string;
+  ETA: string; //YYYY-MM-DD-HH-mm
   diagnosis: string;
   prescription: string;
 };
@@ -52,7 +52,19 @@ export const allAppointmentsColumns: ColumnDef<PastAppointment>[] = [
   },
   {
     accessorKey: 'ETA',
+    header: () => <p className="font-semibold text-black">Date</p>,
+    cell: ({row}) => {
+      const date = row.original.ETA.split('-').slice(0,3).join('-')
+      return <p>{date}</p>
+    }
+  },
+  {
+    accessorKey: 'ETA',
     header: () => <p className="font-semibold text-black">ETA</p>,
+    cell: ({row}) => {
+      const time = row.original.ETA.split('-').slice(3).join(':')
+      return <p>{time}</p>
+    }
   },
   {
     accessorKey: 'diagnosis',

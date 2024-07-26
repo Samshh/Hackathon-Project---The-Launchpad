@@ -1,5 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/24/solid';
-import { DataTable } from '../../DataTable';
+import { DataTable } from '../../../DataTable';
 import { yourDoctorsColumns } from './yourDoctorsColumns';
 import { yourDoctorsMockData } from './yourDoctorsMockData';
 import { Button } from '@/components/ui/button';
@@ -12,11 +11,11 @@ export default function YourDoctorsSection() {
         <p className="text-xl font-bold">Your Doctors</p>
         <Button variant={'default'} className="flex items-center gap-3 hover:text-white">
           <p>See All</p>
-          <ChevronRight className="size-4" /> 
+          <ChevronRight className="size-4" />
         </Button>
       </header>
       <section className="flex-grow h-1 overflow-y-auto shrink-0">
-        <DataTable data={yourDoctorsMockData} columns={yourDoctorsColumns} />
+        <DataTable data={yourDoctorsMockData} columns={yourDoctorsColumns} type="doctor" />
       </section>
     </section>
   );

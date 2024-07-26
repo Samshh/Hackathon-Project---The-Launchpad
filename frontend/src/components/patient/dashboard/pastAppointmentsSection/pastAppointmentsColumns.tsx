@@ -1,19 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye } from 'lucide-react';
-
-type Doctor = {
-  name: string;
-  specialization: string;
-};
-
-export type PastAppointment = {
-  doctor: Doctor;
-  status: 0 | 1;
-  note: string;
-  ETA: string;
-  diagnosis: string
-  prescription: string
-};
+import { PastAppointment } from '../../appointments/allAppointmentsColumns';
 
 export const pastAppointmentsColumns: ColumnDef<PastAppointment>[] = [
   {
