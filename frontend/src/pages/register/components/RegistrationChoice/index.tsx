@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/react/shallow';
 import RegistrationStepOne from './RegistrationStepOne';
 import RegistrationStepTwo from './RegistrationStepTwo';
 import RegistrationStepThree from './RegistrationStepThree';
+import axios from 'axios';
 
 export default function RegistrationChoice() {
   const [
@@ -25,6 +26,7 @@ export default function RegistrationChoice() {
     address,
     department,
     specialization,
+    contactNumber,
   ] = useRegistrationChoiceStore(
     useShallow((state) => [
       state.step,
@@ -43,8 +45,55 @@ export default function RegistrationChoice() {
       state.address,
       state.department,
       state.specialization,
+      state.contactNumber,
     ]),
   );
+
+  const registrationAPI = async () => {
+    const PatientData = {
+      Fname: firstName,
+      Lname: lastName,
+      Sex: sex,
+      Email: email,
+      Contact: contactNumber,
+      BirthDate : birthday,
+      Password: password,
+    };
+
+    const DoctorData = {
+      Fname: firstName,
+      Lname: lastName,
+      Address: address,
+      Specialization: specialization,
+      Sex: sex,
+      Email: email,
+      Contact: contactNumber,
+      Password: password,
+    };
+
+    if (accountType === 'doctor') {
+      try {
+        const response = axios.post('http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/user/doctor/register', DoctorData);
+        const data = await response;
+        console.log(data);
+        toLogin();
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (accountType === 'patient') {
+        try {
+          const response = axios.post('http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/user/patient/register', PatientData);
+          const data = await response;
+          console.log(data);
+          toLogin();
+          console.log('Success');
+        }catch (error) {
+          console.log(error);
+        }
+    } else {
+      console.log('Error');
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -128,8 +177,7 @@ export default function RegistrationChoice() {
             size={'lg'}
             onClick={() => {
               if (currentStep === 2) {
-                console.log('Finish registration');
-                toLogin();
+                registrationAPI();
               } else {
                 goToNextStep();
               }

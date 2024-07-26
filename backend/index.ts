@@ -8,7 +8,7 @@ import { DatabaseStorage } from './database/storage';
 import { CreateServer } from './server';
 
 const databaseOptions: DatabaseOptions = {
-  sincronize: false,
+  sincronize: true,
   migrationsRun: true,
   storage: new DatabaseStorage({
     key: 'DATABASE',
