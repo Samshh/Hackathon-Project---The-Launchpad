@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Suspense } from 'react';
 import { useGlobalComponentStore } from './globalComponentStore';
 import { lazy } from 'react';
-import { PastAppointment } from './patient/appointments/allAppointmentsColumns';
+import { Appointment } from './patient/appointments/allAppointmentsColumns';
 
 const LazyAppointmentSheetContent = lazy(() => import('./patient/appointments/AppointmentSheetContent'));
 
@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps
                   toggleOpenSheet(
                     LazyAppointmentSheetContent && (
                       <Suspense fallback={<div>Loading...</div>}>
-                        <LazyAppointmentSheetContent appointment={row.original as PastAppointment} />
+                        <LazyAppointmentSheetContent appointment={row.original as Appointment} />
                       </Suspense>
                     ),
                   );

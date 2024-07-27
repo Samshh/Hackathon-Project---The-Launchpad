@@ -1,6 +1,6 @@
-import { PastAppointment } from "./allAppointmentsColumns";
+import { Appointment } from "./allAppointmentsColumns";
 
-export const appointmentsMockData: PastAppointment[] = [
+export const appointmentsMockData: Appointment[] = [
   {
     doctor: {
       name: 'John Smith',
@@ -8,7 +8,7 @@ export const appointmentsMockData: PastAppointment[] = [
     },
     status: 1,
     note: 'Experiencing occasional chest pain, need to discuss medication adjustment.',
-    ETA: '2024-08-20-09-30',
+    ETA: '2020-08-20-09-30',
     diagnosis: 'Mild angina',
     prescription: 'Increase dosage of nitroglycerin to 0.6mg as needed. Schedule stress test next week.'
   },

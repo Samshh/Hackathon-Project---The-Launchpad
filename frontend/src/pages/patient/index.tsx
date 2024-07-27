@@ -5,11 +5,11 @@ import PastAppointmentsSection from '@/components/patient/dashboard/pastAppointm
 
 export default function PatientDashboardPage() {
   return (
-    <main className="grid flex-1 grid-cols-9 overflow-y-hidden gap-x-6 gap-y-6">
+    <main className="grid flex-1 grid-cols-9 overflow-y-hidden gap-x-4 gap-y-4">
       <CurrentAppointmentSection />
       <PastAppointmentsSection />
-      <YourDoctorsSection />
       <PrescriptionsSection />
+      <YourDoctorsSection />
     </main>
   );
 }

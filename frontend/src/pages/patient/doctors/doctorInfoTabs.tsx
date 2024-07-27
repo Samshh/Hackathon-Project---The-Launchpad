@@ -57,8 +57,8 @@ export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
         </TabsContent>
       )}
       {currentTab === 'doctorScheds' && (
-        <TabsContent value="doctorScheds" className={`flex flex-col flex-grow`}>
-          show doctor availability calendar
+        <TabsContent value="doctorScheds" className={`flex flex-col flex-grow h-1 overflow-y-auto bg-red-500`}>
+          <div className='h-[100vh] text-white bg-black'>scrollable</div>
         </TabsContent>
       )}
     </Tabs>

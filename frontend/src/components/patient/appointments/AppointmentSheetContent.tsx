@@ -1,11 +1,9 @@
-import { PastAppointment } from './allAppointmentsColumns';
+import { Appointment } from './allAppointmentsColumns';
 import { parse, format } from 'date-fns';
 import { isEtaBeforeCurrent } from '@/lib/utils';
-import { useGlobalComponentStore } from '@/components/globalComponentStore';
-import {useEffect} from "react"
 
 type AppointmenListItemProps = {
-  appointment: PastAppointment;
+  appointment: Appointment;
 };
 
 export default function AppointmentSheetContent({ appointment }: AppointmenListItemProps) {
@@ -42,11 +40,11 @@ export default function AppointmentSheetContent({ appointment }: AppointmenListI
           <p className="text-xl break-words w-[350px]">{appointment.note}</p>
           <div className="flex flex-col justify-start font-medium text-gray-500">Diagnosis</div>
           <p className="text-xl break-words w-[350px]">
-            {appointment.status === 1 && !isEtaBeforeCurrent && appointment.diagnosis}
+            {appointment.status === 1 && !isEtaBeforeCurr ? appointment.diagnosis : 'N/A'}
           </p>
           <div className="flex flex-col justify-start font-medium text-gray-500">Prescription</div>
           <p className="text-xl break-words w-[350px]">
-            {appointment.status === 1 && !isEtaBeforeCurrent && appointment.prescription}
+            {appointment.status === 1 && !isEtaBeforeCurr ? appointment.prescription : 'N/A'}
           </p>
         </div>
       </div>

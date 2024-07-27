@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { isBefore, parse } from 'date-fns';
+import { Appointment } from '@/components/patient/appointments/allAppointmentsColumns';
+import { parseISO } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,4 +20,16 @@ export function isEtaBeforeCurrent(etaDateTime: string) {
   const parsedDateTime = parse(etaDateTime, 'yyyy-MM-dd-HH-mm', new Date());
   const currentDateTime = new Date();
   return isBefore(currentDateTime, parsedDateTime);
+}
+
+export function sortAppointments(appointments: Appointment[], isAscending: boolean) {
+  const b = appointments.sort((a, b) => {
+    const dateA = parseISO(a.ETA);
+    const dateB = parseISO(b.ETA);
+
+    // Compare the dates
+    return dateA.getTime() - dateB.getTime();
+  });
+  console.log(b);
+  return b;
 }
