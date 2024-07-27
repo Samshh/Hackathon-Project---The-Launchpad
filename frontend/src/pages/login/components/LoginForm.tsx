@@ -18,7 +18,6 @@ export default function LoginForm() {
   const [password, setPassword] = useState<string>('');
   const [accountType, setAccountType] = useState<string>('Select');
 
-
   const toRegister = () => {
     navigate('/register');
   };
@@ -33,9 +32,7 @@ export default function LoginForm() {
     setPassword(pass);
   };
 
-
   const loginAPI = async () => {
-
     const loginData = {
       Email: email,
       Password: password,
@@ -44,18 +41,16 @@ export default function LoginForm() {
 
     try {
       const response = await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/login', loginData, {
-        withCredentials: true
+        withCredentials: true,
       });
       console.log(response.data);
       toLogin();
     } catch (error: any) {
       console.error(error.message);
     }
-
   };
 
-
-  const toLogin  = () => {
+  const toLogin = () => {
     if (accountType === 'Doctor') {
       navigate('/doctor');
       console.log(email);
