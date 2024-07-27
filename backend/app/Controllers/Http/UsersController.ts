@@ -6,24 +6,34 @@ import { Response, Request } from 'express';
 import njwt from 'njwt';
 
 const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
-const oauth2Scheme = (req: Request) => {
-  const token = req.cookies['token'];
-  return token;
-};
+
 export default class UsersController {
   static async authenticate(request: Request, response: Response) {
-    const token = oauth2Scheme(request);
-    if (token) {
-      return response.json({
-        status: 200,
-        message: 'Authenticated',
-      });
-    } else {
+
+    const token = request.cookies.token;
+
+    if (!token) {   
       return response.status(401).json({
-        status: 401,
+        status: 0,
         message: 'Unauthorized',
       });
     }
+    
+    njwt.verify(token, JWT_SECRET, (err, verifiedJwt) => {
+      if (err) {
+        return response.status(401).json({
+          status: 0,
+          message: 'oten dako',
+        });
+ 
+      } else {
+        return response.json({
+          status: 1,
+          message: 'Authenticated',
+          user: verifiedJwt.body, 
+        });
+      }
+    });
   }
 
   /*
@@ -153,14 +163,16 @@ export default class UsersController {
         });
       }
 
-      const claims = { id: user.DoctorID, Email: user.Email };
+      const claims = { TypeIs: 1 , id: user.DoctorID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
 
       response.cookie('token', jwt, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'none',
+        expires: new Date(Date.now() + 60 * 60 * 1000),
       });
 
       return response.json({
@@ -201,14 +213,16 @@ export default class UsersController {
         });
       }
 
-      const claims = { id: user.PatientID, Email: user.Email };
+      const claims = { TypeIs  : 2, id: user.PatientID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
 
       response.cookie('token', jwt, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'none',
+        expires: new Date(Date.now() + 60 * 60 * 1000),
       });
 
       return response.json({

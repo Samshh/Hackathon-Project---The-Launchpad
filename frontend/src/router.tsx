@@ -1,7 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomePage from "./pages/home";
 import ProviderCheckpoint from "./checkpoints/ProviderCheckpoint";
-import AuthCheckpoint from "./checkpoints/AuthCheckpoint";
+import AuthCheckpointDoctor from "./checkpoints/AuthCheckpointDoctor";
+import AuthCheckpointPatient from "./checkpoints/AuthCheckpointPatient";
 import DefaultLayout from "./layouts/default";
 import LoginLayout from "./layouts/login";
 import RegisterLayout from "./layouts/register";
@@ -23,53 +24,38 @@ const router = createBrowserRouter([
     element: <ProviderCheckpoint />,
     children: [
       {
-        element: <AuthCheckpoint />,
+        path: "/",
+        element: <DefaultLayout />,
         children: [
           {
-            path: "/",
-            element: <DefaultLayout />,
-            children: [
-              {
-                index: true,
-                element: <HomePage />
-              }
-            ]
-          },
+            index: true,
+            element: <HomePage />
+          }
+        ]
+      },
+      {
+        path: "login",
+        element: <LoginLayout />,
+        children: [
           {
-            path: "login",
-            element: <LoginLayout />,
-            children: [
-              {
-                index: true,
-                element: <LoginPage />
-              }
-            ]
-          },
+            index: true,
+            element: <LoginPage />
+          }
+        ]
+      },
+      {
+        path: "register",
+        element: <RegisterLayout />,
+        children: [
           {
-            path: "register",
-            element: <RegisterLayout />,
-            children: [
-              {
-                index: true,
-                element: <RegisterPage />
-              }
-            ]
-          },
-          {
-            path: "patient",
-            element: <PatientLayout />,
-            children: [
-              {
-                index: true,
-                element: <PatientDashboardPage />
-              },
-              {
-                path: "appointments",
-                index: true,
-                element: <PatientAppointmentsPage/>
-              }
-            ]
-          },
+            index: true,
+            element: <RegisterPage />
+          }
+        ]
+      },
+      {
+        element: <AuthCheckpointDoctor />,
+        children: [
           {
             path: "doctor",
             element: <DoctorLayout />,
@@ -102,12 +88,37 @@ const router = createBrowserRouter([
               }
             ]
           },
-          {
-            path: "*",
-            element: <Navigate to="/" replace />
-          }
         ]
+      },
+      {
+        element: <AuthCheckpointPatient />,
+        children: [
+          {
+            path: "patient",
+            element: <PatientLayout />,
+            children: [
+              {
+                index: true,
+                element: <PatientDashboardPage />
+              },
+              {
+                path: "appointments",
+                index: true,
+                element: <PatientAppointmentsPage />
+              }
+            ]
+          },
+        ]
+      },
+      {
+        path: "*",
+        element: <Navigate to="/" replace />
       }
+      // {
+      //   element: <AuthCheckpoint />,
+      //   children: [
+      //   ]
+      // }
     ]
   }
 ]);

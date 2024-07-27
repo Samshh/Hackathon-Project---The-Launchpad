@@ -75,6 +75,7 @@ export default function RegistrationChoice() {
 
     if (accountType === 'doctor') {
       try {
+        console.log(DoctorData);
         const response = axios.post(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/register`, DoctorData);
         // const response = axios.post(`${apiUrl}/user/doctor/register`, DoctorData);
         const data = await response;
