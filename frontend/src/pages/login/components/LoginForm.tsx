@@ -10,12 +10,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [accountType, setAccountType] = useState<string>('Select');
+
+
   const toRegister = () => {
     navigate('/register');
   };
@@ -30,7 +33,29 @@ export default function LoginForm() {
     setPassword(pass);
   };
 
-  const toLogin = () => {
+
+  const loginAPI = async () => {
+
+    const loginData = {
+      Email: email,
+      Password: password,
+      AccountType: accountType,
+    };
+
+    try {
+      const response = await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/login', loginData, {
+        withCredentials: true
+      });
+      console.log(response.data);
+      toLogin();
+    } catch (error: any) {
+      console.error(error.message);
+    }
+
+  };
+
+
+  const toLogin  = () => {
     if (accountType === 'Doctor') {
       navigate('/doctor');
       console.log(email);
@@ -45,8 +70,8 @@ export default function LoginForm() {
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">
         <div className="flex flex-col justify-start items-start pt-[5rem]">
-          <h6 className="font-normal">Login</h6>
-          <h3>Welcome back!</h3>
+          <h6 className="font-normal">Good to See You Again!</h6>
+          <h3>Your health journey continues here. Please log in to proceed.</h3>
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-[0.5rem]">
           <div className="flex flex-col w-full items-start">
@@ -77,7 +102,7 @@ export default function LoginForm() {
         <div className="flex items-center justify-center w-full gap-[2rem]">
           <Button
             disabled={!email || !password || !accountType || accountType == 'Select'}
-            onClick={toLogin}
+            onClick={loginAPI}
             size={'lg'}
             className="w-full font-semibold"
           >

@@ -9,10 +9,10 @@ const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
 
 export default class UsersController {
 
-  static async test(request: Request, response: Response) {
+  static async authenticate(request: Request, response: Response) {
     return response.json({
-      status: 1,
-      message: 'Testing 123 ABC',
+      status: 200,
+      message: 'Authenticated',
     });
   }
 
