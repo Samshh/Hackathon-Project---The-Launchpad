@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "react-router-dom";
-import DoctorPatientDetailItem from "./DoctorPatientDetailItem";
+import DoctorDetailItem from "../../../components/doctor/DoctorDetailItem";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { isAfter } from "date-fns";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -126,10 +126,10 @@ export default function DoctorPatientDetails() {
           <hr className="bg-gray-100" />
 
           <div className="flex-grow flex flex-col justify-start items-stretch gap-4">
-            <DoctorPatientDetailItem label="Sex" value={patient.sex} />
-            <DoctorPatientDetailItem label="Age" value={patient.age} />
-            <DoctorPatientDetailItem label="Email" value={patient.email} />
-            <DoctorPatientDetailItem label="Contact Number" value={patient.contactNumber} />
+            <DoctorDetailItem label="Sex" value={patient.sex} />
+            <DoctorDetailItem label="Age" value={patient.age} />
+            <DoctorDetailItem label="Email" value={patient.email} />
+            <DoctorDetailItem label="Contact Number" value={patient.contactNumber} />
           </div>
         </div>
 
