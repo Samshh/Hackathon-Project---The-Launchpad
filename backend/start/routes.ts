@@ -13,7 +13,8 @@ const Route = Router();
 // USER
 Route.post('/user/doctor/register', UsersController.docRegister);
 Route.post('/user/patient/register', UsersController.patRegister);
-Route.post('/user/login', UsersController.doctorlogin)
+Route.post('/user/doctor/login', UsersController.doctorlogin)
+Route.post('/user/patient/login', UsersController.patientlogin)
 Route.get('/authenticate', AuthMiddleware.authenticateJWT, UsersController.authenticate);
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
