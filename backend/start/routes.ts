@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import UsersController from 'App/Controllers/Http/UsersController';
 import AppointmentsController from 'App/Controllers/Http/AppointmentsController';
-import authenticateJWT from 'App/Middleware/Auth';
-
+import AuthMiddleware from 'App/Middleware/Auth';
 const Route = Router();
 
 /*
@@ -15,14 +14,13 @@ const Route = Router();
 Route.post('/user/doctor/register', UsersController.docRegister);
 Route.post('/user/patient/register', UsersController.patRegister);
 Route.post('/user/login', UsersController.doctorlogin)
-Route.get('/test', authenticateJWT, UsersController.test);
+Route.get('/authenticate', AuthMiddleware.authenticateJWT, UsersController.authenticate);
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
 
 
-
 Route.post('/patient/appointment/create', AppointmentsController.patientCreateAppointment);
-Route.post('/doctor/appointments', AppointmentsController.getAppointments);
+Route.post('/doctor/appointments', AuthMiddleware.authenticateJWT ,AppointmentsController.getAppointments);
 // Route.post('/user/update', isAuth, UsersController.update);
 
 // // EVENT

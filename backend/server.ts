@@ -7,7 +7,12 @@ import { routes } from './start/routes';
 export function CreateServer() {
   const app = express();
 
-  app.use(cors());
+  // Configure CORS
+  app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true 
+  }));
+
   app.use(express.json({ limit: '1.5mb' }));
   app.use(ExceptionHandler);
   app.use(routes);

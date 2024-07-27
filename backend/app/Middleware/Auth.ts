@@ -3,7 +3,8 @@ import njwt from 'njwt';
 
 const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
 
-export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
+export default class AuthMiddleware {
+ static authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.header('Authorization');
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -27,4 +28,4 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
   });
 };
 
-export default authenticateJWT;
+}
