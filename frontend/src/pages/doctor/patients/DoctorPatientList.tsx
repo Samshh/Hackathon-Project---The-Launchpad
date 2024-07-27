@@ -1,5 +1,6 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 
 const patients = [
   {
@@ -7,173 +8,165 @@ const patients = [
     name: "Juan Dela Cruz",
     sex: "Male",
     age: "18 years, 6 months",
-    contactNumber: "09123456789"
+    contactNumber: "09123456789",
+    lastAppointment: "1 day ago"
   },
   {
     id: 2,
     name: "Maria Santos",
     sex: "Female",
-    age: "42 years, 0 months",
-    contactNumber: "09123456789"
+    age: "25 years, 2 months",
+    contactNumber: "09876543210",
+    lastAppointment: "2 days ago"
   },
   {
     id: 3,
-    name: "Jojo Binay",
+    name: "John Smith",
     sex: "Male",
-    age: "3 years, 3 months",
-    contactNumber: "09123456789"
+    age: "30 years, 1 month",
+    contactNumber: "09123456789",
+    lastAppointment: "3 days ago"
   },
   {
     id: 4,
-    name: "Raul Aquino",
-    sex: "Male",
-    age: "78 years, 9 months",
-    contactNumber: "09123456789"
-  },        
+    name: "Jane Doe",
+    sex: "Female",
+    age: "40 years, 5 months",
+    contactNumber: "09876543210",
+    lastAppointment: "4 days ago"
+  },
   {
     id: 5,
-    name: "John Doe",
-    sex: "Male",
-    age: "30 years, 4 months",
-    contactNumber: "09123456789"
+    name: "Sarah Johnson",
+    sex: "Female",
+    age: "35 years, 3 months",
+    contactNumber: "09123456789",
+    lastAppointment: "5 days ago"
   },
   {
     id: 6,
-    name: "Jane Smith",
-    sex: "Female",
-    age: "25 years, 9 months",
-    contactNumber: "09123456789"
+    name: "Michael Brown",
+    sex: "Male",
+    age: "45 years, 9 months",
+    contactNumber: "09876543210",
+    lastAppointment: "6 days ago"
   },
   {
     id: 7,
-    name: "Michael Johnson",
-    sex: "Male",
-    age: "45 years, 2 months",
-    contactNumber: "09123456789"
+    name: "Emily Davis",
+    sex: "Female",
+    age: "28 years, 4 months",
+    contactNumber: "09123456789",
+    lastAppointment: "7 days ago"
   },
   {
     id: 8,
-    name: "Emily Davis",
-    sex: "Female",
-    age: "35 years, 7 months",
-    contactNumber: "09123456789"
+    name: "Daniel Wilson",
+    sex: "Male",
+    age: "32 years, 7 months",
+    contactNumber: "09876543210",
+    lastAppointment: "8 days ago"
   },
   {
     id: 9,
-    name: "David Wilson",
-    sex: "Male",
-    age: "50 years, 11 months",
-    contactNumber: "09123456789"
+    name: "Olivia Martinez",
+    sex: "Female",
+    age: "22 years, 1 month",
+    contactNumber: "09123456789",
+    lastAppointment: "9 days ago"
   },
   {
     id: 10,
-    name: "Sarah Thompson",
-    sex: "Female",
-    age: "28 years, 3 months",
-    contactNumber: "09123456789"
+    name: "Alex Johnson",
+    sex: "Male",
+    age: "27 years, 3 months",
+    contactNumber: "09123456789",
+    lastAppointment: "10 days ago"
   },
   {
     id: 11,
-    name: "Christopher Martinez",
-    sex: "Male",
-    age: "32 years, 6 months",
-    contactNumber: "09123456789"
+    name: "Sophia Davis",
+    sex: "Female",
+    age: "31 years, 8 months",
+    contactNumber: "09876543210",
+    lastAppointment: "11 days ago"
   },
   {
     id: 12,
-    name: "Olivia Anderson",
-    sex: "Female",
-    age: "39 years, 1 month",
-    contactNumber: "09123456789"
+    name: "Ethan Wilson",
+    sex: "Male",
+    age: "29 years, 2 months",
+    contactNumber: "09123456789",
+    lastAppointment: "12 days ago"
   },
   {
     id: 13,
-    name: "Daniel Taylor",
-    sex: "Male",
-    age: "41 years, 8 months",
-    contactNumber: "09123456789"
+    name: "Isabella Martinez",
+    sex: "Female",
+    age: "23 years, 7 months",
+    contactNumber: "09876543210",
+    lastAppointment: "13 days ago"
   },
   {
     id: 14,
-    name: "Sophia Thomas",
-    sex: "Female",
-    age: "27 years, 5 months",
-    contactNumber: "09123456789"
+    name: "Liam Johnson",
+    sex: "Male",
+    age: "33 years, 4 months",
+    contactNumber: "09123456789",
+    lastAppointment: "14 days ago"
   },
   {
     id: 15,
-    name: "Matthew Hernandez",
-    sex: "Male",
-    age: "36 years, 10 months",
-    contactNumber: "09123456789"
+    name: "Ava Davis",
+    sex: "Female",
+    age: "26 years, 9 months",
+    contactNumber: "09876543210",
+    lastAppointment: "15 days ago"
   },
   {
     id: 16,
-    name: "Ava Wilson",
-    sex: "Female",
-    age: "33 years, 2 months",
-    contactNumber: "09123456789"
+    name: "Noah Wilson",
+    sex: "Male",
+    age: "30 years, 3 months",
+    contactNumber: "09123456789",
+    lastAppointment: "16 days ago"
   },
   {
     id: 17,
-    name: "Andrew Thompson",
-    sex: "Male",
-    age: "47 years, 7 months",
-    contactNumber: "09123456789"
+    name: "Mia Martinez",
+    sex: "Female",
+    age: "24 years, 8 months",
+    contactNumber: "09876543210",
+    lastAppointment: "17 days ago"
   },
   {
     id: 18,
-    name: "Isabella Davis",
-    sex: "Female",
-    age: "31 years, 9 months",
-    contactNumber: "09123456789"
+    name: "William Johnson",
+    sex: "Male",
+    age: "34 years, 5 months",
+    contactNumber: "09123456789",
+    lastAppointment: "18 days ago"
   },
   {
     id: 19,
-    name: "Joseph Johnson",
-    sex: "Male",
-    age: "43 years, 3 months",
-    contactNumber: "09123456789"
-  },
-  {
-    id: 20,
-    name: "Mia Smith",
+    name: "Charlotte Davis",
     sex: "Female",
-    age: "29 years, 6 months",
-    contactNumber: "09123456789"
-  },
-  {
-    id: 21,
-    name: "Ethan Martinez",
-    sex: "Male",
-    age: "38 years, 0 months",
-    contactNumber: "09123456789"
-  },
-  {
-    id: 22,
-    name: "Charlotte Anderson",
-    sex: "Female",
-    age: "34 years, 4 months",
-    contactNumber: "09123456789"
-  },
-  {
-    id: 23,
-    name: "Alexander Taylor",
-    sex: "Male",
-    age: "49 years, 11 months",
-    contactNumber: "09123456789"
-  },
-  {
-    id: 24,
-    name: "Amelia Thomas",
-    sex: "Female",
-    age: "26 years, 8 months",
-    contactNumber: "09123456789"
+    age: "27 years, 10 months",
+    contactNumber: "09876543210",
+    lastAppointment: "19 days ago"
   }
 ];
 
 export default function DoctorPatientList() {
-  const navigate = useNavigate();
+  const [searchParams, _] = useSearchParams();
+
+  const filteredPatients = useMemo(() => {
+    if (!searchParams.has('name')) {
+      return patients;
+    }
+
+    return patients.filter((patient) => patient.name.toLowerCase().includes(searchParams.get('name')!.toLowerCase()));
+  }, [searchParams]);
   
   return (
     <section className="flex-grow relative w-full flex flex-col justify-start items-stretch bg-white rounded-md shadow-md border border-gray-100 overflow-y-hidden">
@@ -183,24 +176,54 @@ export default function DoctorPatientList() {
             <TableHead className="w-1/2 py-2 pl-8">Name</TableHead>
             <TableHead className="py-2">Sex</TableHead>
             <TableHead className="py-2">Age</TableHead>
-            <TableHead className="py-2 pr-8">Contact Number</TableHead>
+            <TableHead className="py-2">Contact Number</TableHead>
+            <TableHead className="py-2 pr-8">Last Appointment</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="overflow-y-auto">
-          {patients.map((patient) => (
+          {filteredPatients.map((patient) => (
             <TableRow 
               key={`doctor-patient-${patient.id}`}
-              className="cursor-pointer"
-              onClick={() => navigate(`/doctor/patients/${patient.id}`)}
             >
-              <TableCell className="font-medium pl-8">{patient.name}</TableCell>
-              <TableCell>{patient.sex}</TableCell>
-              <TableCell>{patient.age}</TableCell>
-              <TableCell className="pr-8">{patient.contactNumber}</TableCell>
+              <TableCell className="p-0">
+                <Link to={`/doctor/patients/${patient.id}`} className="block w-full font-medium p-4 pl-8">
+                  {patient.name}
+                </Link>
+              </TableCell>
+
+              <TableCell className="p-0">
+                <Link to={`/doctor/patients/${patient.id}`} className="block w-full font-medium p-4">
+                  {patient.sex}
+                </Link>
+              </TableCell>
+
+              <TableCell className="p-0">
+                <Link to={`/doctor/patients/${patient.id}`} className="block w-full font-medium p-4">
+                  {patient.age}
+                </Link>
+              </TableCell>
+
+              <TableCell className="p-0">
+                <Link to={`/doctor/patients/${patient.id}`} className="block w-full font-medium p-4 pr-8">
+                  {patient.contactNumber}
+                </Link>                
+              </TableCell>
+
+              <TableCell className="p-0">
+                <Link to={`/doctor/patients/${patient.id}`} className="block w-full font-medium p-4 pr-8">
+                  {patient.lastAppointment}
+                </Link>                
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {filteredPatients.length === 0 && (
+        <TableCaption className="flex-grow flex justify-center items-center">
+          No patients found.
+        </TableCaption>
+      )}
     </section>
   )
 }
