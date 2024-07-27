@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react';
 
 export default function PrescriptionsSection() {
   return (
-    <section className="flex flex-col col-span-3 gap-4 p-5 overflow-y-hidden bg-white shadow-md rounded-xl">
+    <section className="flex flex-col col-span-4 gap-4 p-5 overflow-y-hidden bg-white shadow-md rounded-xl">
       <p className="text-xl font-bold">Prescriptions</p>
       <div className="flex-grow h-1 overflow-y-auto">
         <div className="grid grid-cols-2 gap-x-4 gap-y-4">

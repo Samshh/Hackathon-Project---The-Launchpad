@@ -2,11 +2,11 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table-custom';
 import { Suspense } from 'react';
-import { useGlobalSheetStore } from './store';
+import { useGlobalComponentStore } from './globalComponentStore';
 import { lazy } from 'react';
 import { PastAppointment } from './patient/appointments/allAppointmentsColumns';
 
-const AppointmentListItem = lazy(() => import('./patient/appointments/AppointmentListItem'));
+const LazyAppointmentSheetContent = lazy(() => import('./patient/appointments/AppointmentSheetContent'));
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -21,7 +21,7 @@ export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const { toggleOpen } = useGlobalSheetStore();
+  const { toggleOpenSheet } = useGlobalComponentStore();
 
   return (
     <Table wrapperClassName="overflow-clip">
@@ -45,10 +45,10 @@ export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps
               className="hover:cursor-pointer"
               onClick={() => {
                 if (type === 'patientAppointment') {
-                  toggleOpen(
-                    AppointmentListItem && (
+                  toggleOpenSheet(
+                    LazyAppointmentSheetContent && (
                       <Suspense fallback={<div>Loading...</div>}>
-                        <AppointmentListItem appointment={row.original as PastAppointment} />
+                        <LazyAppointmentSheetContent appointment={row.original as PastAppointment} />
                       </Suspense>
                     ),
                   );

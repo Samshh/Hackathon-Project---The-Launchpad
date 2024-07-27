@@ -1,4 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
+import { parse, format } from 'date-fns';
+import { isEtaBeforeCurrent } from '@/lib/utils';
 
 type Doctor = {
   name: string;
@@ -33,13 +35,16 @@ export const allAppointmentsColumns: ColumnDef<PastAppointment>[] = [
     header: () => <p className="font-semibold text-black">Status</p>,
     cell: ({ row }) => {
       const status = row.original.status;
-      return (
-        <p
-          className={`  w-min font-medium rounded-md py-1 px-2 ${status === 0 ? 'text-red-500 bg-red-200' : 'text-green-500 bg-green-200'}`}
-        >
-          {status === 0 ? 'Cancelled' : 'Finished'}
-        </p>
-      );
+      const etaDateTime = row.original.ETA;
+
+      if (status === 1) {
+        if (isEtaBeforeCurrent(etaDateTime)) {
+          return <p className={`w-min font-medium rounded-md py-1 px-2 text-orange-500 bg-orange-200`}>Pending</p>;
+        }
+        return <p className={`w-min font-medium rounded-md py-1 px-2 text-green-500 bg-green-200`}>Finished</p>;
+      }
+
+      return <p className={`w-min font-medium rounded-md py-1 px-2 text-red-500 bg-red-200`}>Cancelled</p>;
     },
   },
   {
@@ -51,27 +56,33 @@ export const allAppointmentsColumns: ColumnDef<PastAppointment>[] = [
     },
   },
   {
-    accessorKey: 'ETA',
+    accessorKey: 'eta-date',
     header: () => <p className="font-semibold text-black">Date</p>,
-    cell: ({row}) => {
-      const date = row.original.ETA.split('-').slice(0,3).join('-')
-      return <p>{date}</p>
-    }
+    cell: ({ row }) => {
+      const date = row.original.ETA.split('-').slice(0, 3).join('-');
+      const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
+    },
   },
   {
-    accessorKey: 'ETA',
+    accessorKey: 'eta-time',
     header: () => <p className="font-semibold text-black">ETA</p>,
-    cell: ({row}) => {
-      const time = row.original.ETA.split('-').slice(3).join(':')
-      return <p>{time}</p>
-    }
+    cell: ({ row }) => {
+      const militaryTime = row.original.ETA.split('-').slice(3).join(':');
+      const parsedTime = parse(militaryTime, 'HH:mm', new Date());
+      const formattedTime = format(parsedTime, 'h:mm a');
+      return <p>{formattedTime}</p>;
+    },
   },
   {
     accessorKey: 'diagnosis',
     header: () => <p className="font-semibold text-black">Diagnosis</p>,
     cell: ({ row }) => {
       const diagnosis = row.original.diagnosis;
-      return <p className="w-[200px]">{diagnosis}</p>;
+      const status = row.original.status;
+      const isEtaBeforeCurr = isEtaBeforeCurrent(row.original.ETA);
+      return <p className="w-[200px]">{status === 1 && !isEtaBeforeCurr && diagnosis}</p>;
     },
   },
   {
@@ -79,7 +90,9 @@ export const allAppointmentsColumns: ColumnDef<PastAppointment>[] = [
     header: () => <p className="font-semibold text-black">Prescription</p>,
     cell: ({ row }) => {
       const prescription = row.original.prescription;
-      return <p className="w-[200px]">{prescription}</p>;
+      const status = row.original.status;
+      const isEtaBeforeCurr = isEtaBeforeCurrent(row.original.ETA);
+      return <p className="w-[200px]">{status === 1 && !isEtaBeforeCurr && prescription}</p>;
     },
   },
 ];
