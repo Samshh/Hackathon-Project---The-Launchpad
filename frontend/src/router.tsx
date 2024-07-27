@@ -15,6 +15,8 @@ import PatientAppointmentsPage from "./pages/patient/appointments";
 import DoctorAppointmentsPage from "./pages/doctor/appointments";
 import DoctorPatientsPage from "./pages/doctor/patients";
 import DoctorAccountPage from "./pages/doctor/account";
+import DoctorPatientList from "./pages/doctor/patients/DoctorPatientList";
+import DoctorPatientDetails from "./pages/doctor/patients/DoctorPatientDetails";
 
 const router = createBrowserRouter([
   {
@@ -82,7 +84,17 @@ const router = createBrowserRouter([
               },
               {
                 path: "patients",
-                element: <DoctorPatientsPage />
+                element: <DoctorPatientsPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <DoctorPatientList />,
+                  },
+                  {
+                    path: ":patientId",
+                    element: <DoctorPatientDetails />,
+                  }
+                ]
               },
               {
                 path: "account",
