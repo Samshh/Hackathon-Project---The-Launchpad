@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import useAppointmentsStore from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { differenceInCalendarDays, isWithinInterval } from "date-fns";
-
+import axios from 'axios';
 const appointments = [
   {
     id: 1,
@@ -27,6 +27,13 @@ const appointments = [
   },
 ]
 
+
+const getAppointments = async () => {
+  const userAppointments = axios.get('http://localhost:4943/appointments', {
+    withCredentials: true
+  });
+}
+
 export default function AppointmentTimeBlockGrid() {
   const [isHovering, setIsHovering] = useState(false);
   const [offsetTop, setOffsetTop] = useState(-1);
@@ -34,7 +41,7 @@ export default function AppointmentTimeBlockGrid() {
   const hoveredMinutes = useMemo(() => Math.floor(offsetTop % 160 / 160 * 60), [offsetTop]);
 
   const [
-    activeWeekFirstDay, 
+    activeWeekFirstDay,
     getActiveWeekLastDay
   ] = useAppointmentsStore(
     useShallow((state) => [
@@ -52,10 +59,10 @@ export default function AppointmentTimeBlockGrid() {
         onMouseLeave={() => {
           setIsHovering(false);
           setOffsetTop(-1);
-        }}        
+        }}
       >
         {[...Array(24)].map((_, hourIndex) => (
-          <div 
+          <div
             className="grid row-span-1 col-span-full grid-cols-subgrid"
             key={`hour-${hourIndex}`}
           >
@@ -64,18 +71,18 @@ export default function AppointmentTimeBlockGrid() {
             </div>
 
             {[...Array(7)].map((_, weekIndex) => (
-              <div 
-                key={`hour-${hourIndex}-week-${weekIndex}`} 
-                className="border-b border-r border-gray-200" 
+              <div
+                key={`hour-${hourIndex}-week-${weekIndex}`}
+                className="border-b border-r border-gray-200"
               />
             ))}
           </div>
         ))}
 
         {appointments.map((appointment) => {
-          if (!isWithinInterval(appointment.eta, { 
+          if (!isWithinInterval(appointment.eta, {
             start: activeWeekFirstDay,
-            end: getActiveWeekLastDay() 
+            end: getActiveWeekLastDay()
           })) {
             return null;
           }
@@ -97,9 +104,9 @@ export default function AppointmentTimeBlockGrid() {
             >
               <div className={`
                 flex-grow flex flex-col justify-between items-start text-sm rounded-md shadow-md px-2 py-1 cursor-pointer border
-                ${appointment.status === 0 ? 'border-red-300 bg-red-50 hover:bg-red-100' : 
-                  isBefore ? 'border-green-300 bg-green-50 hover:bg-green-100' : 
-                  'border-yellow-300 bg-yellow-50 hover:bg-yellow-100'
+                ${appointment.status === 0 ? 'border-red-300 bg-red-50 hover:bg-red-100' :
+                  isBefore ? 'border-green-300 bg-green-50 hover:bg-green-100' :
+                    'border-yellow-300 bg-yellow-50 hover:bg-yellow-100'
                 }
               `}>
                 <div className="flex flex-col justify-start items-start">
@@ -116,7 +123,7 @@ export default function AppointmentTimeBlockGrid() {
         })}
 
         {isHovering && (
-          <div 
+          <div
             className="w-full absolute left-20 flex flex-row justify-end items-center pointer-events-none"
             style={{
               top: offsetTop,
@@ -125,9 +132,9 @@ export default function AppointmentTimeBlockGrid() {
             <span className="absolute top-0 right-full text-xs text-white bg-accent rounded-full px-2 py-1 -translate-y-1/2">
               {hoveredHour.toString().padStart(2, "0")}:{hoveredMinutes.toString().padStart(2, "0")}
             </span>
-            <hr className="w-full border-dashed border-accent border-t"/>
+            <hr className="w-full border-dashed border-accent border-t" />
           </div>
-        )}        
+        )}
       </div>
     </div>
   )
