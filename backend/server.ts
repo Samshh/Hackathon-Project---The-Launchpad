@@ -6,10 +6,17 @@ import { routes } from './start/routes';
 
 export function CreateServer() {
   const app = express();
+  const cookieParser = require('cookie-parser');
 
-  app.use(cors());
+  // Configure CORS
+  app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true 
+  }));
+
   app.use(express.json({ limit: '1.5mb' }));
   app.use(ExceptionHandler);
+  app.use(cookieParser());
   app.use(routes);
 
   // Guard routes

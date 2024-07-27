@@ -6,14 +6,24 @@ import { Response, Request } from 'express';
 import njwt from 'njwt';
 
 const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
-
+  const oauth2Scheme = (req: Request) => {
+    const token = req.cookies['token'];
+    return token;
+  };
 export default class UsersController {
-
-  static async test(request: Request, response: Response) {
-    return response.json({
-      status: 1,
-      message: 'Testing 123 ABC',
-    });
+  static async authenticate(request: Request, response: Response) {
+    const token = oauth2Scheme(request);
+    if (token) {
+      return response.json({
+        status: 200,
+        message: 'Authenticated',
+      });
+    } else {
+      return response.status(401).json({
+        status: 401,
+        message: 'Unauthorized',
+      });
+    }
   }
 
   /*

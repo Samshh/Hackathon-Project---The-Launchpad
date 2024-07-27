@@ -30,6 +30,9 @@ export class Appointment extends BaseEntity {
   ETA: Date;
 
   @Column({ type: 'text', nullable: true })
+  Reason: string;
+
+  @Column({ type: 'text', nullable: true })
   Note: string;
 
   @Column({ type: 'text', nullable: true })

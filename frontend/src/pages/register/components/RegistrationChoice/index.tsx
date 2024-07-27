@@ -71,9 +71,12 @@ export default function RegistrationChoice() {
       Password: password,
     };
 
+    // const apiUrl = process.env.REACT_APP_API_URL;
+
     if (accountType === 'doctor') {
       try {
-        const response = axios.post('http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/user/doctor/register', DoctorData);
+        const response = axios.post(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/register`, DoctorData);
+        // const response = axios.post(`${apiUrl}/user/doctor/register`, DoctorData);
         const data = await response;
         console.log(data);
         toLogin();
@@ -82,7 +85,7 @@ export default function RegistrationChoice() {
       }
     } else if (accountType === 'patient') {
         try {
-          const response = axios.post('http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/user/patient/register', PatientData);
+          const response = axios.post(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/register`, PatientData);
           const data = await response;
           console.log(data);
           toLogin();

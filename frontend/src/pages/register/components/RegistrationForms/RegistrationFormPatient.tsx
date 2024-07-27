@@ -100,7 +100,7 @@ export default function RegistrationFormPatient() {
             <p>Date of Birth:</p>
             <Input
               value={birthday || ''}
-              placeholder="September 4, 2003"
+              placeholder="YYYY-MM-DD"
               onChange={(e) => setBirthday(e.target.value)}
             />
           </div>
