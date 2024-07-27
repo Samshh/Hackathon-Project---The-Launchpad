@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { Doctor } from './doctorsMockData';
 
-export default function TabsDemo({ doctor }: { doctor: Doctor }) {
+export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
   const [currentTab, setCurrentTab] = useState('doctorInfo');
   return (
     <Tabs
@@ -11,8 +11,18 @@ export default function TabsDemo({ doctor }: { doctor: Doctor }) {
       className="flex flex-col flex-grow w-full gap-4"
     >
       <TabsList className="grid grid-cols-2 w-fit">
-        <TabsTrigger value="doctorInfo">Doctor Information</TabsTrigger>
-        <TabsTrigger value="doctorScheds">Doctor Schedules</TabsTrigger>
+        <TabsTrigger
+          value="doctorInfo"
+          className={`before:hidden ${currentTab === 'doctorInfo' && 'before:block'} before:absolute relative before:-bottom-[2px] before:h-[2px] before:bg-accent before:w-full`}
+        >
+          Doctor Information
+        </TabsTrigger>
+        <TabsTrigger
+          value="doctorScheds"
+          className={`before:hidden before:absolute ${currentTab === 'doctorScheds' && 'before:block'} relative before:-bottom-[2px] before:h-[2px] before:bg-accent before:w-full`}
+        >
+          Doctor Schedules
+        </TabsTrigger>
       </TabsList>
       {currentTab === 'doctorInfo' && (
         <TabsContent value="doctorInfo" className={`flex flex-col bg-white rounded-md shadow-md p-6 gap-8`}>
@@ -48,7 +58,7 @@ export default function TabsDemo({ doctor }: { doctor: Doctor }) {
       )}
       {currentTab === 'doctorScheds' && (
         <TabsContent value="doctorScheds" className={`flex flex-col flex-grow`}>
-            show doctor availability calendar
+          show doctor availability calendar
         </TabsContent>
       )}
     </Tabs>

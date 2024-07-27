@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { Doctor } from './doctorsMockData';
-import TabsDemo from './doctorInfoTabs';
+import DoctorInfoPageTabs from './doctorInfoTabs';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import DoctorDialogContent from '@/components/patient/doctors/DoctorDialogContent';
 
@@ -41,7 +41,7 @@ export default function DoctorInfoPage() {
           Book Appointment
         </button>
       </div>
-      <TabsDemo doctor={doctorTemp} />
+      <DoctorInfoPageTabs doctor={doctorTemp} />
     </div>
   );
 }
