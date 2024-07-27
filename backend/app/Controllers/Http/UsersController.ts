@@ -8,11 +8,31 @@ import njwt from 'njwt';
 const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
 
 export default class UsersController {
-
   static async authenticate(request: Request, response: Response) {
-    return response.json({
-      status: 200,
-      message: 'Authenticated',
+
+    const token = request.cookies.token;
+
+    if (!token) {   
+      return response.status(401).json({
+        status: 0,
+        message: 'Unauthorized',
+      });
+    }
+    
+    njwt.verify(token, JWT_SECRET, (err, verifiedJwt) => {
+      if (err) {
+        return response.status(401).json({
+          status: 0,
+          message: 'oten dako',
+        });
+ 
+      } else {
+        return response.json({
+          status: 1,
+          message: 'Authenticated',
+          user: verifiedJwt.body, 
+        });
+      }
     });
   }
 
@@ -143,14 +163,16 @@ export default class UsersController {
         });
       }
 
-      const claims = { id: user.DoctorID, Email: user.Email };
+      const claims = { TypeIs: 1 , id: user.DoctorID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
 
       response.cookie('token', jwt, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'none',
+        expires: new Date(Date.now() + 60 * 60 * 1000),
       });
 
       return response.json({
@@ -191,14 +213,16 @@ export default class UsersController {
         });
       }
 
-      const claims = { id: user.PatientID, Email: user.Email };
+      const claims = { TypeIs  : 2, id: user.PatientID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
 
       response.cookie('token', jwt, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'none',
+        expires: new Date(Date.now() + 60 * 60 * 1000),
       });
 
       return response.json({
@@ -259,11 +283,11 @@ export default class UsersController {
     try {
       const { DoctorID } = request.params;
       const parsedDoctorID = parseInt(DoctorID, 10); // Convert DoctorID to a number
-  
+
       const user = await Doctor.findOne({
         where: [{ DoctorID: parsedDoctorID }], // Use parsedDoctorID instead of DoctorID
       });
-  
+
       if (!user) {
         response.status(404);
         return response.json({
@@ -271,7 +295,7 @@ export default class UsersController {
           message: 'User not found.',
         });
       }
-  
+
       return response.json({
         status: 1,
         data: user,
@@ -287,12 +311,12 @@ export default class UsersController {
   static async get_patient_by_id(request: Request, response: Response) {
     try {
       const { PatientID } = request.params;
-      const parsedPatientID = parseInt(PatientID, 10); 
-  
+      const parsedPatientID = parseInt(PatientID, 10);
+
       const user = await Patient.findOne({
-        where: [{ PatientID: parsedPatientID }], 
+        where: [{ PatientID: parsedPatientID }],
       });
-  
+
       if (!user) {
         response.status(404);
         return response.json({
@@ -300,7 +324,7 @@ export default class UsersController {
           message: 'User not found.',
         });
       }
-  
+
       return response.json({
         status: 1,
         data: user,
@@ -314,10 +338,9 @@ export default class UsersController {
     }
   }
 
-/*
+  /*
 |--------------------------------------------------------------------------
 | UPDATE USER
 |--------------------------------------------------------------------------
 */
-  
 }

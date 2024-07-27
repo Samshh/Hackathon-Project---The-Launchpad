@@ -18,7 +18,6 @@ export default function LoginForm() {
   const [password, setPassword] = useState<string>('');
   const [accountType, setAccountType] = useState<string>('Select');
 
-
   const toRegister = () => {
     navigate('/register');
   };
@@ -33,39 +32,45 @@ export default function LoginForm() {
     setPassword(pass);
   };
 
-
   const loginAPI = async () => {
-
     const loginData = {
       Email: email,
       Password: password,
-      AccountType: accountType,
     };
 
     try {
-      const response = await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/login', loginData, {
-        withCredentials: true
-      });
-      console.log(response.data);
-      toLogin();
-    } catch (error: any) {
-      console.error(error.message);
-    }
+      let endpoint = '';
+      if (accountType === 'Doctor') {
+        endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/login';
+      } else if (accountType === 'Patient') {
+        endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/login';
+      } else {
+        throw new Error('Invalid account type');
+      }
 
+      const response = await axios.post(endpoint, loginData, {
+        withCredentials: true,
+      });
+
+      if (response.data.status === 1) {
+        console.log('Login successful:', response.data);
+        toLogin();
+      } else {
+        console.error('Login failed:', response.data.message);
+      }
+    } catch (error: any) {
+      console.error('Login error:', error.message);
+    }
   };
 
-
-  const toLogin  = () => {
+  const toLogin = () => {
     if (accountType === 'Doctor') {
       navigate('/doctor');
-      console.log(email);
-      console.log(password);
     } else if (accountType === 'Patient') {
       navigate('/patient');
-      console.log(email);
-      console.log(password);
     }
   };
+
   return (
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">

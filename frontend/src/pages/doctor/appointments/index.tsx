@@ -1,5 +1,4 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import AppointmentTimeBlockGrid from "./AppointmentTimeBlockGrid";
 import { useEffect, useState } from "react";
 import AppointmentCalendar from "./AppointmentCalendar";
 import useAppointmentsStore from "./store";
