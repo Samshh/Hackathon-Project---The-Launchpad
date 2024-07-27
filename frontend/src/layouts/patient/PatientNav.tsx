@@ -28,3 +28,43 @@ export default function PatientNav() {
     </div>
   );
 }
+
+
+// import { Calendar, LogOut } from 'lucide-react';
+// import { Link } from 'react-router-dom';
+
+// export default function PatientNav() {
+//   return (
+//     <div className="flex flex-col min-h-full overflow-hidden text-gray-600 bg-white rounded-lg shadow-md">
+//       <div className="flex items-center gap-2">
+//         {/* <div className="rounded-full bg-accent size-6"></div> */}
+//         <p className="mt-6 ml-4 text-2xl font-bold">LOGO</p>
+//       </div>
+//       <div className="flex flex-col flex-1 mt-12 font-semibold">
+//         <Link to="/patient" className="flex items-center gap-6 px-5 py-4 hover:bg-accent hover:text-white group">
+//           <Calendar className="size-6 stroke-gray-600 group-hover:stroke-white" />
+//           <p>Dashboard</p>
+//         </Link>
+//         <Link
+//           to="/patient/appointments"
+//           className="flex items-center gap-6 px-5 py-4 hover:bg-accent hover:text-white group"
+//         >
+//           <Calendar className="size-6 stroke-gray-600 group-hover:stroke-white" />
+//           <p>Appointments</p>
+//         </Link>
+//         <Link
+//           to="/patient/doctors"
+//           className="flex items-center gap-6 px-5 py-4 hover:bg-accent hover:text-white group"
+//         >
+//           <Calendar className="size-6 stroke-gray-600 group-hover:stroke-white" />
+//           <p>Doctors</p>
+//         </Link>
+//       </div>
+//       <button className="flex items-center gap-6 px-5 py-4 hover:bg-accent hover:text-white group">
+//         <LogOut className="size-6 stroke-gray-600 group-hover:stroke-white" />
+//         <p>Logout</p>
+//       </button>
+//     </div>
+//   );
+// }
+

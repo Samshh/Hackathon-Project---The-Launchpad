@@ -1,4 +1,3 @@
-import GlobalSheet from '@/components/GlobalSheet';
 import CurrentAppointmentSection from '../../components/patient/dashboard/CurrentAppointmentSection';
 import PrescriptionsSection from '../../components/patient/dashboard/PrescriptionsSection';
 import YourDoctorsSection from '../../components/patient/dashboard/yourDoctorsSection/YourDoctorsSection';
@@ -6,12 +5,11 @@ import PastAppointmentsSection from '@/components/patient/dashboard/pastAppointm
 
 export default function PatientDashboardPage() {
   return (
-    <main className="grid flex-1 h-screen grid-cols-8 overflow-y-hidden gap-x-6 gap-y-6">
-      <GlobalSheet/>
+    <main className="grid flex-1 grid-cols-9 overflow-y-hidden gap-x-4 gap-y-4">
       <CurrentAppointmentSection />
       <PastAppointmentsSection />
-      <YourDoctorsSection />
       <PrescriptionsSection />
+      <YourDoctorsSection />
     </main>
   );
 }
