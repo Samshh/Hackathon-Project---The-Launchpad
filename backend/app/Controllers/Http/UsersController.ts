@@ -6,10 +6,10 @@ import { Response, Request } from 'express';
 import njwt from 'njwt';
 
 const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
-  const oauth2Scheme = (req: Request) => {
-    const token = req.cookies['token'];
-    return token;
-  };
+const oauth2Scheme = (req: Request) => {
+  const token = req.cookies['token'];
+  return token;
+};
 export default class UsersController {
   static async authenticate(request: Request, response: Response) {
     const token = oauth2Scheme(request);
@@ -269,11 +269,11 @@ export default class UsersController {
     try {
       const { DoctorID } = request.params;
       const parsedDoctorID = parseInt(DoctorID, 10); // Convert DoctorID to a number
-  
+
       const user = await Doctor.findOne({
         where: [{ DoctorID: parsedDoctorID }], // Use parsedDoctorID instead of DoctorID
       });
-  
+
       if (!user) {
         response.status(404);
         return response.json({
@@ -281,7 +281,7 @@ export default class UsersController {
           message: 'User not found.',
         });
       }
-  
+
       return response.json({
         status: 1,
         data: user,
@@ -297,12 +297,12 @@ export default class UsersController {
   static async get_patient_by_id(request: Request, response: Response) {
     try {
       const { PatientID } = request.params;
-      const parsedPatientID = parseInt(PatientID, 10); 
-  
+      const parsedPatientID = parseInt(PatientID, 10);
+
       const user = await Patient.findOne({
-        where: [{ PatientID: parsedPatientID }], 
+        where: [{ PatientID: parsedPatientID }],
       });
-  
+
       if (!user) {
         response.status(404);
         return response.json({
@@ -310,7 +310,7 @@ export default class UsersController {
           message: 'User not found.',
         });
       }
-  
+
       return response.json({
         status: 1,
         data: user,
@@ -324,10 +324,9 @@ export default class UsersController {
     }
   }
 
-/*
+  /*
 |--------------------------------------------------------------------------
 | UPDATE USER
 |--------------------------------------------------------------------------
 */
-  
 }
