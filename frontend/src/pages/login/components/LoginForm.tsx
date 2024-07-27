@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function LoginForm() {
@@ -25,14 +25,17 @@ export default function LoginForm() {
   const accountDropdown = (type: string) => {
     setAccountType(type);
   };
+
   const emailInput = (email: string) => {
     setEmail(email);
   };
+
   const passwordInput = (pass: string) => {
     setPassword(pass);
   };
 
   const loginAPI = async () => {
+    console.log('Logging in');
     const loginData = {
       Email: email,
       Password: password,
@@ -70,6 +73,33 @@ export default function LoginForm() {
       navigate('/patient');
     }
   };
+
+  const checkAuth = async () => {
+    console.log('Checking auth');
+    try {
+      let response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
+        withCredentials: true,
+      });
+      const data = await response.data;
+      if (data && data.user.TypeIs === 1) {
+        setAccountType('Doctor');
+        console.log('Authenticated as doctor');
+        navigate('/doctor');
+      } else if (data && data.user.TypeIs === 2) {
+        setAccountType('Patient');
+        console.log('Authenticated as patient');
+        navigate('/patient');
+      } else {
+        console.log('Not authenticated');
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <div className="flex flex-col h-full pl-[3.5rem]">
