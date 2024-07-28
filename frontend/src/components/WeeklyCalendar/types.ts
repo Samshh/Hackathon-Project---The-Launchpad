@@ -11,4 +11,5 @@ export interface CalendarFloatingTimeBlock {
   className?: string;
   startTime: Date;
   endTime?: Date;
+  dayOfTheWeek?: number;
 }

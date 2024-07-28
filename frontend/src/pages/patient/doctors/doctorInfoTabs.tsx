@@ -1,6 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { Doctor } from './doctorsMockData';
+import DoctorInfoTab from '@/components/patient/doctors/doctorInfoTabs/DoctorInfoTab';
+import DoctorSchedTab from '@/components/patient/doctors/doctorInfoTabs/DoctorSchedTab';
 
 export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
   const [currentTab, setCurrentTab] = useState('doctorInfo');
@@ -26,39 +28,12 @@ export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
       </TabsList>
       {currentTab === 'doctorInfo' && (
         <TabsContent value="doctorInfo" className={`flex flex-col bg-white rounded-md shadow-md p-6 gap-8`}>
-          <div className="grid grid-cols-4 gap-y-8">
-            <div>
-              <p className="text-sm text-gray-500">Full Name</p>
-              <p className="text-lg font-semibold">
-                {doctor.firstName} {doctor.lastName}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Department</p>
-              <p className="text-lg font-semibold">{doctor.department}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Specialization</p>
-              <p className="text-lg font-semibold">{doctor.specialization}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Address</p>
-              <p className="text-lg font-semibold">{doctor.address}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Email</p>
-              <p className="text-lg font-semibold">{doctor.email}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Contact</p>
-              <p className="text-lg font-semibold">{doctor.contact}</p>
-            </div>
-          </div>
+          <DoctorInfoTab doctor={doctor} />
         </TabsContent>
       )}
       {currentTab === 'doctorScheds' && (
-        <TabsContent value="doctorScheds" className={`flex flex-col flex-grow h-1 overflow-y-auto bg-red-500`}>
-          <div className='h-[100vh] text-white bg-black'>scrollable</div>
+        <TabsContent value="doctorScheds" className={`flex flex-col flex-grow`}>
+          <DoctorSchedTab />
         </TabsContent>
       )}
     </Tabs>

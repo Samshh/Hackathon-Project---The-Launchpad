@@ -1,6 +1,7 @@
 import DoctorRegisterValidator from 'App/Validators/DoctorRegisterValidator';
 import PatientRegisterValidator from 'App/Validators/PatientRegisterValidator';
 import { Appointment } from "Database/entities/appointment";
+import { Patient_Records } from 'Database/entities/patient_record';
 import { Doctor } from 'Database/entities/doctor';
 import { Patient } from 'Database/entities/patient';
 import { Response, Request } from 'express';
@@ -88,7 +89,7 @@ export default class UsersController {
     }
   }
   static async patRegister(request: Request, response: Response) {
-    const { Fname, Lname, BirthDate, Sex, Email, Contact, Password } = request.body;
+    const { Fname, Lname, BirthDate, Sex, Email, Contact, Password, Documents } = request.body;
 
     const userData: Partial<Patient> = {
       Fname,
@@ -121,7 +122,16 @@ export default class UsersController {
         });
       }
 
-      await Patient.save(userData);
+      const newPatient = await Patient.save(userData);
+
+      if (Documents && Documents.length > 0) {
+        const records = Documents.map((doc: string) => ({
+          FilePath: doc,
+          patient: newPatient,
+        }));
+
+        await Patient_Records.save(records);
+      }
 
       return response.status(201).json({
         status: 1,
@@ -134,7 +144,7 @@ export default class UsersController {
         error: error.message,
       });
     }
-  }
+}
   // LOGIN
   static async doctorlogin(request: Request, response: Response) {
     try {

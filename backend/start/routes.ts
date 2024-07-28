@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UsersController from 'App/Controllers/Http/UsersController';
 import AppointmentsController from 'App/Controllers/Http/AppointmentsController';
+import FileController from 'App/Controllers/Http/FileController';
 import AuthMiddleware from 'App/Middleware/Auth';
 import jwtCreate from 'App/Middleware/jwtCreate';
 const Route = Router();
@@ -19,6 +20,8 @@ Route.post('/user/doctor/register', UsersController.docRegister);
 Route.post('/user/patient/register', UsersController.patRegister);
 Route.post('/user/doctor/login', UsersController.doctorlogin)
 Route.post('/user/patient/login', UsersController.patientlogin)
+
+Route.get('/allFiles', FileController.getAllFiles);
 
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
