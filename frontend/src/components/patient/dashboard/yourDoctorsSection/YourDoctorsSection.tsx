@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import { doctorsMockData } from '@/pages/patient/doctors/doctorsMockData';
+import { useNavigate } from 'react-router-dom';
 
 export default function YourDoctorsSection() {
+  const navigate = useNavigate();
+
   return (
     <section className={`bg-white shadow-md col-span-4 gap-3 rounded-xl p-5 flex flex-col overflow-hidden`}>
       <header className="flex items-center justify-between">
@@ -17,6 +20,7 @@ export default function YourDoctorsSection() {
           {doctorsMockData.map((doctor) => {
             return (
               <div
+                onClick={() => navigate(`/patient/doctors/${doctor.id}`)}
                 key={doctor.id}
                 className="rounded-lg text-start min-h-[80px] border border-gray-400 flex p-3 items-center gap-3 group hover:border-accent hover:cursor-pointer"
               >
