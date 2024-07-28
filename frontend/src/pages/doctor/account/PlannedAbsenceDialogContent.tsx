@@ -3,15 +3,10 @@ import { z } from "zod";
 import { PlannedAbsence } from "./types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
+import DateTimeField from "@/components/DateTimeField";
 
 interface PlannedAbsenceDialogContentProps {
   plannedAbsence?: PlannedAbsence;
@@ -57,129 +52,13 @@ export default function PlannedAbsenceDialogContent({
             <div className="flex flex-col justify-start items-start gap-1">
               <Label>Start</Label>
 
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "Pp")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value ? new Date(field.value) : undefined}
-                          onSelect={(date) => {
-                            if (!date) return;
-
-                            const prevStartHours = field.value.getHours();
-                            const prevStartMinutes = field.value.getMinutes();
-
-                            const selectedDate = new Date(date);
-                            selectedDate.setHours(prevStartHours, prevStartMinutes);
-                            field.onChange(selectedDate);
-                          }}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-
-                        <Input
-                          type="time"
-                          value={field.value ? format(field.value, "HH:mm") : ""}
-                          onChange={(e) => {
-                            const selectedDate = new Date(field.value);
-                            const [hours, minutes] = e.target.value.split(":");
-                            selectedDate.setHours(parseInt(hours), parseInt(minutes));
-                            field.onChange(selectedDate);
-                          }}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormItem>
-                )}
-              />
+              <DateTimeField control={form.control} name="startDate" />
             </div>
 
             <div className="flex flex-col justify-start items-start gap-1">
               <Label>End</Label>
 
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "Pp")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value ? new Date(field.value) : undefined}
-                          onSelect={(date) => {
-                            if (!date) return;
-
-                            const prevStartHours = field.value.getHours();
-                            const prevStartMinutes = field.value.getMinutes();
-
-                            const selectedDate = new Date(date);
-                            selectedDate.setHours(prevStartHours, prevStartMinutes);
-                            field.onChange(selectedDate);
-                          }}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-
-                        <Input
-                          type="time"
-                          value={field.value ? format(field.value, "HH:mm") : ""}
-                          onChange={(e) => {
-                            const selectedDate = new Date(field.value);
-                            const [hours, minutes] = e.target.value.split(":");
-                            selectedDate.setHours(parseInt(hours), parseInt(minutes));
-                            field.onChange(selectedDate);
-                          }}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormItem>
-                )}
-              />
+              <DateTimeField control={form.control} name="endDate"/>
             </div>
           </div>
 
