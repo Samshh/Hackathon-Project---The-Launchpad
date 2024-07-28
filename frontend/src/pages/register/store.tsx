@@ -14,6 +14,7 @@ interface RegistrationChoiceStoreValues {
   department: string | null;
   specialization: string | null;
   finalButton: string | null;
+  fileUrl: string | null;
 }
 
 interface RegistrationChoiceStoreActions {
@@ -32,6 +33,7 @@ interface RegistrationChoiceStoreActions {
   setDepartment: (newDepartment: string) => void;
   setSpecialization: (newSpecialization: string) => void;
   setFinalButton: (newFinalButton: string) => void;
+  setFileUrl: (newFileUrl: string | null) => void;
 }
 
 type RegistrationChoiceStore = RegistrationChoiceStoreValues & RegistrationChoiceStoreActions;
@@ -50,10 +52,16 @@ const defaultValues: RegistrationChoiceStoreValues = {
   department: 'Select',
   specialization: null,
   finalButton: null,
+  fileUrl: null,
 };
 
 const useRegistrationChoiceStore = create<RegistrationChoiceStore>((set, get) => ({
   ...defaultValues,
+
+  setFileUrl: (newFileUrl: string | null) => {
+    console.log('Setting file URL:', newFileUrl);
+    set({ fileUrl: newFileUrl });
+  },
 
   setFinalButton: (newFinalButton: string) => {
     console.log('Setting final button:', newFinalButton);
