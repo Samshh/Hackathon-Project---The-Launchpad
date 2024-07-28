@@ -9,8 +9,7 @@ const JWT_SECRET = 'your_jwt_secret'; // Replace with your actual secret
 
 export default class AppointmentsController {
     static async getAppointments(request: Request, response: Response) {
-        const authHeader = request.header('Authorization');
-        const token = authHeader && authHeader.split(' ')[1];
+        const token = request.cookies.token;
 
         if (!token) {
             return response.status(401).json({
@@ -21,9 +20,7 @@ export default class AppointmentsController {
 
         let decodedToken;
         try {
-            // Decode the token without verification
             decodedToken = njwt.verify(token, JWT_SECRET);
-            console.log(decodedToken);
         } catch (error) {
             return response.status(401).json({
                 status: 0,
@@ -31,11 +28,9 @@ export default class AppointmentsController {
             });
         }
 
-
         // Extract ID from the decoded token
         const DoctorID = decodedToken.body.id;
         const parsedDoctorID = parseInt(DoctorID, 10);
-
         if (isNaN(parsedDoctorID)) {
             return response.status(400).json({
                 status: 0,
@@ -46,25 +41,26 @@ export default class AppointmentsController {
         }
 
         try {
-            const appointments = await Appointment.findOne({
+            const appointments = await Appointment.find({
                 where: { doctor: { DoctorID: parsedDoctorID } },
-                select: ['AppointmentID', 'ETA', 'patient', 'Reason' ], // Specify the fields you want to include
-                relations: ['doctor', 'patient'], // Ensure the doctor relation is loaded
+                select: ['AppointmentID', 'ETA', 'patient', 'Reason' ], 
+                relations: ['doctor', 'patient'], 
             });
-            if (appointments) {
-                const result = {
-                    id: appointments.AppointmentID,
-                    PatientID: appointments.patient.PatientID,
-                    patient: appointments.patient.Fname + ' ' + appointments.patient.Lname,
-                    reason : appointments.Reason,
-                    eta: appointments.ETA,
-                };
+
+            if (appointments && appointments.length > 0) {
+                const result = appointments.map(appointment => ({
+                    appointmentId: appointment.AppointmentID,
+                    patientId: appointment.patient.PatientID,
+                    patientName: appointment.patient.Fname + ' ' + appointment.patient.Lname,
+                    reason: appointment.Reason,
+                    eta: appointment.ETA,
+                    status: appointment.Status ? 1 : 0,
+                }));
                 return response.json({
                     status: 1,
                     data: result,
                 });
             }else{
-                response.status(404);
                 return response.json({
                     status: 0,
                     message: 'No appointment found.',
@@ -80,8 +76,79 @@ export default class AppointmentsController {
         }
         
     }
+
+    static async mypatientlist(request: Request, response: Response) {
+        const token = request.cookies.token;
+        if (!token) {
+            return response.status(401).json({
+                status: 0,
+                message: "No token provided",
+            });
+        }
+
+        let decodedToken;
+        try {
+            decodedToken = njwt.verify(token, JWT_SECRET);
+        } catch (error) {
+            return response.status(401).json({
+                status: 0,
+                message: "Invalid token",
+            });
+        }
+
+        const doctorId = decodedToken.body.id;
+        const parsedDoctorId = parseInt(doctorId, 10);
+
+        if (isNaN(parsedDoctorId)) {
+            return response.status(400).json({
+                status: 0,
+                message: "Invalid DoctorID",
+                doctorId: doctorId,
+                parsedDoctorId: parsedDoctorId,
+            });
+        }
+        
+        try {
+            const patients = await Patient.find({
+                where: { appointments: { doctor: { DoctorID: parsedDoctorId } } }, 
+                select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact'],
+                relations: ['appointments', 'appointments.doctor'], 
+            });
+
+            const result = patients.map(patient => {
+                const birthDate = new Date(patient.BirthDate);
+                const now = new Date();
+                const age = now.getFullYear() - birthDate.getFullYear();
+
+                const latestAppointment = patient.appointments
+                    .sort((a, b) => new Date(b.ETA).getTime() - new Date(a.ETA).getTime())
+                    .slice(0, 1)[0];
+
+                return {
+                    patientId: patient.PatientID,
+                    name: patient.Fname + ' ' + patient.Lname,
+                    sex: patient.Sex,
+                    birthDate: patient.BirthDate,
+                    contact: patient.Contact,
+                    age: age,
+                    date: latestAppointment.ETA, 
+                };
+            });
+
+            return response.json({
+                status: 1,
+                data: result,
+            });
+        } catch (error: any) {
+            return response.status(400).json({
+                status: 0,
+                message: error.message,
+            });
+        }
+    }
+
     static async patientCreateAppointment(request: Request, response: Response) {
-        const { DoctorID, PatientID, ETA, Note } = request.body;
+        const { DoctorID, PatientID, ETA, Note, Reason } = request.body;
         const parsedDoctorID = parseInt(DoctorID, 10);
         const parsedPatientID = parseInt(PatientID, 10);
         try {
@@ -105,15 +172,15 @@ export default class AppointmentsController {
                     message: 'Patient not found.',
                 });
             }
-            const formattedETA = format(new Date(ETA), 'yyyy-MM-dd-HH-mm');
-            const etaDate = new Date(formattedETA);
+
             
             const appointment = new Appointment();
             appointment.doctor = doctor;
             appointment.patient = patient;
-            appointment.ETA = etaDate;
+            appointment.ETA = ETA;
             appointment.Note = Note;
             appointment.Status = false;
+            appointment.Reason = Reason;
             appointment.created_at = new Date().getTime();
             appointment.updated_at = new Date().getTime();
             await appointment.save();

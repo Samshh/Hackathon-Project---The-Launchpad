@@ -25,10 +25,11 @@ Route.get('/allFiles', FileController.getAllFiles);
 
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
+Route.get('/get/patient/:id', UsersController.get_patient_by_id);
 
-
+Route.get('/get/mypatientlist', AppointmentsController.mypatientlist);
 Route.post('/patient/appointment/create', AppointmentsController.patientCreateAppointment);
-Route.post('/doctor/appointments', AuthMiddleware.authenticateJWT ,AppointmentsController.getAppointments);
+Route.get('/doctor/appointments' ,AppointmentsController.getAppointments);
 // Route.post('/user/update', isAuth, UsersController.update);
 
 // // EVENT
