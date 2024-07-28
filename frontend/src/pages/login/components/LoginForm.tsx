@@ -11,8 +11,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function LoginForm() {
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -41,28 +43,24 @@ export default function LoginForm() {
       Password: password,
     };
 
-    try {
-      let endpoint = '';
-      if (accountType === 'Doctor') {
-        endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/login';
-      } else if (accountType === 'Patient') {
-        endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/login';
-      } else {
-        throw new Error('Invalid account type');
-      }
+    let endpoint = '';
+    if (accountType === 'Doctor') {
+      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/login';
+    } else if (accountType === 'Patient') {
+      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/login';
+    } else {
+      throw new Error('Invalid account type');
+    }
 
-      const response = await axios.post(endpoint, loginData, {
-        withCredentials: true,
-      });
+    const response = await axios.post(endpoint, loginData, {
+      withCredentials: true,
+    });
 
-      if (response.data.status === 1) {
-        console.log('Login successful:', response.data);
-        toLogin();
-      } else {
-        console.error('Login failed:', response.data.message);
-      }
-    } catch (error: any) {
-      console.error('Login error:', error.message);
+    if (response.data.status === 1) {
+      console.log('Login successful:', response.data);
+      return response.data;
+    } else {
+      throw new Error(response.data.message || 'Login failed');
     }
   };
 
@@ -77,7 +75,7 @@ export default function LoginForm() {
   const checkAuth = async () => {
     console.log('Checking auth');
     try {
-      let response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
+      const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
         withCredentials: true,
       });
       const data = await response.data;
@@ -137,7 +135,24 @@ export default function LoginForm() {
         <div className="flex items-center justify-center w-full gap-[2rem]">
           <Button
             disabled={!email || !password || !accountType || accountType == 'Select'}
-            onClick={loginAPI}
+            onClick={async () => {
+              try {
+                await loginAPI();
+                toast({
+                  title: 'Success',
+                  description: 'Logged in successfully.',
+                  duration: 5000,
+                });
+                toLogin();
+              } catch (error) {
+                console.error(error);
+                toast({
+                  title: 'Error',
+                  description: 'Email or password is incorrect, please try again.',
+                  duration: 5000,
+                });
+              }
+            }}
             size={'lg'}
             className="w-full font-semibold"
           >
