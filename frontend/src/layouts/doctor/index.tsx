@@ -1,4 +1,4 @@
-import { Outlet, Navigate} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import DoctorNavbar from './DoctorNavbar';
 
 export default function DoctorLayout() {
