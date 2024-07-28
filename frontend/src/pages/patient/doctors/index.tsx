@@ -1,22 +1,37 @@
 import { doctorsMockData } from './doctorsMockData';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMemo } from 'react';
+import DoctorsFilterPopover from '@/components/patient/doctors/DoctorsFilterPopover';
+import { useGlobalComponentStore } from '@/components/globalComponentStore';
 
 export default function PatientDoctorsPage() {
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();
+  const { selectedDoctorFilters } = useGlobalComponentStore();
 
   const filteredDoctors = useMemo(() => {
-    if (!searchParams.get('name')) return doctorsMockData;
+    if (searchParams.get('name') || searchParams.get('departments')) {
+      const selectedDepartmentsInParams = searchParams
+        .get('departments')
+        ?.split(',')
+        .map((dep) => dep.trim().toLowerCase());
 
-    return doctorsMockData.filter((doctor) => {
-      return `${doctor.firstName} ${doctor.lastName}`.toLowerCase().includes(searchParams.get('name')!.toLowerCase());
-    });
+      return doctorsMockData.filter((doctor) => {
+        return (
+          // `${doctor.firstName} ${doctor.lastName}`.toLowerCase().includes(searchParams.get('name')!.toLowerCase()) ||
+          selectedDepartmentsInParams?.includes(doctor.department.toLowerCase())
+        );
+      });
+    }
+    return doctorsMockData;
   }, [searchParams]);
 
   return (
     <div className="flex flex-col flex-1 gap-8 py-3">
-      <p className="pl-6 text-3xl font-bold">Doctors</p>
+      <div className="flex items-center gap-10">
+        <p className="pl-6 text-3xl font-bold">Doctors</p>
+        <DoctorsFilterPopover />
+      </div>
       <div className="flex flex-col flex-1 px-6 py-3 rounded-lg shadow-md">
         {filteredDoctors.length !== 0 ? (
           <div className="flex-grow h-1 overflow-y-auto">

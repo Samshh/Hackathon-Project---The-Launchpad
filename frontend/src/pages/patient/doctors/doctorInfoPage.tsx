@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Doctor } from './doctorsMockData';
 import DoctorInfoPageTabs from './doctorInfoTabs';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
-import DoctorDialogContent from '@/components/patient/doctors/DoctorDialogContent';
+import BookAppointmentDialogContent from '@/components/patient/doctors/BookAppointmentDialogContent';
 
 const doctorTemp: Doctor = {
   id: 'D001',
@@ -35,7 +35,7 @@ export default function DoctorInfoPage() {
           </div>
         </div>
         <button
-          onClick={() => toggleOpenDialog(<DoctorDialogContent />)}
+          onClick={() => toggleOpenDialog(<BookAppointmentDialogContent />)}
           className="px-4 py-2 ml-auto text-lg text-white rounded-lg bg-accent"
         >
           Book Appointment

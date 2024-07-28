@@ -9,7 +9,7 @@ export default function GlobalDialog() {
   );
   return (
     <Dialog open={isDialogOpen} onOpenChange={toggleOpenDialog}>
-      <DialogContent>
+      <DialogContent className="min-w-fit">
         <VisuallyHidden.Root>
           <DialogHeader>
             <DialogTitle>
