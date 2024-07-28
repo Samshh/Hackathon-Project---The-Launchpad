@@ -9,7 +9,7 @@ import RegisterLayout from './layouts/register';
 import PatientLayout from './layouts/patient';
 import DoctorLayout from './layouts/doctor';
 import PatientDashboardPage from './pages/patient';
-import DoctorDashboardPage from './pages/doctor';
+import DoctorDashboardPage from './pages/doctor/dashboard';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import PatientAppointmentsPage from './pages/patient/appointments';
