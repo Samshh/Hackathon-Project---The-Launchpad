@@ -10,7 +10,7 @@ export default function PrescriptionsSection() {
     <section className="flex flex-col col-span-5 gap-4 p-5 overflow-y-hidden bg-white shadow-md rounded-xl">
       <p className="text-xl font-bold">Prescriptions</p>
       <div className="flex-grow h-1 overflow-y-auto">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {appointmentsMockData.map((appointment, i) => {
             const isEtaBeforeCurr = isEtaBeforeCurrent(appointment.ETA);
             if (appointment.status === 1 && !isEtaBeforeCurr) {
