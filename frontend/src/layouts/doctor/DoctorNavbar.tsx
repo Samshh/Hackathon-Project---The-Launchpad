@@ -32,30 +32,32 @@ export default function DoctorNavbar() {
 
   return (
     <nav className="flex flex-col justify-between items-center rounded-md shadow-md p-4 bg-white gap-6">
-      <Link to="/">
-        <img src="/logoChainMed.svg" alt="" className='size-8'/>
-      </Link>
+      <div className="flex flex-col justify-start items-center gap-10">
+        <Link to="/">
+          <img src="/logoChainMed.svg" alt="" className='size-8'/>
+        </Link>
 
-      <div className="flex flex-col justify-start items-center gap-6">
-        {primaryNavLinks.map((link) => {
-          const NavIcon = link.icon;
-          return (
-            <NavLink
-              to={link.to}
-              end={link.to === "/doctor"}
-              className={({ isActive }) => `
-                size-12 flex justify-center items-center rounded-md 
-                ${isActive ? 'bg-accent' : ''}
-              `}
-              key={`link-${link.to}`}
-            >
-              {({ isActive }) => (
-                <NavIcon size={32} className={`${isActive ? 'text-white' : 'text-black'}`}/>
-              )}
-              {/* <div className="size-8 bg-gray-400 rounded-full" /> */}
-            </NavLink>
-          )
-        })}
+        <div className="flex flex-col justify-start items-center gap-6">
+          {primaryNavLinks.map((link) => {
+            const NavIcon = link.icon;
+            return (
+              <NavLink
+                to={link.to}
+                end={link.to === "/doctor"}
+                className={({ isActive }) => `
+                  size-12 flex justify-center items-center rounded-md 
+                  ${isActive ? 'bg-accent' : ''}
+                `}
+                key={`link-${link.to}`}
+              >
+                {({ isActive }) => (
+                  <NavIcon size={32} className={`${isActive ? 'text-white' : 'text-black'}`}/>
+                )}
+                {/* <div className="size-8 bg-gray-400 rounded-full" /> */}
+              </NavLink>
+            )
+          })}
+        </div>
       </div>
 
       <div className="flex flex-col justify-end items-center gap-6">
