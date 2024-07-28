@@ -3,6 +3,7 @@ import useAppointmentsStore from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { differenceInCalendarDays, isWithinInterval } from "date-fns";
 import axios from 'axios';
+
 const appointments = [
   {
     id: 1,
