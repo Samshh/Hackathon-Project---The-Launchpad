@@ -1,5 +1,6 @@
 import React from 'react';
 import { create } from 'zustand';
+import { CalendarFloatingTimeBlock } from '@/components/WeeklyCalendar/types';
 
 type GlobalComponentStoreValues = {
   isSheetOpen: boolean;
@@ -8,16 +9,20 @@ type GlobalComponentStoreValues = {
   dialogContent: React.ReactNode | null;
   selectedDoctorFilters: string[];
   isDoctorFilterPopoverOpen: boolean;
+  patientSelectedBookingSchedule: CalendarFloatingTimeBlock | null;
 };
 
 type GlobalComponentStoreActions = {
   toggleOpenSheet: (sheetContent: React.ReactNode) => void;
   toggleOpenDialog: (dialogContent: React.ReactNode) => void;
+  closeDialog: () => void;
   closeSheet: () => void;
   addSelectedDoctorFilter: (department: string) => void;
   removeSelectedDoctorFilter: (department: string) => void;
   toggleDoctorFilterPopover: () => void;
   closeDoctorFilterPopover: () => void;
+  setPatientSelectedBookingSchedule: (selectedTimeBlock: CalendarFloatingTimeBlock) => void;
+  resetPatientSelectedBookingSchedule: () => void;
 };
 
 type GlobalComponentStore = GlobalComponentStoreActions & GlobalComponentStoreValues;
@@ -29,6 +34,7 @@ const globalSheetStoreDefaultValues: GlobalComponentStoreValues = {
   dialogContent: null,
   selectedDoctorFilters: [],
   isDoctorFilterPopoverOpen: false,
+  patientSelectedBookingSchedule: null,
 };
 
 export const useGlobalComponentStore = create<GlobalComponentStore>((set, get) => ({
@@ -41,4 +47,7 @@ export const useGlobalComponentStore = create<GlobalComponentStore>((set, get) =
     set({ selectedDoctorFilters: get().selectedDoctorFilters.filter((dept) => dept !== department) }),
   toggleDoctorFilterPopover: () => set({ isDoctorFilterPopoverOpen: !get().isDoctorFilterPopoverOpen }),
   closeDoctorFilterPopover: () => set({ isDoctorFilterPopoverOpen: false }),
+  closeDialog: () => set({ isDialogOpen: false }),
+  setPatientSelectedBookingSchedule: (timeBlock) => set({ patientSelectedBookingSchedule: timeBlock }),
+  resetPatientSelectedBookingSchedule: () => set({ patientSelectedBookingSchedule: null }),
 }));

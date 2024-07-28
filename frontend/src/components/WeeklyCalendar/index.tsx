@@ -1,10 +1,10 @@
-import { areDatesEqual } from "@/lib/utils";
-import { useMemo, useState } from "react";
-import { startOfWeek } from "date-fns";
-import WeeklyCalendarTimeBlockGrid from "./WeeklyCalendarTimeBlockGrid";
-import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CalendarAppointment, CalendarFloatingTimeBlock } from "./types";
+import { areDatesEqual } from '@/lib/utils';
+import { useMemo, useState } from 'react';
+import { startOfWeek } from 'date-fns';
+import WeeklyCalendarTimeBlockGrid from './WeeklyCalendarTimeBlockGrid';
+import { Button } from '../ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarAppointment, CalendarFloatingTimeBlock } from './types';
 
 interface WeeklyCalendarProps {
   areDaysDisplayed?: boolean;
@@ -12,17 +12,10 @@ interface WeeklyCalendarProps {
   floatingTimeBlocks?: CalendarFloatingTimeBlock[];
   onCalendarClick?: (selectedDateTime: Date) => void;
   onFloatingTimeBlockClick?: (selectedTimeBlock: any) => void;
+  startTimeAndEndTimeSeparator?: React.ReactNode;
 }
 
-const daysOfTheWeek = [
-  'SUN',
-  'MON',
-  'TUE',
-  'WED',
-  'THU',
-  'FRI',
-  'SAT',
-];
+const daysOfTheWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
 export default function WeeklyCalendar({
   areDaysDisplayed = false,
@@ -30,6 +23,7 @@ export default function WeeklyCalendar({
   floatingTimeBlocks,
   onCalendarClick,
   onFloatingTimeBlockClick,
+  startTimeAndEndTimeSeparator,
 }: WeeklyCalendarProps) {
   const [activeWeekFirstDay, setActiveWeekFirstDay] = useState<Date>(startOfWeek(new Date()));
 
@@ -43,7 +37,7 @@ export default function WeeklyCalendar({
       days.push(nextDay);
     }
 
-    return days;    
+    return days;
   }, [activeWeekFirstDay]);
 
   const activeMonthYearText = useMemo(() => {
@@ -60,7 +54,7 @@ export default function WeeklyCalendar({
 
     return `${firstMonth}${firstMonth === lastMonth ? '' : `${firstYear === lastYear ? '' : `${firstYear}`} - ${lastMonth}`} ${lastYear}`;
   }, [activeWeekFirstDay]);
-  
+
   const goToPreviousWeek = () => {
     const newActiveWeekFirstDay = new Date(activeWeekFirstDay);
     newActiveWeekFirstDay.setDate(newActiveWeekFirstDay.getDate() - 7);
@@ -103,7 +97,7 @@ export default function WeeklyCalendar({
             <div key={index} className="flex-grow flex flex-col justify-center items-center">
               <p className="text-xs font-semibold text-gray-400">{daysOfTheWeek[index]}</p>
               {areDaysDisplayed && (
-                <p 
+                <p
                   className={`py-0.5 px-1.5 ${areDatesEqual(day, new Date()) ? 'rounded-full bg-accent text-white' : 'text-gray-600'}`}
                 >
                   {day.getDate()}
@@ -113,14 +107,15 @@ export default function WeeklyCalendar({
           ))}
         </div>
 
-        <WeeklyCalendarTimeBlockGrid 
-          activeWeekFirstDay={activeWeekFirstDay} 
-          appointments={appointments} 
+        <WeeklyCalendarTimeBlockGrid
+          startTimeAndEndTimeSeparator={startTimeAndEndTimeSeparator}
+          activeWeekFirstDay={activeWeekFirstDay}
+          appointments={appointments}
           onCalendarClick={onCalendarClick}
           floatingTimeBlocks={floatingTimeBlocks}
           onFloatingTimeBlockClick={onFloatingTimeBlockClick}
         />
       </div>
-    </div>    
+    </div>
   );
 }
