@@ -1,5 +1,6 @@
 import DoctorRegisterValidator from 'App/Validators/DoctorRegisterValidator';
 import PatientRegisterValidator from 'App/Validators/PatientRegisterValidator';
+import { Appointment } from "Database/entities/appointment";
 import { Doctor } from 'Database/entities/doctor';
 import { Patient } from 'Database/entities/patient';
 import { Response, Request } from 'express';
@@ -36,11 +37,6 @@ export default class UsersController {
     });
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | CREATE NEW USER
-  |--------------------------------------------------------------------------
-  */
 
   static async docRegister(request: Request, response: Response) {
     const { Fname, Lname, Address, Specialization, Sex, Email, Contact, Password } = request.body;
@@ -241,11 +237,6 @@ export default class UsersController {
     }
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | READ USER
-  |--------------------------------------------------------------------------
-  */
 
   static async get_all_doctors(request: Request, response: Response) {
     try {
@@ -264,20 +255,47 @@ export default class UsersController {
     }
   }
   static async get_all_patients(request: Request, response: Response) {
-    try {
-      const users = await Patient.find();
+try {
+  // get the most latest appointment of each patient
+  const patients = await Patient.find({
+    select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact'], 
+    relations: ['appointments'], 
+  });
 
-      return response.json({
-        status: 1,
-        data: users,
-      });
-    } catch (error: any) {
-      response.status(400);
-      return response.json({
-        status: 0,
-        message: error.message,
-      });
-    }
+  const result = patients.map(patient => {
+    const birthDate = new Date(patient.BirthDate);
+    const now = new Date();
+    const age = now.getFullYear() - birthDate.getFullYear();
+
+    return {
+      PatientID: patient.PatientID,
+      PatientName: patient.Fname + ' ' + patient.Lname,
+      Email: patient.Email,
+      Sex: patient.Sex,
+      Birthdate: patient.BirthDate,
+      Age: age, // Calculate age dynamically
+      Contact: patient.Contact,
+      Appointments: patient.appointments
+        .filter(appointment => appointment.Status == false)
+        .sort((a, b) => b.AppointmentID - a.AppointmentID)
+        .map(appointment => ({
+          AppointmentID: appointment.AppointmentID,
+          Date: appointment.ETA,
+          Status: appointment.Status,
+        }))
+    };
+  });
+
+  return response.json({
+    status: 1,
+    data: result,
+  });
+} catch (error: any) {
+  response.status(400).json({
+    status: 0,
+    message: error.message,
+  });
+}
   }
   static async get_doctor_by_id(request: Request, response: Response) {
     try {
@@ -310,24 +328,51 @@ export default class UsersController {
   }
   static async get_patient_by_id(request: Request, response: Response) {
     try {
-      const { PatientID } = request.params;
-      const parsedPatientID = parseInt(PatientID, 10);
+      const { id } = request.params;
 
-      const user = await Patient.findOne({
-        where: [{ PatientID: parsedPatientID }],
+      const patient = await Patient.findOne({
+        where: { PatientID: id },
+        select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact', 'Email'],
+        relations: ['appointments'],
       });
 
-      if (!user) {
+      if (!patient) {
         response.status(404);
         return response.json({
           status: 0,
-          message: 'User not found.',
+          message: 'Patient not found.',
         });
       }
 
+      const birthDate = new Date(patient.BirthDate);
+      const now = new Date();
+      const age = now.getFullYear() - birthDate.getFullYear();
+
+      const latestAppointment = patient.appointments
+        .sort((a, b) => new Date(b.ETA).getTime() - new Date(a.ETA).getTime())
+        .slice(0, 1)[0];
+
+      const result = {
+        patientId: patient.PatientID,
+        patientName: patient.Fname + ' ' + patient.Lname,
+        email: patient.Email,
+        sex: patient.Sex,
+        age: age,
+        contact: patient.Contact,
+        date: latestAppointment.ETA,
+        appointments: patient.appointments
+          .filter(appointment => appointment.Status == false)
+          .sort((a, b) => b.AppointmentID - a.AppointmentID)
+          .map(appointment => ({
+            appointmentId: appointment.AppointmentID,
+            date: appointment.ETA,
+            status: appointment.Status,
+          })),
+      };
+
       return response.json({
         status: 1,
-        data: user,
+        data: result,
       });
     } catch (error: any) {
       response.status(400);

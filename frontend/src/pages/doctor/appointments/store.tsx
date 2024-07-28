@@ -2,6 +2,7 @@ import { startOfWeek } from "date-fns";
 import { create } from "zustand";
 
 interface AppointmentsValues {
+  appointments: Appointment[];
   activeWeekFirstDay: Date;
 }
 
@@ -11,12 +12,14 @@ interface AppointmentsActions {
   getActiveWeekDays(): Date[];
   goToPreviousWeek(): void;
   goToNextWeek(): void;
+  setAppointments(appointments: Appointment[]): void;
   reset(): void;
 }
 
 type AppointmentsStore = AppointmentsValues & AppointmentsActions;
 
 const defaultValues: AppointmentsValues = {
+  appointments: [],
   activeWeekFirstDay: startOfWeek(new Date()),
 };
 
@@ -65,6 +68,10 @@ const useAppointmentsStore = create<AppointmentsStore>((set, get) => ({
     const activeWeekFirstDay = new Date(get().activeWeekFirstDay);
     activeWeekFirstDay.setDate(activeWeekFirstDay.getDate() + 7);
     set({ activeWeekFirstDay });
+  },
+
+  setAppointments: (appointments: Appointment[]) => {
+    set({ appointments });
   },
 
   reset: () => set(defaultValues),

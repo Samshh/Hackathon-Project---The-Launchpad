@@ -37,12 +37,12 @@ export default function DoctorPatientsPage() {
         </div>
 
         <form onSubmit={onSearchFormSubmit}>
-          <Input 
-            type="text" 
-            className="w-80" 
+          <Input
+            type="text"
+            className="w-80"
             placeholder="Search patients..."
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)} 
+            onChange={(e) => setSearchText(e.target.value)}
           />
 
           <input type="submit" className="hidden" />

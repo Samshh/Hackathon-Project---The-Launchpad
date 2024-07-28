@@ -43,10 +43,12 @@ export default function AppointmentTimeBlockGrid() {
 
   const [
     activeWeekFirstDay,
-    getActiveWeekLastDay
+    appointments,
+    getActiveWeekLastDay,
   ] = useAppointmentsStore(
     useShallow((state) => [
       state.activeWeekFirstDay,
+      state.appointments,
       state.getActiveWeekLastDay,
     ])
   );
@@ -81,21 +83,23 @@ export default function AppointmentTimeBlockGrid() {
         ))}
 
         {appointments.map((appointment) => {
-          if (!isWithinInterval(appointment.eta, {
+          const appointmentEtaObject = new Date(appointment.eta);
+
+          if (!isWithinInterval(appointmentEtaObject, {
             start: activeWeekFirstDay,
             end: getActiveWeekLastDay()
           })) {
             return null;
           }
 
-          const gridColumnStart = differenceInCalendarDays(appointment.eta, activeWeekFirstDay) + 2;
-          const isBefore = differenceInCalendarDays(appointment.eta, new Date()) < 0;
-          const hourOffsetTop = appointment.eta.getHours() * 160 + appointment.eta.getMinutes() / 60 * 160;
+          const gridColumnStart = differenceInCalendarDays(appointmentEtaObject, activeWeekFirstDay) + 2;
+          const isBefore = differenceInCalendarDays(appointmentEtaObject, new Date()) < 0;
+          const hourOffsetTop = appointmentEtaObject.getHours() * 160 + appointmentEtaObject.getMinutes() / 60 * 160;
 
           // TODO: Make element show right side dialog on click
           return (
             <button
-              key={`appointment-${appointment.id}`}
+              key={`appointment-${appointment.appointmentId}`}
               className="absolute w-full h-40 flex flex-row justify-center items-stretch p-2"
               style={{
                 gridColumnStart: gridColumnStart,
@@ -111,12 +115,14 @@ export default function AppointmentTimeBlockGrid() {
                 }
               `}>
                 <div className="flex flex-col justify-start items-start">
-                  <p className="font-semibold">{appointment.patient}</p>
-                  <p className="text-gray-500">{appointment.reason}</p>
+                  <p className="font-semibold">{appointment.patientName}</p>
+                  {appointment.reason && (
+                    <p className="text-gray-500">{appointment.reason}</p>
+                  )}
                 </div>
 
                 <p className="text-gray-500">
-                  {appointment.eta.getHours()}:{appointment.eta.getMinutes()} - {appointment.eta.getHours() + 1}:{appointment.eta.getMinutes()}
+                  {appointmentEtaObject.getHours()}:{appointmentEtaObject.getMinutes()} - {appointmentEtaObject.getHours() + 1}:{appointmentEtaObject.getMinutes()}
                 </p>
               </div>
             </button>

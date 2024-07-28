@@ -59,7 +59,7 @@ export default function AppointmentCalendar() {
           {getActiveWeekDays().map((day, index) => (
             <div key={index} className="flex-grow flex flex-col justify-center items-center">
               <p className="text-xs font-semibold text-gray-400">{daysOfTheWeek[index]}</p>
-              <p 
+              <p
                 className={`py-0.5 px-1.5 ${areDatesEqual(day, new Date()) ? 'rounded-full bg-accent text-white' : 'text-gray-600'}`}
               >
                 {day.getDate()}
@@ -70,6 +70,6 @@ export default function AppointmentCalendar() {
 
         <AppointmentTimeBlockGrid />
       </div>
-    </div>    
+    </div>
   )
 }

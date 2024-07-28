@@ -18,8 +18,8 @@ export class Patient extends BaseEntity {
   @Column({ type: 'text' })
   Sex: string;
 
-  @Column({ type: 'text' })
-  BirthDate: string;
+  @Column({ type: 'date' })
+  BirthDate: Date;
 
   @Column({ type: 'text' })
   Password: string;
