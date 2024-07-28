@@ -10,6 +10,7 @@ import { CalendarX, EditIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import PlannedAbsenceDialogContent from "./PlannedAbsenceDialogContent";
 import { PlannedAbsence } from "./types";
+import WorkingHoursDialog from "./WorkingHoursDialog";
 
 const doctor = {
   name: "Juan Dela Cruz",
@@ -44,7 +45,7 @@ const absences: PlannedAbsence[] = [
 
 export default function DoctorAccountPage() {
   const [currentTab, setCurrentTab] = useState('working-hours');
-  
+
   return (
     <main className="h-full min-h-[480px] flex-grow flex flex-col justify-start items-stretch gap-4 pt-4">
       <h5>Account</h5>
@@ -100,8 +101,7 @@ export default function DoctorAccountPage() {
               value="working-hours"
               className="flex-grow flex flex-col justify-start items-stretch gap-4 bg-white rounded-md shadow-md overflow-hidden"
             >
-              {/* TODO: Add calendar here for working hours */}
-              <WeeklyCalendar />
+              <WorkingHoursDialog />
             </TabsContent>
           )}
 

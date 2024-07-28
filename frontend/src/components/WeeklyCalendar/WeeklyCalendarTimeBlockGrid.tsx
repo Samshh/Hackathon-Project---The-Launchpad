@@ -1,13 +1,15 @@
-import useAppointmentsStore from "@/pages/doctor/appointments/store";
-import { isWithinInterval, differenceInCalendarDays } from "date-fns";
+import { isWithinInterval, differenceInCalendarDays, format } from "date-fns";
 import { useMemo, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { ScrollArea } from "../ui/scroll-area";
-import { CalendarAppointment } from "./types";
+import { CalendarAppointment, CalendarFloatingTimeBlock } from "./types";
+import { cn } from "@/lib/utils";
 
 interface WeeklyCalendarTimeBlockGridProps {
   activeWeekFirstDay: Date;
   appointments?: CalendarAppointment[];
+  floatingTimeBlocks?: CalendarFloatingTimeBlock[];
+  onCalendarClick?: (selectedDateTime: Date) => void;
+  onFloatingTimeBlockClick?: (selectedTimeBlock: any) => void;
 }
 
 const appointments = [
@@ -34,7 +36,12 @@ const appointments = [
   },
 ];
 
-export default function WeeklyCalendarTimeBlockGrid({ activeWeekFirstDay }: WeeklyCalendarTimeBlockGridProps) {
+export default function WeeklyCalendarTimeBlockGrid({ 
+  activeWeekFirstDay, 
+  floatingTimeBlocks,
+  onCalendarClick,
+  onFloatingTimeBlockClick,
+}: WeeklyCalendarTimeBlockGridProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [offsetTop, setOffsetTop] = useState(-1);
   const hoveredHour = useMemo(() => Math.floor(offsetTop / 160), [offsetTop]);
@@ -49,7 +56,10 @@ export default function WeeklyCalendarTimeBlockGrid({ activeWeekFirstDay }: Week
   return (
     <ScrollArea className="basis-px flex-grow overflow-y-auto">
       <div
-        className="relative min-h-full grid grid-rows-[repeat(24,_160px)] grid-cols-[80px_repeat(7,_1fr)]"
+        className={`
+          relative min-h-full grid grid-rows-[repeat(24,_160px)] grid-cols-[80px_repeat(7,_1fr)]
+          ${onCalendarClick ? 'cursor-pointer' : ''}
+        `}
         onMouseEnter={() => setIsHovering(true)}
         onMouseMove={(e) => setOffsetTop(e.clientY - e.currentTarget.getBoundingClientRect().top)}
         onMouseLeave={() => {
@@ -70,10 +80,62 @@ export default function WeeklyCalendarTimeBlockGrid({ activeWeekFirstDay }: Week
               <div
                 key={`hour-${hourIndex}-week-${weekIndex}`}
                 className="border-b border-r border-gray-200"
+                {...onCalendarClick ? {
+                  onClick: () => {
+                    const selectedDateTime = new Date(activeWeekFirstDay);
+                    selectedDateTime.setDate(selectedDateTime.getDate() + weekIndex);
+                    selectedDateTime.setHours(hoveredHour);
+                    selectedDateTime.setMinutes(hoveredMinutes);
+                    onCalendarClick(selectedDateTime);
+                  }
+                }: {}}
               />
             ))}
           </div>
         ))}
+
+        {floatingTimeBlocks && floatingTimeBlocks.length === 0 && (
+          floatingTimeBlocks.map((floatingTimeBlock) => {
+            if (floatingTimeBlock.startTime && !isWithinInterval(floatingTimeBlock.startTime, {
+              start: activeWeekFirstDay,
+              end: activeWeekLastDay
+            })) {
+              return null;
+            }
+
+            const gridColumnStart = differenceInCalendarDays(floatingTimeBlock.startTime, activeWeekFirstDay) + 2;
+            const hourOffsetTop = floatingTimeBlock.startTime.getHours() * 160 + floatingTimeBlock.startTime.getMinutes() / 60 * 160;
+            const hourHeight = floatingTimeBlock.endTime ? 
+              differenceInCalendarDays(floatingTimeBlock.startTime, floatingTimeBlock.endTime) * 160 : 
+              160;
+
+            return (
+              <button
+                key={`floating-time-block-${floatingTimeBlock.id}`}
+                onClick={() => {
+                  if (onFloatingTimeBlockClick) {
+                    onFloatingTimeBlockClick({
+                      id: floatingTimeBlock.id,
+                      startTime: floatingTimeBlock.startTime,
+                      endTime: floatingTimeBlock.endTime,
+                    });
+                  }
+                }}
+                className={cn("absolute w-full flex justify-center items-center p-1", floatingTimeBlock.className)}
+                style={{
+                  top: hourOffsetTop,
+                  gridColumnStart: gridColumnStart,
+                  height: hourHeight,
+                }}
+              >
+                <p>{format(floatingTimeBlock.startTime, "HH:mm")}</p>
+                {floatingTimeBlock.endTime && (
+                  <p>{format(floatingTimeBlock.endTime, "HH:mm")}</p>
+                )}
+              </button>
+            );
+          })
+        )}
 
         {appointments && appointments.length === 0 && (
           appointments.map((appointment) => {

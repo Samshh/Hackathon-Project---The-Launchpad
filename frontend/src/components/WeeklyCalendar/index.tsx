@@ -4,11 +4,14 @@ import { startOfWeek } from "date-fns";
 import WeeklyCalendarTimeBlockGrid from "./WeeklyCalendarTimeBlockGrid";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CalendarAppointment } from "./types";
+import { CalendarAppointment, CalendarFloatingTimeBlock } from "./types";
 
 interface WeeklyCalendarProps {
   areDaysDisplayed?: boolean;
   appointments?: CalendarAppointment[];
+  floatingTimeBlocks?: CalendarFloatingTimeBlock[];
+  onCalendarClick?: (selectedDateTime: Date) => void;
+  onFloatingTimeBlockClick?: (selectedTimeBlock: any) => void;
 }
 
 const daysOfTheWeek = [
@@ -23,7 +26,10 @@ const daysOfTheWeek = [
 
 export default function WeeklyCalendar({
   areDaysDisplayed = false,
-  appointments
+  appointments,
+  floatingTimeBlocks,
+  onCalendarClick,
+  onFloatingTimeBlockClick,
 }: WeeklyCalendarProps) {
   const [activeWeekFirstDay, setActiveWeekFirstDay] = useState<Date>(startOfWeek(new Date()));
 
@@ -107,7 +113,13 @@ export default function WeeklyCalendar({
           ))}
         </div>
 
-        <WeeklyCalendarTimeBlockGrid activeWeekFirstDay={activeWeekFirstDay} appointments={appointments} />
+        <WeeklyCalendarTimeBlockGrid 
+          activeWeekFirstDay={activeWeekFirstDay} 
+          appointments={appointments} 
+          onCalendarClick={onCalendarClick}
+          floatingTimeBlocks={floatingTimeBlocks}
+          onFloatingTimeBlockClick={onFloatingTimeBlockClick}
+        />
       </div>
     </div>    
   );

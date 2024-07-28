@@ -5,3 +5,10 @@ export interface CalendarAppointment {
   reason: string;
   status: number;
 }
+
+export interface CalendarFloatingTimeBlock {
+  id: string;
+  className?: string;
+  startTime: Date;
+  endTime?: Date;
+}
