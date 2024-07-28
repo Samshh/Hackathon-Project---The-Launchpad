@@ -2,7 +2,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Filter } from 'lucide-react';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import { useShallow } from 'zustand/react/shallow';
-import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { doctorsMockData } from '@/pages/patient/doctors/doctorsMockData';
 
 const departments = [
   'Anesthesiology',
@@ -50,9 +52,9 @@ export default function DoctorsFilterPopover() {
     ]),
   );
 
-  useEffect(() => {
-    console.log('isDoctorFilterPopoverOpen', isDoctorFilterPopoverOpen);
-  }, [isDoctorFilterPopoverOpen]);
+  const navigate = useNavigate();
+  const [searchParams, _] = useSearchParams();
+  const location = useLocation();
 
   return (
     <Popover open={isDoctorFilterPopoverOpen} onOpenChange={() => toggleDoctorFilterPopover()}>
@@ -82,7 +84,16 @@ export default function DoctorsFilterPopover() {
           })}
         </div>
         <button
-          onClick={() => closeDoctorFilterPopover()}
+          onClick={() => {
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set('departments', selectedDoctorFilters.join(',').toLowerCase());
+            navigate(`${location.pathname}?${newSearchParams.toString()}`);
+            // if (selectedDoctorFilters.length !== 0) {
+            // } else {
+            //   navigate(`/patient/doctors`);
+            // }
+            closeDoctorFilterPopover();
+          }}
           className="w-full py-2 mt-2 font-medium text-white rounded-full bg-accent"
         >
           Filter
