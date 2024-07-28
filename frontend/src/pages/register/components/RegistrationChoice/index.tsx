@@ -29,6 +29,7 @@ export default function RegistrationChoice() {
     department,
     specialization,
     contactNumber,
+    fileUrl,
   ] = useRegistrationChoiceStore(
     useShallow((state) => [
       state.step,
@@ -48,6 +49,7 @@ export default function RegistrationChoice() {
       state.department,
       state.specialization,
       state.contactNumber,
+      state.fileUrl,
     ]),
   );
 
@@ -66,6 +68,7 @@ export default function RegistrationChoice() {
       Contact: contactNumber,
       BirthDate: birthday,
       Password: password,
+      Documents : fileUrl, 
     };
 
     const DoctorData = {
@@ -94,6 +97,7 @@ export default function RegistrationChoice() {
         throw error;
       }
     } else if (accountType === 'patient') {
+      console.log(PatientData);
       try {
         const response = await axios.post(
           `http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/register`,
@@ -101,15 +105,18 @@ export default function RegistrationChoice() {
         );
         const data = response.data;
         console.log(data);
+
+
+        // if (fileUrl) {
+        //   await uploadPatientRecord(userId, fileUrl);
+        // }
+
         toLogin();
         console.log('Success');
-      } catch (error) {
+        } catch (error) {
         console.log(error);
         throw error;
       }
-    } else {
-      console.log('Error');
-      throw new Error('Invalid account type');
     }
   };
 

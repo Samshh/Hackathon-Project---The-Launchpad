@@ -11,12 +11,6 @@ export class Patient_Records extends BaseEntity {
   @Column({ type: 'text' })
   FilePath: string;
 
-  @Column({ type: 'text' })
-  Name: string;
-
-  @Column({ type: 'date' })
-  ReleaseDate: Date;
-
   @ManyToOne(() => Patient, (patient) => patient.records)
   @JoinColumn({ name: 'PatientID' })
   patient: Patient;
