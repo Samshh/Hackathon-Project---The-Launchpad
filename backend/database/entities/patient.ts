@@ -27,7 +27,7 @@ export class Patient extends BaseEntity {
   @Column({ type: 'text', unique: true })
   Email: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'text'})
   Contact: string;
 
   @Column({ type: 'bigint' })

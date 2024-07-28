@@ -16,7 +16,7 @@ export class Doctor extends BaseEntity {
   @Column({ type: 'text' })
   Lname: string;
 
-  @Column ({ type: 'text' })
+  @Column({ type: 'text' })
   Password: string;
 
   @Column({ type: 'text' })
@@ -31,7 +31,7 @@ export class Doctor extends BaseEntity {
   @Column({ type: 'text', unique: true })
   Email: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'text' })
   Contact: string;
 
   @Column({ type: 'bigint' })
@@ -42,7 +42,7 @@ export class Doctor extends BaseEntity {
 
   @OneToMany(() => Appointment, (appointment) => appointment.doctor)
   appointments: Appointment[];
-  
+
   @OneToMany(() => Doctor_Schedule_Exception, (doctor_schedule_exception) => doctor_schedule_exception.doctor)
   schedule_exceptions: Doctor_Schedule_Exception[];
 

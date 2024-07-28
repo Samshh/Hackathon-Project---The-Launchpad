@@ -1,14 +1,16 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import useRegistrationChoiceStore from '../../store';
 import { useShallow } from 'zustand/react/shallow';
 import RegistrationStepOne from './RegistrationStepOne';
 import RegistrationStepTwo from './RegistrationStepTwo';
 import RegistrationStepThree from './RegistrationStepThree';
 import axios from 'axios';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function RegistrationChoice() {
+  const { toast } = useToast();
   const [
     currentStep,
     accountType,
@@ -49,6 +51,12 @@ export default function RegistrationChoice() {
     ]),
   );
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  const isEmailValid = useMemo(() => emailRegex.test(email), [email]);
+  const isPasswordValid = useMemo(() => passwordRegex.test(password), [password]);
+
   const registrationAPI = async () => {
     const PatientData = {
       Fname: firstName,
@@ -56,7 +64,7 @@ export default function RegistrationChoice() {
       Sex: sex,
       Email: email,
       Contact: contactNumber,
-      BirthDate : birthday,
+      BirthDate: birthday,
       Password: password,
     };
 
@@ -71,31 +79,37 @@ export default function RegistrationChoice() {
       Password: password,
     };
 
-    // const apiUrl = process.env.REACT_APP_API_URL;
-
     if (accountType === 'doctor') {
       try {
         console.log(DoctorData);
-        const response = axios.post(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/register`, DoctorData);
-        // const response = axios.post(`${apiUrl}/user/doctor/register`, DoctorData);
-        const data = await response;
+        const response = await axios.post(
+          `http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/register`,
+          DoctorData,
+        );
+        const data = response.data;
         console.log(data);
         toLogin();
       } catch (error) {
         console.log(error);
+        throw error;
       }
     } else if (accountType === 'patient') {
-        try {
-          const response = axios.post(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/register`, PatientData);
-          const data = await response;
-          console.log(data);
-          toLogin();
-          console.log('Success');
-        }catch (error) {
-          console.log(error);
-        }
+      try {
+        const response = await axios.post(
+          `http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/register`,
+          PatientData,
+        );
+        const data = response.data;
+        console.log(data);
+        toLogin();
+        console.log('Success');
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
     } else {
       console.log('Error');
+      throw new Error('Invalid account type');
     }
   };
 
@@ -121,25 +135,25 @@ export default function RegistrationChoice() {
     }
   }, [currentStep, setFinalButton]);
 
-  const isFilled = React.useMemo(() => {
+  const isFilled = useMemo(() => {
     if (currentStep === 1) {
       if (accountType === 'doctor') {
-        return Boolean(firstName && lastName && email && password && sex && sex !== 'Select' && address);
+        return Boolean(firstName && lastName && isEmailValid && isPasswordValid && sex && sex !== 'Select' && address);
       } else if (accountType === 'patient') {
-        return Boolean(firstName && lastName && email && password && sex && sex !== 'Select' && birthday);
+        return Boolean(firstName && lastName && isEmailValid && isPasswordValid && sex && sex !== 'Select' && birthday);
       }
     }
     return true;
-  }, [accountType, currentStep, firstName, lastName, email, password, sex, address, birthday]);
+  }, [accountType, currentStep, firstName, lastName, isEmailValid, isPasswordValid, sex, address, birthday]);
 
-  const isFilledDoctor = React.useMemo(() => {
+  const isFilledDoctor = useMemo(() => {
     if (currentStep === 2 && accountType === 'doctor') {
       return Boolean(department && department !== 'Select' && specialization);
     }
     return true;
   }, [currentStep, accountType, department, specialization]);
 
-  const isButtonDisabled = React.useMemo(() => {
+  const isButtonDisabled = useMemo(() => {
     if (currentStep === 0) return accountType === null;
     if (currentStep === 1) return !isFilled;
     if (currentStep === 2) return accountType === 'doctor' ? !isFilledDoctor : false;
@@ -179,9 +193,25 @@ export default function RegistrationChoice() {
           <Button
             disabled={isButtonDisabled}
             size={'lg'}
-            onClick={() => {
+            onClick={async () => {
               if (currentStep === 2) {
-                registrationAPI();
+                try {
+                  await registrationAPI();
+                  toast({
+                    title: 'Success',
+                    description: 'You have successfully registered.',
+                    duration: 5000,
+                  });
+                  toLogin();
+                } catch (error) {
+                  console.error(error);
+                  toast({
+                    title: 'Error',
+                    description: 'Email already taken, please try again.',
+                    duration: 5000,
+                  });
+                  goToPrevStep();
+                }
               } else {
                 goToNextStep();
               }
