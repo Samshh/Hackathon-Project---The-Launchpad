@@ -5,21 +5,26 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function PatientHeader() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [searchParams, _] = useSearchParams();
+  const location = useLocation();
 
   const onSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
-    navigate(`/patient/doctors${search && `?name=${search}`}`);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('name', search);
+    navigate(`${location.pathname}?${newSearchParams.toString()}`);
+    // navigate(`/patient/doctors${search && `?name=${search}`}`);
   };
 
   return (
     <div className="flex items-center w-full gap-8 pb-1">
-      <img src="/logoChainMed.svg" alt="" className='size-12'/>
+      <img src="/logoChainMed.svg" alt="" className="size-12" />
       <form onSubmit={onSubmit} className="flex-grow">
         <Input
           placeholder="Search for doctors..."
