@@ -2,6 +2,7 @@ import { Router } from 'express';
 import UsersController from 'App/Controllers/Http/UsersController';
 import AppointmentsController from 'App/Controllers/Http/AppointmentsController';
 import AuthMiddleware from 'App/Middleware/Auth';
+import jwtCreate from 'App/Middleware/jwtCreate';
 const Route = Router();
 
 /*
@@ -9,12 +10,16 @@ const Route = Router();
 | Authenticated Routes
 |--------------------------------------------------------------------------
 */
+Route.get('/authenticate', UsersController.authenticate);
+Route.post('/jwt', jwtCreate.createJWT);
 
 // USER
+
 Route.post('/user/doctor/register', UsersController.docRegister);
 Route.post('/user/patient/register', UsersController.patRegister);
-Route.post('/user/login', UsersController.doctorlogin)
-Route.get('/authenticate', AuthMiddleware.authenticateJWT, UsersController.authenticate);
+Route.post('/user/doctor/login', UsersController.doctorlogin)
+Route.post('/user/patient/login', UsersController.patientlogin)
+
 Route.get('/get/all/doctor', UsersController.get_all_doctors);
 Route.get('/get/all/patient', UsersController.get_all_patients);
 

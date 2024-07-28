@@ -1,27 +1,48 @@
-// import { useAppointmentsStore } from '@/components/patient/appointments/store';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function PatientHeader() {
-  // const { toggleOpen } = useAppointmentsStore();
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+
+  const onSubmit: React.FormEventHandler = (e) => {
+    e.preventDefault();
+    navigate(`/patient/doctors${search && `?name=${search}`}`);
+  };
+
   return (
     <div className="flex items-center w-full gap-8 pb-1">
-      <div className="rounded-full size-12 bg-accent"></div>
-      <input placeholder="Search for doctors..." className="flex-1 px-6 py-3 rounded-lg shadow-md"></input>
+      <img src="/logoChainMed.svg" alt="" className='size-12'/>
+      <form onSubmit={onSubmit} className="flex-grow">
+        <Input
+          placeholder="Search for doctors..."
+          className="flex-grow w-full py-6 rounded-lg shadow-md"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        ></Input>
+        <input type="submit" className="hidden" />
+      </form>
       <DropdownMenu>
         <DropdownMenuTrigger className="grid bg-white border rounded-full size-12 border-accent place-items-center">
           <p className="text-lg font-semibold">H</p>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 mr-8 max-h-fit">
-          <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Dashboard</DropdownMenuItem>
-          <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">
-            Appointments
-          </DropdownMenuItem>
-          <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Doctors</DropdownMenuItem>
+          <Link to={'/patient'}>
+            <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Dashboard</DropdownMenuItem>
+          </Link>
+          <Link to={'/patient/appointments'}>
+            <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Appointments</DropdownMenuItem>
+          </Link>
+          <Link to={'/patient/doctors'}>
+            <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Doctors</DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

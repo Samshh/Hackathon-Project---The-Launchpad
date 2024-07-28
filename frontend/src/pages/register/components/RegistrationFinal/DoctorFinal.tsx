@@ -10,11 +10,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useShallow } from 'zustand/react/shallow';
 import useRegistrationChoiceStore from '../../store';
+import React, { useState } from 'react';
 
 export default function DoctorFinal() {
   const [setDepartment, department, setSpecialization, specialization] = useRegistrationChoiceStore(
     useShallow((state) => [state.setDepartment, state.department, state.setSpecialization, state.specialization]),
   );
+
+  const [specializationError, setSpecializationError] = useState(false);
+
+  const validateSpecialization = (value: string) => {
+    setSpecialization(value);
+    setSpecializationError(value.length === 0);
+  }
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -76,7 +84,8 @@ export default function DoctorFinal() {
           <Input
             value={specialization || ''}
             placeholder="Cardiology"
-            onChange={(e) => setSpecialization(e.target.value)}
+            onChange={(e) => validateSpecialization(e.target.value)}
+            className={specializationError ? 'ring-red-500 ring-2 ring-offset-2' : ''}
           />
         </div>
       </div>

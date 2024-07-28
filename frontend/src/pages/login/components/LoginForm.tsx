@@ -9,10 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function LoginForm() {
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -25,42 +27,78 @@ export default function LoginForm() {
   const accountDropdown = (type: string) => {
     setAccountType(type);
   };
+
   const emailInput = (email: string) => {
     setEmail(email);
   };
+
   const passwordInput = (pass: string) => {
     setPassword(pass);
   };
 
   const loginAPI = async () => {
+    console.log('Logging in');
     const loginData = {
       Email: email,
       Password: password,
-      AccountType: accountType,
     };
 
-    try {
-      const response = await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/login', loginData, {
-        withCredentials: true,
-      });
-      console.log(response.data);
-      toLogin();
-    } catch (error: any) {
-      console.error(error.message);
+    let endpoint = '';
+    if (accountType === 'Doctor') {
+      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/login';
+    } else if (accountType === 'Patient') {
+      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/login';
+    } else {
+      throw new Error('Invalid account type');
+    }
+
+    const response = await axios.post(endpoint, loginData, {
+      withCredentials: true,
+    });
+
+    if (response.data.status === 1) {
+      console.log('Login successful:', response.data);
+      return response.data;
+    } else {
+      throw new Error(response.data.message || 'Login failed');
     }
   };
 
   const toLogin = () => {
     if (accountType === 'Doctor') {
       navigate('/doctor');
-      console.log(email);
-      console.log(password);
     } else if (accountType === 'Patient') {
       navigate('/patient');
-      console.log(email);
-      console.log(password);
     }
   };
+
+  const checkAuth = async () => {
+    console.log('Checking auth');
+    try {
+      const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
+        withCredentials: true,
+      });
+      const data = await response.data;
+      if (data && data.user.TypeIs === 1) {
+        setAccountType('Doctor');
+        console.log('Authenticated as doctor');
+        navigate('/doctor');
+      } else if (data && data.user.TypeIs === 2) {
+        setAccountType('Patient');
+        console.log('Authenticated as patient');
+        navigate('/patient');
+      } else {
+        console.log('Not authenticated');
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <div className="flex flex-col h-full pl-[3.5rem]">
       <div className="flex flex-col flex-grow justify-start items-start gap-[2rem]">
@@ -97,7 +135,24 @@ export default function LoginForm() {
         <div className="flex items-center justify-center w-full gap-[2rem]">
           <Button
             disabled={!email || !password || !accountType || accountType == 'Select'}
-            onClick={loginAPI}
+            onClick={async () => {
+              try {
+                await loginAPI();
+                toast({
+                  title: 'Success',
+                  description: 'Logged in successfully.',
+                  duration: 5000,
+                });
+                toLogin();
+              } catch (error) {
+                console.error(error);
+                toast({
+                  title: 'Error',
+                  description: 'Email or password is incorrect, please try again.',
+                  duration: 5000,
+                });
+              }
+            }}
             size={'lg'}
             className="w-full font-semibold"
           >
