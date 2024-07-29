@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import HomePage from './pages/home';
 import ProviderCheckpoint from './checkpoints/ProviderCheckpoint';
 import AuthCheckpointDoctor from './checkpoints/AuthCheckpointDoctor';
-// import AuthCheckpointPatient from './checkpoints/AuthCheckpointPatient';
+import AuthCheckpointPatient from './checkpoints/AuthCheckpointPatient';
 import DefaultLayout from './layouts/default';
 import LoginLayout from './layouts/login';
 import RegisterLayout from './layouts/register';
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        // element: <AuthCheckpointPatient />,
+        element: <AuthCheckpointPatient />,
         children: [
           {
             path: 'patient',
