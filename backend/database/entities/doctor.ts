@@ -25,6 +25,9 @@ export class Doctor extends BaseEntity {
   @Column({ type: 'text' })
   Specialization: string;
 
+  // @Column({ type: 'text' })
+  // Department: string;
+
   @Column({ type: 'text' })
   Sex: string;
 

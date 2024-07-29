@@ -12,15 +12,12 @@ export class Doctor_Schedule extends BaseEntity {
   @JoinColumn({ name: 'DoctorID' })
   doctor: Doctor;
 
-  @Column({ type: 'text' })
-  day: string;
-
-  @Column({ type: 'text' })
-  time: string;
-
   @Column({ type: 'bigint' })
-  created_at: number;
+  day: number;
 
-  @Column({ type: 'bigint' })
-  updated_at: number;
+  @Column({ type: 'text' })
+  starttime: string;
+
+  @Column({ type: 'text' })
+  endtime: string;
 }

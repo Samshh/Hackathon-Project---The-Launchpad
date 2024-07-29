@@ -123,8 +123,7 @@ export default class UsersController {
       }
 
       const newPatient = await Patient.save(userData);
-      console.log(Documents)
-      console.log(newPatient);
+
       if (Documents && typeof Documents === 'string') {
         const record = {
           FilePath: Documents,
@@ -308,13 +307,14 @@ export default class UsersController {
       });
     }
   }
+
+  // include schedule
   static async get_doctor_by_id(request: Request, response: Response) {
     try {
-      const { DoctorID } = request.params;
-      const parsedDoctorID = parseInt(DoctorID, 10); // Convert DoctorID to a number
+      const { id } = request.params;
 
       const user = await Doctor.findOne({
-        where: [{ DoctorID: parsedDoctorID }], // Use parsedDoctorID instead of DoctorID
+        where: [{ DoctorID: id }], // Use parsedDoctorID instead of DoctorID
       });
 
       if (!user) {
@@ -324,10 +324,18 @@ export default class UsersController {
           message: 'User not found.',
         });
       }
-
+      
+      const doctorinfo = {
+        DoctorID: user.DoctorID,
+        Fname: user.Fname,
+        Lname: user.Lname,
+        Address: user.Address,
+        Specialization: user.Specialization,
+        Department: user.Department,
+      };
       return response.json({
         status: 1,
-        data: user,
+        data: doctorinfo,
       });
     } catch (error: any) {
       response.status(400);
@@ -344,7 +352,7 @@ export default class UsersController {
       const patient = await Patient.findOne({
         where: { PatientID: id },
         select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact', 'Email'],
-        relations: ['appointments'],
+        relations: ['appointments', 'appointments.doctor'],
       });
 
       if (!patient) {
@@ -363,6 +371,16 @@ export default class UsersController {
         .sort((a, b) => new Date(b.ETA).getTime() - new Date(a.ETA).getTime())
         .slice(0, 1)[0];
 
+      const uniqueDoctors = Array.from(new Set(
+        patient.appointments
+          .filter(appointment => appointment.doctor)
+          .map(appointment => JSON.stringify({
+            doctorId: appointment.doctor.DoctorID,
+            name: appointment.doctor.Fname + ' ' + appointment.doctor.Lname,
+            specialization: appointment.doctor.Specialization
+          }))
+      )).map(doctor => JSON.parse(doctor));
+
       const result = {
         patientId: patient.PatientID,
         patientName: patient.Fname + ' ' + patient.Lname,
@@ -380,11 +398,20 @@ export default class UsersController {
             prescription: appointment.Prescription,
             diagnosis: appointment.Diagnosis,
             status: appointment.Status,
+            prescriptions: appointment.Prescription,
+            notes: appointment.Note,
+            doctor: {
+              doctorId: appointment.doctor.DoctorID,
+              doctorName: appointment.doctor.Fname + ' ' + appointment.doctor.Lname,
+              specialization: appointment.doctor.Specialization,
+              contact: appointment.doctor.Contact,
+            }
           })),
         prescriptions: patient.appointments
           .filter(appointment => appointment.Status == false)
           .sort((a, b) => b.AppointmentID - a.AppointmentID)
           .map(appointment => appointment.Prescription),
+        mydoctors: uniqueDoctors
       };
 
       return response.json({

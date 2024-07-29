@@ -179,7 +179,7 @@ export default class AppointmentsController {
             appointment.patient = patient;
             appointment.ETA = ETA;
             appointment.Note = Note;
-            appointment.Status = false;
+            appointment.Status = true;
             appointment.Reason = Reason;
             appointment.Prescription = Prescription;
             appointment.Diagnosis = Diagnosis;
