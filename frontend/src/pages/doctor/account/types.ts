@@ -12,3 +12,17 @@ export interface AvailabilityInput {
   selectedDateTime: Date;
   availabilityId?: number;
 }
+
+export interface AvailabilityResponseData {
+  availabilityId: number;
+  day: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface Availability {
+  availabilityId: number;
+  day: number;
+  startTime: Date;
+  endTime: Date;
+}

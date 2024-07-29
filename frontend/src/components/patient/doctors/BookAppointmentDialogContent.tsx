@@ -5,6 +5,11 @@ import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import { useShallow } from 'zustand/react/shallow';
 import { useEffect, useState } from 'react';
 import { format, setDay } from 'date-fns';
+import { useQuery } from "react-query"
+import axios from "axios"
+import { Doctor } from "@/pages/patient/types";
+import { militaryTimeToDate } from "@/lib/utils";
+import { useMemo } from "react"
 
 const doctorSchedTimeBlocks: CalendarFloatingTimeBlock[] = [
   {
@@ -49,7 +54,15 @@ const doctorSchedTimeBlocks: CalendarFloatingTimeBlock[] = [
   },
 ];
 
-export default function BookAppointmentDialogContent() {
+export default function BookAppointmentDialogContent({ doctor }: { doctor: Doctor }) {
+  // const {data} = useQuery({
+  //   queryKey: ['bookappointmentdialog'],
+  //   queryFn: async() => {
+  //     const response = await axios.get(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/doctor/${doctor.doctorId}`)
+  //     return response.data as Doctor
+  //   }
+  // })
+
   const [
     patientSelectedBookingSchedule,
     setPatientSelectedBookingSchedule,
@@ -71,6 +84,18 @@ export default function BookAppointmentDialogContent() {
     resetPatientSelectedBookingSchedule();
   }, []);
 
+  useEffect(() => { console.log(selectedReason); }, [selectedReason])
+
+  const timeBlocks = useMemo(() => {
+    return doctor.schedules.map((schedule) => ({
+      id: schedule.scheduleId,
+      startTime: militaryTimeToDate(schedule.startTime),
+      endTime: militaryTimeToDate(schedule.endTime),
+      dayOfTheWeek: schedule.day + 1,
+      className: 'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group'
+    }))
+  }, [doctor]);
+
   return (
     <div className="h-[80dvh] w-[75dvw] flex-grow flex flex-col gap-6 items-stretch text-white">
       <p className="text-2xl font-semibold text-black">Book an Appointment</p>
@@ -91,10 +116,11 @@ export default function BookAppointmentDialogContent() {
             )}
           </div>
           <WeeklyCalendar
+            areDaysDisplayed
             onFloatingTimeBlockClick={(selectedTimeBlock) => {
               setPatientSelectedBookingSchedule(selectedTimeBlock);
             }}
-            floatingTimeBlocks={doctorSchedTimeBlocks}
+            floatingTimeBlocks={timeBlocks}
             startTimeAndEndTimeSeparator={<div className="h-px w-1 group-hover:bg-white bg-black"></div>}
           />
         </div>
@@ -135,14 +161,29 @@ export default function BookAppointmentDialogContent() {
               Cancel
             </button>
             <button
-              onClick={() => closeDialog()}
               className="py-3 flex justify-center items-center self-end px-12 bg-accent rounded-xl text-white font-medium"
+              onClick={async () => {
+                console.log('STARTING TO BOOK APPOINTMENT');
+                await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/patient/appointment/create',
+                  {
+                    DoctorID: doctor.doctorId,
+                    ETA: patientSelectedBookingSchedule.startTime.toISOString(),
+                    Reason: selectedReason,
+                    Note: noteText
+                  },
+                  {
+                    withCredentials: true, // Ensure cookies are sent with the request
+                  }
+                );
+                console.log('BOOKed APPOINTMENT???');
+                closeDialog()
+              }}
             >
               Book
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

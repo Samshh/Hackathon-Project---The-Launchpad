@@ -74,15 +74,15 @@ export default function WeeklyCalendar({
           <div className="flex flex-row justify-start items-center gap-4">
             <div className="flex flex-row justify-start items-center gap-2">
               <Button variant="outline" size="icon" onClick={goToPreviousWeek}>
-                <ChevronLeft size={16} />
+                <ChevronLeft size={16} stroke={"black"}/>
               </Button>
 
               <Button variant="outline" size="icon" onClick={goToNextWeek}>
-                <ChevronRight size={16} />
+                <ChevronRight size={16} stroke={"black"}/>
               </Button>
             </div>
 
-            <p className="text-xl font-semibold">{activeMonthYearText}</p>
+            <p className="text-xl text-black font-semibold">{activeMonthYearText}</p>
           </div>
         </div>
       )}

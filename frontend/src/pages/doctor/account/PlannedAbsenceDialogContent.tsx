@@ -22,10 +22,12 @@ export default function PlannedAbsenceDialogContent({
 }: PlannedAbsenceDialogContentProps) {
   const form = useForm<z.infer<typeof plannedAbsenceSchema>>({
     resolver: zodResolver(plannedAbsenceSchema),
-    ...(plannedAbsence ? { defaultValues: {
-      startDate: plannedAbsence.startDate,
-      endDate: plannedAbsence.endDate,
-    }} : {}),
+    ...(plannedAbsence ? {
+      defaultValues: {
+        startDate: plannedAbsence.startDate,
+        endDate: plannedAbsence.endDate,
+      }
+    } : {}),
   });
 
   const onSubmit = (values: z.infer<typeof plannedAbsenceSchema>) => {
@@ -58,7 +60,7 @@ export default function PlannedAbsenceDialogContent({
             <div className="flex flex-col justify-start items-start gap-1">
               <Label>End</Label>
 
-              <DateTimeField control={form.control} name="endDate"/>
+              <DateTimeField control={form.control} name="endDate" />
             </div>
           </div>
 

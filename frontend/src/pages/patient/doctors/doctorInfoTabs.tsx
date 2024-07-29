@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { Doctor } from './doctorsMockData';
 import DoctorInfoTab from '@/components/patient/doctors/doctorInfoTabs/DoctorInfoTab';
 import DoctorSchedTab from '@/components/patient/doctors/doctorInfoTabs/DoctorSchedTab';
+import { DoctorData } from "../types"
 
-export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
+export default function DoctorInfoPageTabs({doctorInfo} : {doctorInfo: DoctorData}) {
   const [currentTab, setCurrentTab] = useState('doctorInfo');
   return (
     <Tabs
@@ -28,7 +29,7 @@ export default function DoctorInfoPageTabs({ doctor }: { doctor: Doctor }) {
       </TabsList>
       {currentTab === 'doctorInfo' && (
         <TabsContent value="doctorInfo" className={`flex flex-col bg-white rounded-md shadow-md p-6 gap-8`}>
-          <DoctorInfoTab doctor={doctor} />
+          <DoctorInfoTab doctorInfo={doctorInfo} />
         </TabsContent>
       )}
       {currentTab === 'doctorScheds' && (

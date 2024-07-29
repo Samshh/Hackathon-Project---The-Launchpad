@@ -7,6 +7,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function PatientHeader() {
   const navigate = useNavigate();
@@ -48,7 +50,18 @@ export default function PatientHeader() {
           <Link to={'/patient/doctors'}>
             <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Doctors</DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="py-3 font-semibold hover:cursor-pointer">Logout</DropdownMenuItem>
+          <DropdownMenuItem
+            className="py-3 font-semibold hover:cursor-pointer"
+            onClick={async () => {
+              // await axios.post("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/logout", {}, {
+              //   withCredentials: true,
+              // });
+              Cookies.remove("token");
+              navigate("/");
+            }}
+          >
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

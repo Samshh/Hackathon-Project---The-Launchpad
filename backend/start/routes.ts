@@ -14,7 +14,7 @@ const Route = Router();
 */
 Route.get('/authenticate', UsersController.authenticate);
 Route.post('/jwt', jwtCreate.createJWT);
-
+Route.post('/logout', UsersController.logout);
 // USER
 // Register and loginA
 Route.post('/user/doctor/register', UsersController.docRegister);
