@@ -3,26 +3,28 @@ import useAppointmentsStore from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { differenceInCalendarDays, isWithinInterval } from "date-fns";
 import axios from 'axios';
+import { useGlobalComponentStore } from "@/components/globalComponentStore";
+import AppointmentSheetContent from "./AppointmentSheetContent";
 
 const appointments = [
   {
-    id: 1,
-    eta: new Date(2024, 6, 25, 10, 30),
-    patient: "Juan Dela Cruz",
+    appointmentId: 1,
+    eta: new Date(2024, 6, 29, 10, 30),
+    patientName: "Juan Dela Cruz",
     reason: "Checkup",
     status: 0,
   },
   {
-    id: 2,
-    eta: new Date(2024, 6, 24, 18, 45),
-    patient: "Maria Clara",
+    appointmentId: 2,
+    eta: new Date(2024, 6, 30, 18, 45),
+    patientName: "Maria Clara",
     reason: "Checkup",
     status: 1,
   },
   {
-    id: 3,
-    eta: new Date(2024, 6, 26, 10, 30),
-    patient: "Jose Rizal",
+    appointmentId: 3,
+    eta: new Date(2024, 6, 31, 10, 30),
+    patientName: "Jose Rizal",
     reason: "Checkup",
     status: 1,
   },
@@ -43,15 +45,25 @@ export default function AppointmentTimeBlockGrid() {
 
   const [
     activeWeekFirstDay,
-    appointments,
+    // appointments,
     getActiveWeekLastDay,
   ] = useAppointmentsStore(
     useShallow((state) => [
       state.activeWeekFirstDay,
-      state.appointments,
+      // state.appointments,
       state.getActiveWeekLastDay,
     ])
   );
+
+  const [
+    toggleOpenSheet,
+    closeSheet
+  ] = useGlobalComponentStore(
+    useShallow((state) => [
+      state.toggleOpenSheet,
+      state.closeSheet,
+    ])
+  )
 
   return (
     <div className="flex-grow overflow-y-auto">
@@ -96,7 +108,6 @@ export default function AppointmentTimeBlockGrid() {
           const isBefore = differenceInCalendarDays(appointmentEtaObject, new Date()) < 0;
           const hourOffsetTop = appointmentEtaObject.getHours() * 160 + appointmentEtaObject.getMinutes() / 60 * 160;
 
-          // TODO: Make element show right side dialog on click
           return (
             <button
               key={`appointment-${appointment.appointmentId}`}
@@ -106,6 +117,17 @@ export default function AppointmentTimeBlockGrid() {
                 gridColumnEnd: gridColumnStart + 1,
                 top: hourOffsetTop,
               }}
+              onClick={() => {
+                console.log("CLICKED!");
+                console.log(`DAY OF THE WEEK: ${gridColumnStart - 2}`);
+                console.log(`HOVERED HOURS: ${hoveredHour}`);
+                console.log(`HOVERED MINUTES: ${hoveredMinutes}`);
+
+                toggleOpenSheet(
+                 <AppointmentSheetContent appointmentId={appointment.appointmentId} />
+                );                
+              }}
+              
             >
               <div className={`
                 flex-grow flex flex-col justify-between items-start text-sm rounded-md shadow-md px-2 py-1 cursor-pointer border

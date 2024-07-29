@@ -1,6 +1,8 @@
 import { CalendarIcon, HomeIcon, HospitalIcon, LogOutIcon, LucideProps, UserIcon } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Cookies from "js-cookie";
 
 type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
@@ -71,6 +73,9 @@ export default function DoctorNavbar() {
             //   withCredentials: true,
             // });
             Cookies.remove("token", { domain: 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943' });
+=======
+            Cookies.remove("token");
+
             navigate("/");
           }}
         >

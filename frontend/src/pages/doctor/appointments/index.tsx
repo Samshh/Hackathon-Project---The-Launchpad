@@ -19,7 +19,6 @@ const fetchAppointments = async () => {
 
 
 export default function DoctorAppointmentsPage() {
-  const [viewType, setViewType] = useState<AppointmentViewType>('calendar');
   const [
     resetStore,
     setAppointments
@@ -65,22 +64,10 @@ export default function DoctorAppointmentsPage() {
       <main className="h-full min-h-[480px] flex-grow flex flex-col justify-start items-stretch gap-4 pt-4">
         <div className="flex flex-row justify-between items-center">
           <h5>Appointments</h5>
-
-          <Select value={viewType} onValueChange={(value: AppointmentViewType) => setViewType(value)}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-
-            <SelectContent>
-              <SelectItem value='calendar'>Calendar</SelectItem>
-              <SelectItem value='list'>List</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
+        
 
-        {viewType === 'calendar' ? (
-          <AppointmentCalendar />
-        ) : null}
+        <AppointmentCalendar />
       </main>
     )
   }
