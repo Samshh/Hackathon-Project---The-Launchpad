@@ -14,25 +14,25 @@ export default class UsersController {
 
     const token = request.cookies.token;
 
-    if (!token) {   
+    if (!token) {
       return response.status(401).json({
         status: 0,
         message: 'Unauthorized',
       });
     }
-    
+
     njwt.verify(token, JWT_SECRET, (err, verifiedJwt) => {
       if (err) {
         return response.status(401).json({
           status: 0,
           message: 'oten dako',
         });
- 
+
       } else {
         return response.json({
           status: 1,
           message: 'Authenticated',
-          user: verifiedJwt.body, 
+          user: verifiedJwt.body,
         });
       }
     });
@@ -123,14 +123,15 @@ export default class UsersController {
       }
 
       const newPatient = await Patient.save(userData);
-
-      if (Documents && Documents.length > 0) {
-        const records = Documents.map((doc: string) => ({
-          FilePath: doc,
+      console.log(Documents)
+      console.log(newPatient);
+      if (Documents && typeof Documents === 'string') {
+        const record = {
+          FilePath: Documents,
           patient: newPatient,
-        }));
-
-        await Patient_Records.save(records);
+        };
+        console.log(record);
+        await Patient_Records.save([{ ...record }]);
       }
 
       return response.status(201).json({
@@ -144,7 +145,7 @@ export default class UsersController {
         error: error.message,
       });
     }
-}
+  }
   // LOGIN
   static async doctorlogin(request: Request, response: Response) {
     try {
@@ -169,7 +170,7 @@ export default class UsersController {
         });
       }
 
-      const claims = { TypeIs: 1 , id: user.DoctorID, Email: user.Email };
+      const claims = { TypeIs: 1, id: user.DoctorID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
@@ -219,7 +220,7 @@ export default class UsersController {
         });
       }
 
-      const claims = { TypeIs  : 2, id: user.PatientID, Email: user.Email };
+      const claims = { TypeIs: 2, id: user.PatientID, Email: user.Email };
       const token = njwt.create(claims, JWT_SECRET);
       token.setExpiration(new Date().getTime() + 60 * 60 * 1000);
       const jwt = token.compact();
@@ -265,47 +266,47 @@ export default class UsersController {
     }
   }
   static async get_all_patients(request: Request, response: Response) {
-try {
-  // get the most latest appointment of each patient
-  const patients = await Patient.find({
-    select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact'], 
-    relations: ['appointments'], 
-  });
+    try {
+      // get the most latest appointment of each patient
+      const patients = await Patient.find({
+        select: ['PatientID', 'Fname', 'Lname', 'Sex', 'BirthDate', 'Contact'],
+        relations: ['appointments'],
+      });
 
-  const result = patients.map(patient => {
-    const birthDate = new Date(patient.BirthDate);
-    const now = new Date();
-    const age = now.getFullYear() - birthDate.getFullYear();
+      const result = patients.map(patient => {
+        const birthDate = new Date(patient.BirthDate);
+        const now = new Date();
+        const age = now.getFullYear() - birthDate.getFullYear();
 
-    return {
-      PatientID: patient.PatientID,
-      PatientName: patient.Fname + ' ' + patient.Lname,
-      Email: patient.Email,
-      Sex: patient.Sex,
-      Birthdate: patient.BirthDate,
-      Age: age, // Calculate age dynamically
-      Contact: patient.Contact,
-      Appointments: patient.appointments
-        .filter(appointment => appointment.Status == false)
-        .sort((a, b) => b.AppointmentID - a.AppointmentID)
-        .map(appointment => ({
-          AppointmentID: appointment.AppointmentID,
-          Date: appointment.ETA,
-          Status: appointment.Status,
-        }))
-    };
-  });
+        return {
+          PatientID: patient.PatientID,
+          PatientName: patient.Fname + ' ' + patient.Lname,
+          Email: patient.Email,
+          Sex: patient.Sex,
+          Birthdate: patient.BirthDate,
+          Age: age, // Calculate age dynamically
+          Contact: patient.Contact,
+          Appointments: patient.appointments
+            .filter(appointment => appointment.Status == false)
+            .sort((a, b) => b.AppointmentID - a.AppointmentID)
+            .map(appointment => ({
+              AppointmentID: appointment.AppointmentID,
+              Date: appointment.ETA,
+              Status: appointment.Status,
+            }))
+        };
+      });
 
-  return response.json({
-    status: 1,
-    data: result,
-  });
-} catch (error: any) {
-  response.status(400).json({
-    status: 0,
-    message: error.message,
-  });
-}
+      return response.json({
+        status: 1,
+        data: result,
+      });
+    } catch (error: any) {
+      response.status(400).json({
+        status: 0,
+        message: error.message,
+      });
+    }
   }
   static async get_doctor_by_id(request: Request, response: Response) {
     try {
@@ -376,8 +377,14 @@ try {
           .map(appointment => ({
             appointmentId: appointment.AppointmentID,
             date: appointment.ETA,
+            prescription: appointment.Prescription,
+            diagnosis: appointment.Diagnosis,
             status: appointment.Status,
           })),
+        prescriptions: patient.appointments
+          .filter(appointment => appointment.Status == false)
+          .sort((a, b) => b.AppointmentID - a.AppointmentID)
+          .map(appointment => appointment.Prescription),
       };
 
       return response.json({

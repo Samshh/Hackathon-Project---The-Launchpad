@@ -148,7 +148,7 @@ export default class AppointmentsController {
     }
 
     static async patientCreateAppointment(request: Request, response: Response) {
-        const { DoctorID, PatientID, ETA, Note, Reason } = request.body;
+        const { DoctorID, PatientID, ETA, Note, Reason, Prescription, Diagnosis } = request.body;
         const parsedDoctorID = parseInt(DoctorID, 10);
         const parsedPatientID = parseInt(PatientID, 10);
         try {
@@ -181,6 +181,8 @@ export default class AppointmentsController {
             appointment.Note = Note;
             appointment.Status = false;
             appointment.Reason = Reason;
+            appointment.Prescription = Prescription;
+            appointment.Diagnosis = Diagnosis;
             appointment.created_at = new Date().getTime();
             appointment.updated_at = new Date().getTime();
             await appointment.save();
