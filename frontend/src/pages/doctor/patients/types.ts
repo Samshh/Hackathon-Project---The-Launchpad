@@ -29,5 +29,5 @@ export interface DoctorPatient {
   age: number;
   contact: string;
   appointments: DoctorPatientAppointment[];
-  prescription: string[];
+  prescriptions: string[];
 }
