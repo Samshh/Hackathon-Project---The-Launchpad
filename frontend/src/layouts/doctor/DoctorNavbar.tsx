@@ -1,5 +1,6 @@
 import { CalendarIcon, HomeIcon, HospitalIcon, LogOutIcon, LucideProps, UserIcon } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
 
@@ -65,6 +66,7 @@ export default function DoctorNavbar() {
           className="size-12 flex justify-center items-center"
           onClick={() => {
             // TODO: Implement logout
+            Cookies.remove("token");
             navigate("/");
           }}
         >

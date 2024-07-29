@@ -76,6 +76,7 @@ export default function RegistrationChoice() {
       Lname: lastName,
       Address: address,
       Specialization: specialization,
+      Department: department,
       Sex: sex,
       Email: email,
       Contact: contactNumber,

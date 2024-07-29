@@ -11,105 +11,6 @@ import { useQuery } from "react-query";
 import { DoctorPatient } from "./types";
 import { formatDistanceToNow } from "date-fns";
 
-const patient = {
-  id: 1,
-  name: "Juan Dela Cruz",
-  sex: "Male",
-  age: "18 years, 6 months",
-  email: "jdcruz@gmail.com",
-  contactNumber: "09123456789",
-  lastAppointment: "1 day ago",
-};
-
-const patientAppointments = [
-  {
-    id: 1,
-    eta: new Date(2024, 0, 1, 9, 0, 0),
-    status: 0
-  },
-  {
-    id: 2,
-    eta: new Date(2024, 6, 31, 10, 0, 0),
-    status: 1
-  },
-  {
-    id: 3,
-    eta: new Date(2024, 4, 3, 11, 0, 0),
-    status: 0
-  },
-  {
-    id: 4,
-    eta: new Date(2024, 3, 4, 12, 0, 0),
-    status: 1
-  },
-  {
-    id: 5,
-    eta: new Date(2024, 5, 5, 13, 0, 0),
-    status: 0
-  },
-  {
-    id: 2,
-    eta: new Date(2024, 6, 31, 10, 0, 0),
-    status: 1
-  },
-  {
-    id: 3,
-    eta: new Date(2024, 4, 3, 11, 0, 0),
-    status: 0
-  },
-  {
-    id: 4,
-    eta: new Date(2024, 3, 4, 12, 0, 0),
-    status: 1
-  },
-  {
-    id: 5,
-    eta: new Date(2024, 5, 5, 13, 0, 0),
-    status: 0
-  },
-  {
-    id: 2,
-    eta: new Date(2024, 6, 31, 10, 0, 0),
-    status: 1
-  },
-  {
-    id: 3,
-    eta: new Date(2024, 4, 3, 11, 0, 0),
-    status: 0
-  },
-  {
-    id: 4,
-    eta: new Date(2024, 3, 4, 12, 0, 0),
-    status: 1
-  },
-  {
-    id: 5,
-    eta: new Date(2024, 5, 5, 13, 0, 0),
-    status: 0
-  }
-];
-
-const prescriptions = [
-  "Paracetamol 500mg, 1 tablet every 4 hours",
-  "Amoxicillin 500mg, 1 tablet every 8 hours",
-  "Ibuprofen 200mg, 1 tablet every 6 hours",
-  "Loratadine 10mg, 1 tablet every 12 hours",
-  "Cetirizine 10mg, 1 tablet every 12 hours",
-  "Ascorbic Acid 500mg, 1 tablet once a day",
-  "Paracetamol 500mg, 1 tablet every 4 hours",
-  "Amoxicillin 500mg, 1 tablet every 8 hours",
-  "Ibuprofen 200mg, 1 tablet every 6 hours",
-  "Loratadine 10mg, 1 tablet every 12 hours",
-  "Cetirizine 10mg, 1 tablet every 12 hours",
-  "Ascorbic Acid 500mg, 1 tablet once a day",
-  "Paracetamol 500mg, 1 tablet every 4 hours",
-  "Amoxicillin 500mg, 1 tablet every 8 hours",
-  "Ibuprofen 200mg, 1 tablet every 6 hours",
-  "Loratadine 10mg, 1 tablet every 12 hours",
-  "Cetirizine 10mg, 1 tablet every 12 hours",
-  "Ascorbic Acid 500mg, 1 tablet once a day",
-]
-
 const fetchPatient = async (id: number) => {
   const response = await axios.get(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/patient/${id}`, {
     withCredentials: true
@@ -229,7 +130,7 @@ export default function DoctorPatientDetails() {
             {currentTab === 'prescriptions' && (
               <TabsContent value="prescriptions" className="h-full flex flex-col justify-start items-stretch bg-white rounded-md shadow-md">
                 <ScrollArea className="flex-grow basis-px">
-                  {prescriptions.map((prescription, index) => (
+                  {patient.prescriptions.map((prescription, index) => (
                     <>
                       <div
                         key={`prescription-${index}`}

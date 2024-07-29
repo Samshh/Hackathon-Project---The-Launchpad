@@ -18,9 +18,4 @@ export class Doctor_Schedule_Exception extends BaseEntity {
   @Column({ type: 'datetime', nullable: true })
   ExceptionDateEnd: Date;
 
-  @Column({ type: 'bigint' })
-  created_at: number;
-
-  @Column({ type: 'bigint' })
-  updated_at: number;
 }
