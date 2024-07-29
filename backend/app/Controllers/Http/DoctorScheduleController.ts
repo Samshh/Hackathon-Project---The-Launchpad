@@ -11,17 +11,36 @@ export default class DoctorScheduleController {
 
     static async createSchedule(request: Request, response: Response) {
         try {
-            const { day, StartTime, EndTime, DoctorID } = request.body;
+            const { day, StartTime, EndTime } = request.body;
+
+            const token = request.cookies.token;
+
+            if (!token) {
+                return response.status(401).json({
+                    status: 0,
+                    message: 'Unauthorized',
+                });
+            }
+            let decodedToken;
+            try {
+                decodedToken = njwt.verify(token, JWT_SECRET);
+            } catch (error) {
+                return response.status(401).json({
+                    status: 0,
+                    message: 'Invalid token',
+                });
+            }
+            const id = decodedToken.body.id;
 
             // Validate input
-            if (day === undefined || !StartTime || !EndTime || !DoctorID) {
+            if (day === undefined || !StartTime || !EndTime || !id) {
                 return response.status(400).json({
                     status: 0,
                     message: 'All fields (day, StartTime, EndTime, DoctorID) are required',
                 });
             }
 
-            const doctor = await Doctor.findOne({ where: { DoctorID: DoctorID } });
+            const doctor = await Doctor.findOne({ where: { DoctorID: id } });
 
             if (!doctor) {
                 return response.status(404).json({
@@ -92,9 +111,16 @@ export default class DoctorScheduleController {
                         message: 'No schedule found',
                     });
                 } else {
+                    const result = schedule.map(schedule => ({
+                        availabilityId: schedule.id,
+                        day: schedule.day,
+                        startTime: schedule.starttime,
+                        endTime: schedule.endtime,
+                    }))
+
                     return response.json({
                         status: 1,
-                        data: schedule,
+                        data: result,
                     });
                 }
             } catch (error: any) {
@@ -117,27 +143,25 @@ export default class DoctorScheduleController {
         try {
             const { startDate, endDate } = request.body;
 
-            // const token = request.cookies.token;
+            const token = request.cookies.token;
 
-            // if (!token) {
-            //     return response.status(401).json({
-            //         status: 0,
-            //         message: 'Unauthorized',
-            //     });
-            // }
+            if (!token) {
+                return response.status(401).json({
+                    status: 0,
+                    message: 'Unauthorized',
+                });
+            }
 
-            // let decodedToken;
-            // try {
-            //     decodedToken = njwt.verify(token, JWT_SECRET);
-            // } catch (error) {
-            //     return response.status(401).json({
-            //         status: 0,
-            //         message: 'Invalid token',
-            //     });
-            // }
-            // const id = decodedToken.body.id;
-
-            const { id } = request.body
+            let decodedToken;
+            try {
+                decodedToken = njwt.verify(token, JWT_SECRET);
+            } catch (error) {
+                return response.status(401).json({
+                    status: 0,
+                    message: 'Invalid token',
+                });
+            }
+            const id = decodedToken.body.id;
 
             // Validate input
             if (!startDate || !endDate || !id) {
@@ -179,27 +203,25 @@ export default class DoctorScheduleController {
 
     static async getScheduleExceptions(request: Request, response: Response) {
         try {
-            // const token = request.cookies.token;
+            const token = request.cookies.token;
 
-            // if (!token) {
-            //     return response.status(401).json({
-            //         status: 0,
-            //         message: "No token provided",
-            //     });
-            // }
+            if (!token) {
+                return response.status(401).json({
+                    status: 0,
+                    message: "No token provided",
+                });
+            }
 
-            // let decodedToken;
-            // try {
-            //     decodedToken = njwt.verify(token, JWT_SECRET);
-            // } catch (error) {
-            //     return response.status(401).json({
-            //         status: 0,
-            //         message: "Invalid token",
-            //     });
-            // }
-            // const id = decodedToken.body.id;
-
-            const { id } = request.body
+            let decodedToken;
+            try {
+                decodedToken = njwt.verify(token, JWT_SECRET);
+            } catch (error) {
+                return response.status(401).json({
+                    status: 0,
+                    message: "Invalid token",
+                });
+            }
+            const id = decodedToken.body.id;
 
             try {
                 const scheduleExceptions = await Doctor_Schedule_Exception.find({
