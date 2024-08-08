@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 import { militaryTimeToDate } from "@/lib/utils";
 
 const fetchWorkingHours = async () => {
-  const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/schedule', {
+  const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/doctor/schedule`, {
     withCredentials: true
   });
 

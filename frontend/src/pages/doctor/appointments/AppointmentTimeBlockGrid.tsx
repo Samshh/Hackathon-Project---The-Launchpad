@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import useAppointmentsStore from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { differenceInCalendarDays, isWithinInterval } from "date-fns";
-
+import {useGlobalComponentStore} from "@/components/globalComponentStore"
+import AppointmentSheetContent from "./AppointmentSheetContent";
 
 export default function AppointmentTimeBlockGrid() {
   const [isHovering, setIsHovering] = useState(false);
@@ -12,23 +13,23 @@ export default function AppointmentTimeBlockGrid() {
 
   const [
     activeWeekFirstDay,
-    // appointments,
+    appointments, 
     getActiveWeekLastDay,
   ] = useAppointmentsStore(
     useShallow((state) => [
       state.activeWeekFirstDay,
-      // state.appointments,
+      state.appointments,
       state.getActiveWeekLastDay,
     ])
   );
 
   const [
     toggleOpenSheet,
-    closeSheet
+    // closeSheet
   ] = useGlobalComponentStore(
     useShallow((state) => [
       state.toggleOpenSheet,
-      state.closeSheet,
+      // state.closeSheet,
     ])
   )
 
@@ -91,7 +92,7 @@ export default function AppointmentTimeBlockGrid() {
                 console.log(`HOVERED MINUTES: ${hoveredMinutes}`);
 
                 toggleOpenSheet(
-                 <AppointmentSheetContent appointmentId={appointment.appointmentId} />
+                 <AppointmentSheetContent />
                 );                
               }}
               

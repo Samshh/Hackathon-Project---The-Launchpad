@@ -1,15 +1,15 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useEffect } from "react";
 import AppointmentCalendar from "./AppointmentCalendar";
 import useAppointmentsStore from "./store";
 import axios from 'axios';
 import { useQuery } from "react-query";
 import { useShallow } from "zustand/react/shallow";
 
-type AppointmentViewType = 'calendar' | 'list';
+// type AppointmentViewType = 'calendar' | 'list';
 
 const fetchAppointments = async () => {
-  const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/appointments', {
+  const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/doctor/appointments`, {
     withCredentials: true
   });
 

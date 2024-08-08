@@ -1,10 +1,8 @@
-import DoctorDetailItem from "@/components/doctor/DoctorDetailItem";
+// import DoctorDetailItem from "@/components/doctor/DoctorDetailItem";
 import { DoctorAppointment } from "./types";
 import { format, isBefore } from "date-fns";
 
-interface AppointmentSheetProps {
-  appointmentId: number;
-}
+
 
 // TODO: Fetch appointment data from API
 
@@ -16,9 +14,7 @@ const appointment: DoctorAppointment = {
   status: 1,
 }
 
-export default function AppointmentSheetContent({
-  appointmentId
-}: AppointmentSheetProps) {
+export default function AppointmentSheetContent() {
   // TODO: React query here
 
   return (

@@ -12,7 +12,7 @@ import { DoctorPatient } from "./types";
 import { formatDistanceToNow } from "date-fns";
 
 const fetchPatient = async (id: number) => {
-  const response = await axios.get(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/patient/${id}`, {
+  const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/get/patient/${id}`, {
     withCredentials: true
   });
 

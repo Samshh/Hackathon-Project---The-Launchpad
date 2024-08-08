@@ -14,7 +14,7 @@ export default function DoctorInfoPage() {
   const { data } = useQuery({
     queryKey: ['doctorInfo'],
     queryFn: async () => {
-      const response = await axios.get(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/doctor/${doctorId}`)
+      const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/get/doctor/${doctorId}`)
       console.log(response);
       return response.data.data as Doctor;
     }

@@ -70,8 +70,7 @@ export default function DoctorNavbar() {
             // await axios.post("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/logout", {}, {
             //   withCredentials: true,
             // });
-            Cookies.remove("token", { domain: 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943' });
-=======
+            // Cookies.remove("token", { domain: 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943' });
             Cookies.remove("token");
 
             navigate("/");

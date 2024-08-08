@@ -44,7 +44,7 @@ const addEditWorkingHours = async (day: number, startTime: string, endTime: stri
   console.log(`endTime: ${endTime}`);
 
   if (availabilityId === undefined) {
-    response = await axios.post("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/schedule/create", {
+    response = await axios.post(`${import.meta.env.VITE_CANISTER_BE_ID}/doctor/schedule/create`, {
       day: day,
       StartTime: startTime,
       EndTime: endTime,
@@ -52,7 +52,7 @@ const addEditWorkingHours = async (day: number, startTime: string, endTime: stri
       withCredentials: true
     });
   } else {
-    response = await axios.put("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/schedule/edit", {
+    response = await axios.put(`${import.meta.env.VITE_CANISTER_BE_ID}/doctor/schedule/edit`, {
       day: day,
       StartTime: startTime,
       EndTime: endTime,
