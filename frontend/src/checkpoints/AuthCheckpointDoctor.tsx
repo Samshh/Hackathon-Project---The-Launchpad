@@ -9,7 +9,7 @@ export default function AuthCheckpoint() {
   useEffect(() => {
     const authenticate = async () => {
       try {
-        let response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
+        let response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/authenticate`, {
           withCredentials: true,
         });
 

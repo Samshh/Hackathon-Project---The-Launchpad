@@ -45,9 +45,9 @@ export default function LoginForm() {
 
     let endpoint = '';
     if (accountType === 'Doctor') {
-      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/login';
+      endpoint = `${import.meta.env.VITE_CANISTER_BE_ID}/user/doctor/login`;
     } else if (accountType === 'Patient') {
-      endpoint = 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/login';
+      endpoint = `${import.meta.env.VITE_CANISTER_BE_ID}/user/patient/login`;
     } else {
       throw new Error('Invalid account type');
     }
@@ -75,7 +75,7 @@ export default function LoginForm() {
   const checkAuth = async () => {
     console.log('Checking auth');
     try {
-      const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/authenticate', {
+      const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/authenticate`, {
         withCredentials: true,
       });
       const data = await response.data;

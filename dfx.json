@@ -33,10 +33,10 @@
                 "backend"
             ],
             "frontend": {
-                "entrypoint": "frontend/build/index.html"
+                "entrypoint": "frontend/dist/index.html"
             },
             "source": [
-                "frontend/build"
+                "frontend/dist"
             ]
         },
         "internet-identity": {

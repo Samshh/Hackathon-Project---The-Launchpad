@@ -120,7 +120,7 @@ export default function BookAppointmentDialogContent({ doctor }: { doctor: Docto
                 console.log('STARTING TO BOOK APPOINTMENT');
 
                 if (patientSelectedBookingSchedule !== null) {
-                  await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/patient/appointment/create',
+                  await axios.post(`${import.meta.env.VITE_CANISTER_BE_ID}/patient/appointment/create`,
                     {
                       DoctorID: doctor.doctorId,
                       ETA: patientSelectedBookingSchedule.startTime.toISOString(),

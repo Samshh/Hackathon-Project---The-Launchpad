@@ -10,10 +10,10 @@ export function CreateServer() {
 
   // Configure CORS
   app.use(cors({
-    origin: 'https://wilfi-giaaa-aaaak-akzxa-cai.icp0.io/', 
+    origin: 'https://wbiou-qaaaa-aaaak-akzwq-cai.raw.icp0.io',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true 
+    credentials: true
   }));
 
   app.use(express.json({ limit: '1.5mb' }));

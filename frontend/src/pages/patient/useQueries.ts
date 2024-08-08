@@ -7,7 +7,7 @@ export function useGetPatientInfoById(id: number) {
   return useQuery({
     queryKey: ['patientInfoById'],
     queryFn: async () => {
-      const { data } = await axios.get(`http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/patient/${id}`);
+      const { data } = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/get/patient/${id}`);
       return data as PatientInfo;
     },
     staleTime: Infinity,

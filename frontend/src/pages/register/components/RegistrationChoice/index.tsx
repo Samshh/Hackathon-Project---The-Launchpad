@@ -87,7 +87,7 @@ export default function RegistrationChoice() {
       try {
         console.log(DoctorData);
         const response = await axios.post(
-          `http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/doctor/register`,
+          `${import.meta.env.VITE_CANISTER_BE_ID}/user/doctor/register`,
           DoctorData,
         );
         const data = response.data;
@@ -101,7 +101,7 @@ export default function RegistrationChoice() {
       console.log(PatientData);
       try {
         const response = await axios.post(
-          `http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/user/patient/register`,
+          `${import.meta.env.VITE_CANISTER_BE_ID}/user/patient/register`,
           PatientData,
         );
         const data = response.data;

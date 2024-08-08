@@ -7,7 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { DoctorPatientItem as Patient, DoctorPatientItemResponseData } from "./types";
 
 const fetchPatients = async () => {
-  const response = await axios.get('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/mypatientlist', {
+  const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/get/mypatientlist`, {
     withCredentials: true
   });
 

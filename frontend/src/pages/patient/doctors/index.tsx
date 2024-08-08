@@ -12,7 +12,7 @@ export default function PatientDoctorsPage() {
     queryKey: ['alldoctors'],
     queryFn: async () => {
       console.log('BEFORE AXIOS');
-      const response = await axios.get("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/get/all/doctor")
+      const response = await axios.get(`${import.meta.env.VITE_CANISTER_BE_ID}/get/all/doctor`)
       console.log('AFTER AXIOS');
       console.log(response);
       return response.data as AllDoctorsResponse
