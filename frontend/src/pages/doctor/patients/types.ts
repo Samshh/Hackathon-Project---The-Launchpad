@@ -30,4 +30,6 @@ export interface DoctorPatient {
   contact: string;
   appointments: DoctorPatientAppointment[];
   prescriptions: string[];
+  date: Date;
+  email: string;
 }

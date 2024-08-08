@@ -1,11 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
-import { Doctor } from './doctorsMockData';
 import DoctorInfoTab from '@/components/patient/doctors/doctorInfoTabs/DoctorInfoTab';
 import DoctorSchedTab from '@/components/patient/doctors/doctorInfoTabs/DoctorSchedTab';
-import { DoctorData } from "../types"
+import { Doctor } from "../types"
 
-export default function DoctorInfoPageTabs({doctorInfo} : {doctorInfo: DoctorData}) {
+export default function DoctorInfoPageTabs({ doctorInfo }: { doctorInfo: Doctor }) {
   const [currentTab, setCurrentTab] = useState('doctorInfo');
   return (
     <Tabs

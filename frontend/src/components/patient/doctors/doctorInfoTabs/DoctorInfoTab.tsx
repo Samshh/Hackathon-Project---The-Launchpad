@@ -1,8 +1,7 @@
-import { Doctor } from '@/pages/patient/doctors/doctorsMockData';
-import {DoctorData} from "@/pages/patient/types"
+import { Doctor } from "@/pages/patient/types"
 
 type DoctorInfoTabProps = {
-  doctorInfo: DoctorData;
+  doctorInfo: Doctor;
 };
 
 export default function DoctorInfoTab({ doctorInfo }: DoctorInfoTabProps) {
@@ -11,7 +10,7 @@ export default function DoctorInfoTab({ doctorInfo }: DoctorInfoTabProps) {
       <div>
         <p className="text-sm text-gray-500">Full Name</p>
         <p className="text-lg font-semibold">
-          {doctorInfo.name}
+          {doctorInfo.doctorName}
         </p>
       </div>
       {/* <div>

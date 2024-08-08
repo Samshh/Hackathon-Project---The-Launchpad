@@ -9,7 +9,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { AvailabilityInput } from "./types";
 import axios from "axios";
-import { useQuery, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import { queryClient } from "@/checkpoints/ProviderCheckpoint";
 
 // TODO: Handle edit working hours

@@ -2,9 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Filter } from 'lucide-react';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import { useShallow } from 'zustand/react/shallow';
-import { useMemo } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { doctorsMockData } from '@/pages/patient/doctors/doctorsMockData';
 
 const departments = [
   'Anesthesiology',

@@ -13,8 +13,3 @@ export function useGetPatientInfoById(id: number) {
     staleTime: Infinity,
   });
 }
-
-
-export default function 
-
-

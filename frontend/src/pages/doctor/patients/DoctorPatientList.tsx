@@ -18,13 +18,14 @@ export default function DoctorPatientList() {
   const [searchParams, _] = useSearchParams();
 
   const [patients, setPatients] = useState<Patient[]>([]);
-  const { status } = useQuery("doctor-patient-list", fetchPatients, {
+  useQuery("doctor-patient-list", fetchPatients, {
     enabled: true,
     onSuccess: (data: DoctorPatientItemResponseData[]) => {
-      let newPatients = data.map((patient: DoctorPatientItemResponseData) => {
-        let newPatient = patient;
-        newPatient.date = new Date(patient.date);
-        return newPatient;
+      let newPatients: Patient[] = data.map((patient: DoctorPatientItemResponseData) => {
+        return {
+          ...patient,
+          date: new Date(patient.date)
+        };
       });
 
       setPatients(newPatients);

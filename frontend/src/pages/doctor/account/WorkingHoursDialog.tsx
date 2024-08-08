@@ -2,7 +2,7 @@ import { Dialog } from "@/components/ui/dialog";
 import WeeklyCalendar from "@/components/WeeklyCalendar";
 import { useState, useMemo } from "react";
 import WorkingHoursDialogContent from "./WorkingHoursDialogContent";
-import { AvailabilityInput, AvailabilityResponseData, Availability } from "./types";
+import { AvailabilityInput, AvailabilityResponseData } from "./types";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { militaryTimeToDate } from "@/lib/utils";
@@ -49,9 +49,6 @@ export default function WorkingHoursDialog() {
       console.log("success2!");
       setWorkingHours(data);
     },
-    onError: (error) => {
-      console.log("error!");
-    }
   })
 
   if (status === "success" && floatingTimeBlocks !== undefined) {

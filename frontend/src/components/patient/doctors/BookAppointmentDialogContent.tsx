@@ -1,58 +1,13 @@
 import WeeklyCalendar from '@/components/WeeklyCalendar/index';
-import { CalendarFloatingTimeBlock } from '@/components/WeeklyCalendar/types';
 import { Textarea } from '@/components/ui/textarea';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import { useShallow } from 'zustand/react/shallow';
 import { useEffect, useState } from 'react';
 import { format, setDay } from 'date-fns';
-import { useQuery } from "react-query"
 import axios from "axios"
 import { Doctor } from "@/pages/patient/types";
 import { militaryTimeToDate } from "@/lib/utils";
 import { useMemo } from "react"
-
-const doctorSchedTimeBlocks: CalendarFloatingTimeBlock[] = [
-  {
-    id: '1',
-    startTime: new Date(2024, 6, 28, 12, 30, 0),
-    endTime: new Date(2024, 6, 28, 13, 30, 0),
-    dayOfTheWeek: 1,
-    className:
-      'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group',
-  },
-  {
-    id: '2',
-    startTime: new Date(2024, 6, 28, 13, 30, 0),
-    endTime: new Date(2024, 6, 28, 14, 30, 0),
-    dayOfTheWeek: 1,
-    className:
-      'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group',
-  },
-  {
-    id: '3',
-    startTime: new Date(2024, 6, 28, 15, 30, 0),
-    endTime: new Date(2024, 6, 28, 16, 30, 0),
-    dayOfTheWeek: 3,
-    className:
-      'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group',
-  },
-  {
-    id: '4',
-    startTime: new Date(2024, 6, 28, 16, 30, 0),
-    endTime: new Date(2024, 6, 28, 17, 30, 0),
-    dayOfTheWeek: 4,
-    className:
-      'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group',
-  },
-  {
-    id: '5',
-    startTime: new Date(2024, 6, 28, 16, 30, 0),
-    endTime: new Date(2024, 6, 28, 17, 30, 0),
-    dayOfTheWeek: 5,
-    className:
-      'bg-yellow-100 text-black flex gap-2 text-xs font-medium border border-yellow-200 hover:bg-accent hover:border-purple-700 hover:text-white transition-colors group',
-  },
-];
 
 export default function BookAppointmentDialogContent({ doctor }: { doctor: Doctor }) {
   // const {data} = useQuery({
@@ -121,7 +76,6 @@ export default function BookAppointmentDialogContent({ doctor }: { doctor: Docto
               setPatientSelectedBookingSchedule(selectedTimeBlock);
             }}
             floatingTimeBlocks={timeBlocks}
-            startTimeAndEndTimeSeparator={<div className="h-px w-1 group-hover:bg-white bg-black"></div>}
           />
         </div>
         <div className="flex flex-col gap-6 h-full w-[35%]">
@@ -164,17 +118,20 @@ export default function BookAppointmentDialogContent({ doctor }: { doctor: Docto
               className="py-3 flex justify-center items-center self-end px-12 bg-accent rounded-xl text-white font-medium"
               onClick={async () => {
                 console.log('STARTING TO BOOK APPOINTMENT');
-                await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/patient/appointment/create',
-                  {
-                    DoctorID: doctor.doctorId,
-                    ETA: patientSelectedBookingSchedule.startTime.toISOString(),
-                    Reason: selectedReason,
-                    Note: noteText
-                  },
-                  {
-                    withCredentials: true, // Ensure cookies are sent with the request
-                  }
-                );
+
+                if (patientSelectedBookingSchedule !== null) {
+                  await axios.post('http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/patient/appointment/create',
+                    {
+                      DoctorID: doctor.doctorId,
+                      ETA: patientSelectedBookingSchedule.startTime.toISOString(),
+                      Reason: selectedReason,
+                      Note: noteText
+                    },
+                    {
+                      withCredentials: true, // Ensure cookies are sent with the request
+                    }
+                  );
+                }
                 console.log('BOOKed APPOINTMENT???');
                 closeDialog()
               }}

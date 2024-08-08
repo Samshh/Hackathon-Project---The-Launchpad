@@ -10,7 +10,7 @@ interface RegistrationChoiceStoreValues {
   sex: string | null;
   contactNumber: string | null;
   address?: string | null;
-  birthday?: Date | null;
+  birthday?: string | null;
   department: string | null;
   specialization: string | null;
   finalButton: string | null;

@@ -7,7 +7,7 @@ export interface CalendarAppointment {
 }
 
 export interface CalendarFloatingTimeBlock {
-  id: string;
+  id: number;
   className?: string;
   startTime: Date;
   endTime?: Date;

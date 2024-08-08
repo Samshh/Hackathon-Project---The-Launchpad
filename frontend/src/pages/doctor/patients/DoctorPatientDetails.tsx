@@ -26,7 +26,7 @@ export default function DoctorPatientDetails() {
   const [patient, setPatient] = useState<DoctorPatient | undefined>(undefined);
   const { status } = useQuery(
     ['doctor-patient-item', patientId],
-    () => fetchPatient(patientId),
+    () => fetchPatient(Number(patientId!)),
     {
       enabled: patientId !== undefined && patientId !== null,
       onSuccess: (data: DoctorPatient) => {
@@ -53,7 +53,7 @@ export default function DoctorPatientDetails() {
 
             <div className="flex-grow flex flex-col justify-start items-stretch gap-4">
               <DoctorDetailItem label="Sex" value={patient.sex} />
-              <DoctorDetailItem label="Age" value={patient.age} />
+              <DoctorDetailItem label="Age" value={patient.age.toString()} />
               <DoctorDetailItem label="Email" value={patient.email} />
               <DoctorDetailItem label="Contact Number" value={patient.contact ?? "N/A"} />
             </div>
@@ -100,7 +100,7 @@ export default function DoctorPatientDetails() {
                         return (
                           <TableRow
                             className="cursor-pointer"
-                            key={`appointment-${appointment.id}`}
+                            key={`appointment-${appointment.appointmentId}`}
                             onClick={() => { }} // TODO: Show appointment drawer
                           >
                             <TableCell className="pl-8">{appointmentDateText}</TableCell>

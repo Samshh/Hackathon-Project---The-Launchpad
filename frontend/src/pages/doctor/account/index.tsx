@@ -5,7 +5,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import WeeklyCalendar from "@/components/WeeklyCalendar";
 import { CalendarX, EditIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import PlannedAbsenceDialogContent from "./PlannedAbsenceDialogContent";
