@@ -22,7 +22,7 @@ export function isEtaBeforeCurrent(etaDateTime: string) {
   return isBefore(currentDateTime, parsedDateTime);
 }
 
-export function sortAppointments(appointments: Appointment[], isAscending: boolean) {
+export function sortAppointments(appointments: Appointment[]) {
   const b = appointments.sort((a, b) => {
     const dateA = parseISO(a.ETA);
     const dateB = parseISO(b.ETA);

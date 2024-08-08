@@ -10,7 +10,7 @@ export function CreateServer() {
 
   // Configure CORS
   app.use(cors({
-    origin: 'http://localhost:5173', 
+    origin: 'https://wilfi-giaaa-aaaak-akzxa-cai.icp0.io/', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true 

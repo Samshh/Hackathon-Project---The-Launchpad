@@ -4,11 +4,9 @@ import { pastAppointmentsColumns } from './pastAppointmentsColumns';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { sortAppointments } from '@/lib/utils';
 import { parseISO } from 'date-fns';
 
 export default function PastAppointmentsSection() {
-  console.log(sortAppointments(appointmentsMockData, false));
   return (
     <section className={`bg-white col-span-5 rounded-xl p-5 gap-3 flex flex-col shadow-md`}>
       <header className="flex items-center justify-between">

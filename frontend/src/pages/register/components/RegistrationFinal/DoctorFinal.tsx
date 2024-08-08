@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useShallow } from 'zustand/react/shallow';
 import useRegistrationChoiceStore from '../../store';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function DoctorFinal() {
   const [setDepartment, department, setSpecialization, specialization] = useRegistrationChoiceStore(

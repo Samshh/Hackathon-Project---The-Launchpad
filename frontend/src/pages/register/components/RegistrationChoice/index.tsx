@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import useRegistrationChoiceStore from '../../store';
 import { useShallow } from 'zustand/react/shallow';
 import RegistrationStepOne from './RegistrationStepOne';
@@ -56,8 +56,8 @@ export default function RegistrationChoice() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  const isEmailValid = useMemo(() => emailRegex.test(email), [email]);
-  const isPasswordValid = useMemo(() => passwordRegex.test(password), [password]);
+  const isEmailValid = useMemo(() => email === null ? false : emailRegex.test(email), [email]);
+  const isPasswordValid = useMemo(() => password === null ? false : passwordRegex.test(password), [password]);
 
   const registrationAPI = async () => {
     const PatientData = {
@@ -68,7 +68,7 @@ export default function RegistrationChoice() {
       Contact: contactNumber,
       BirthDate: birthday,
       Password: password,
-      Documents : fileUrl, 
+      Documents: fileUrl,
     };
 
     const DoctorData = {
@@ -114,7 +114,7 @@ export default function RegistrationChoice() {
 
         toLogin();
         console.log('Success');
-        } catch (error) {
+      } catch (error) {
         console.log(error);
         throw error;
       }

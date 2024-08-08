@@ -2,40 +2,7 @@ import { useMemo, useState } from "react";
 import useAppointmentsStore from "./store";
 import { useShallow } from "zustand/react/shallow";
 import { differenceInCalendarDays, isWithinInterval } from "date-fns";
-import axios from 'axios';
-import { useGlobalComponentStore } from "@/components/globalComponentStore";
-import AppointmentSheetContent from "./AppointmentSheetContent";
 
-const appointments = [
-  {
-    appointmentId: 1,
-    eta: new Date(2024, 6, 29, 10, 30),
-    patientName: "Juan Dela Cruz",
-    reason: "Checkup",
-    status: 0,
-  },
-  {
-    appointmentId: 2,
-    eta: new Date(2024, 6, 30, 18, 45),
-    patientName: "Maria Clara",
-    reason: "Checkup",
-    status: 1,
-  },
-  {
-    appointmentId: 3,
-    eta: new Date(2024, 6, 31, 10, 30),
-    patientName: "Jose Rizal",
-    reason: "Checkup",
-    status: 1,
-  },
-]
-
-
-const getAppointments = async () => {
-  const userAppointments = axios.get('http://localhost:4943/appointments', {
-    withCredentials: true
-  });
-}
 
 export default function AppointmentTimeBlockGrid() {
   const [isHovering, setIsHovering] = useState(false);

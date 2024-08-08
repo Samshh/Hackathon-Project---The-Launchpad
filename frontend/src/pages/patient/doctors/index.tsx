@@ -1,18 +1,14 @@
-import { doctorsMockData } from './doctorsMockData';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useMemo } from 'react';
+// import { doctorsMockData } from './doctorsMockData';
+import { useNavigate } from 'react-router-dom';
 import DoctorsFilterPopover from '@/components/patient/doctors/DoctorsFilterPopover';
-import { useGlobalComponentStore } from '@/components/globalComponentStore';
 import { useQuery } from "react-query"
 import axios from "axios"
-import { AllDoctorsResponse } from "@/components/pages/patient/types"
+import { AllDoctorsResponse, Doctor } from "@/pages/patient/types"
 
 export default function PatientDoctorsPage() {
   const navigate = useNavigate();
-  const [searchParams, _] = useSearchParams();
-  const { selectedDoctorFilters } = useGlobalComponentStore();
 
-  const { data, isLoading, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['alldoctors'],
     queryFn: async () => {
       console.log('BEFORE AXIOS');
@@ -51,10 +47,10 @@ export default function PatientDoctorsPage() {
         <div className="flex flex-col flex-1 px-6 py-3 rounded-lg shadow-md">
           <div className="flex-grow h-1 overflow-y-auto">
             <div className="grid grid-cols-5 gap-y-4 gap-x-4">
-              {data.doctors.map((doctor) => {
+              {data.doctors.map((doctor: Doctor) => {
                 return (
                   <button
-                    key={doctor.id}
+                    key={doctor.doctorId}
                     onClick={() => {
                       navigate(`/patient/doctors/${doctor.doctorId}`);
                     }}

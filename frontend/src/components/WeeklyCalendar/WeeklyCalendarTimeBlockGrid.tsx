@@ -10,7 +10,6 @@ interface WeeklyCalendarTimeBlockGridProps {
   floatingTimeBlocks?: CalendarFloatingTimeBlock[];
   onCalendarClick?: (selectedDateTime: Date) => void;
   onFloatingTimeBlockClick?: (selectedTimeBlock: any) => void;
-  startTimeAndEndTimeSeparator?: React.ReactNode;
 }
 
 const appointments = [
@@ -42,7 +41,6 @@ export default function WeeklyCalendarTimeBlockGrid({
   floatingTimeBlocks,
   onCalendarClick,
   onFloatingTimeBlockClick,
-  startTimeAndEndTimeSeparator,
 }: WeeklyCalendarTimeBlockGridProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [offsetTop, setOffsetTop] = useState(-1);

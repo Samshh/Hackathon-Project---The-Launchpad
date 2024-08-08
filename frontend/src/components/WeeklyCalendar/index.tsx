@@ -12,7 +12,6 @@ interface WeeklyCalendarProps {
   floatingTimeBlocks?: CalendarFloatingTimeBlock[];
   onCalendarClick?: (selectedDateTime: Date) => void;
   onFloatingTimeBlockClick?: (selectedTimeBlock: any) => void;
-  startTimeAndEndTimeSeparator?: React.ReactNode;
 }
 
 const daysOfTheWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -23,7 +22,6 @@ export default function WeeklyCalendar({
   floatingTimeBlocks,
   onCalendarClick,
   onFloatingTimeBlockClick,
-  startTimeAndEndTimeSeparator,
 }: WeeklyCalendarProps) {
   const [activeWeekFirstDay, setActiveWeekFirstDay] = useState<Date>(startOfWeek(new Date()));
 
@@ -74,11 +72,11 @@ export default function WeeklyCalendar({
           <div className="flex flex-row justify-start items-center gap-4">
             <div className="flex flex-row justify-start items-center gap-2">
               <Button variant="outline" size="icon" onClick={goToPreviousWeek}>
-                <ChevronLeft size={16} stroke={"black"}/>
+                <ChevronLeft size={16} stroke={"black"} />
               </Button>
 
               <Button variant="outline" size="icon" onClick={goToNextWeek}>
-                <ChevronRight size={16} stroke={"black"}/>
+                <ChevronRight size={16} stroke={"black"} />
               </Button>
             </div>
 
@@ -108,7 +106,6 @@ export default function WeeklyCalendar({
         </div>
 
         <WeeklyCalendarTimeBlockGrid
-          startTimeAndEndTimeSeparator={startTimeAndEndTimeSeparator}
           activeWeekFirstDay={activeWeekFirstDay}
           appointments={appointments}
           onCalendarClick={onCalendarClick}

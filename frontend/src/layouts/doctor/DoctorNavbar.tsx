@@ -1,8 +1,6 @@
 import { CalendarIcon, HomeIcon, HospitalIcon, LogOutIcon, LucideProps, UserIcon } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
-import axios from "axios";
-
+// import axios from "axios";
 import Cookies from "js-cookie";
 
 type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;

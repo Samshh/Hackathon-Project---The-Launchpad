@@ -7,7 +7,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
-import axios from "axios";
 import Cookies from "js-cookie";
 
 export default function PatientHeader() {

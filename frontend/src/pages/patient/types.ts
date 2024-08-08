@@ -41,7 +41,7 @@ export type Mydoctor = {
 }
 
 type Schedule = {
-    scheduleId: string,
+    scheduleId: number,
     day: number,
     startTime: string,
     endTime: string

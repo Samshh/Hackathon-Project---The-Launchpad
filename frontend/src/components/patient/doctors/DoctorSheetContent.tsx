@@ -1,15 +1,13 @@
 import { Doctor } from '@/pages/patient/doctors/doctorsMockData';
 import { useGlobalComponentStore } from '@/components/globalComponentStore';
-import { useShallow } from 'zustand/react/shallow';
 
 type DoctorSheetContentProps = {
   doctor: Doctor;
 };
 
 export default function DoctorSheetContent({ doctor }: DoctorSheetContentProps) {
-  const [toggleOpenDialog, toggleOpenSheet] = useGlobalComponentStore(
-    useShallow((state) => [state.toggleOpenDialog, state.toggleOpenSheet]),
-  );
+  const toggleOpenDialog = useGlobalComponentStore((state) => state.toggleOpenDialog);
+
   return (
     <div className="flex flex-col h-full gap-8">
       <div className="flex flex-col items-center gap-5">
@@ -49,7 +47,7 @@ export default function DoctorSheetContent({ doctor }: DoctorSheetContentProps) 
       </div>
       <button
         onClick={() => {
-            toggleOpenDialog(<div className='h-[500px]'>hello world</div>);
+          toggleOpenDialog(<div className='h-[500px]'>hello world</div>);
         }}
         className="flex items-center justify-center w-full px-6 py-2 text-lg text-white rounded-lg bg-accent"
       >

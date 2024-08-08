@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useRegistrationChoiceStore from '../../store';
 import { useShallow } from 'zustand/react/shallow';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function RegistrationFormDoctor() {
   const [
