@@ -13,13 +13,13 @@ import { PlannedAbsence } from "./types";
 import WorkingHoursDialog from "./WorkingHoursDialog";
 
 const doctor = {
-  name: "Juan Dela Cruz",
-  email: "jdcruz@gmail.com",
+  name: "Ralph Kris Enrique",
+  email: "test1@mail.com",
   sex: "Male",
   contactNumber: "09123456789",
   department: "Internal Medicine",
-  specialization: "Cardiology",
-  address: "123 Main St., Quezon City",
+  specialization: "Dev 1",
+  address: "El Rio",
 };
 
 const absences: PlannedAbsence[] = [
@@ -49,7 +49,7 @@ export default function DoctorAccountPage() {
   return (
     <main className="h-full min-h-[480px] flex-grow flex flex-col justify-start items-stretch gap-4 pt-4">
       <h5>Account</h5>
-      
+
       <div className="flex-grow flex flex-row justify-start items-stretch gap-8">
         <div className="flex flex-col justify-start items-stretch gap-4">
           <div className="flex-grow w-80 flex flex-col justify-start items-start gap-4 bg-white border border-gray-200 rounded-md shadow-md px-6 py-4">
@@ -59,9 +59,9 @@ export default function DoctorAccountPage() {
             </div>
 
             <Separator />
-            
+
             <DoctorDetailItem label="Email" value={doctor.email} />
-            
+
             <DoctorDetailItem label="Sex" value={doctor.sex} />
 
             <DoctorDetailItem label="Contact Number" value={doctor.contactNumber} />
@@ -74,7 +74,7 @@ export default function DoctorAccountPage() {
           </div>
         </div>
 
-        <Tabs 
+        <Tabs
           defaultValue="working-hours"
           onValueChange={(value) => setCurrentTab(value)}
           className="flex-grow flex flex-col justify-start items-stretch"
@@ -97,7 +97,7 @@ export default function DoctorAccountPage() {
           </div>
 
           {currentTab === 'working-hours' && (
-            <TabsContent 
+            <TabsContent
               value="working-hours"
               className="flex-grow flex flex-col justify-start items-stretch gap-4 bg-white rounded-md shadow-md overflow-hidden"
             >
@@ -106,7 +106,7 @@ export default function DoctorAccountPage() {
           )}
 
           {currentTab === 'planned-absences' && (
-            <TabsContent 
+            <TabsContent
               value="planned-absences"
               className="flex-grow flex flex-col justify-start items-stretch gap-4 bg-white rounded-md shadow-md overflow-hidden"
             >
@@ -125,23 +125,23 @@ export default function DoctorAccountPage() {
                     {absences.map((absence) => (
                       <TableRow key={`absence-${absence.id}`}>
                         <TableCell className="pl-8 py-4">
-                          {absence.startDate.toLocaleString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric', 
-                            hour: 'numeric', 
-                            minute: 'numeric', 
-                            hour12: true 
+                          {absence.startDate.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
                           })}
                         </TableCell>
                         <TableCell className="py-4">
-                          {absence.endDate.toLocaleString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric', 
-                            hour: 'numeric', 
-                            minute: 'numeric', 
-                            hour12: true 
+                          {absence.endDate.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
                           })}
                         </TableCell>
 
@@ -149,8 +149,8 @@ export default function DoctorAccountPage() {
                           <div className="flex flex-row justify-end items-center">
                             <Dialog>
                               <DialogTrigger>
-                                <Button 
-                                  size="icon" 
+                                <Button
+                                  size="icon"
                                   variant="ghost"
                                 >
                                   <EditIcon size={16} />
@@ -162,8 +162,8 @@ export default function DoctorAccountPage() {
 
                             <Dialog>
                               <DialogTrigger>
-                                <Button 
-                                  size="icon" 
+                                <Button
+                                  size="icon"
                                   variant="ghost"
                                 >
                                   <TrashIcon size={16} />
@@ -181,7 +181,7 @@ export default function DoctorAccountPage() {
                                     <Button variant="ghost">Cancel</Button>
                                   </DialogClose>
 
-                                  <Button 
+                                  <Button
                                     variant="destructive"
                                     onClick={() => {
                                       // TODO: Delete absence from list

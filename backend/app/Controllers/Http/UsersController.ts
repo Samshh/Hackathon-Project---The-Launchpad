@@ -4,6 +4,7 @@ import { Appointment } from "Database/entities/appointment";
 import { Patient_Records } from 'Database/entities/patient_record';
 import { Doctor } from 'Database/entities/doctor';
 import { Patient } from 'Database/entities/patient';
+import { Doctor_Schedule } from 'Database/entities/doctor_schedule';
 import { Response, Request } from 'express';
 import njwt from 'njwt';
 
@@ -38,6 +39,14 @@ export default class UsersController {
     });
   }
 
+  static async logout(request: Request, response: Response) {
+    response.cookie('token', '', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      expires: new Date(0), 
+    });
+  }
 
   static async docRegister(request: Request, response: Response) {
     const { Fname, Lname, Address, Specialization, Sex, Email, Contact, Password } = request.body;
@@ -250,11 +259,29 @@ export default class UsersController {
 
   static async get_all_doctors(request: Request, response: Response) {
     try {
-      const users = await Doctor.find();
+      const users = await Doctor.find({
+        select: ['DoctorID', 'Fname', 'Lname', 'Address', 'Specialization', 'Contact', 'Email'],
+        relations: ['schedule'],
+      });
+
+      const result = users.map(user => ({
+        doctorId: user.DoctorID,
+        doctorName: user.Fname + ' ' + user.Lname,
+        address: user.Address,
+        specialization: user.Specialization,
+        contact: user.Contact,
+        email: user.Email,
+        schedules: user.schedule.map(schedule => ({
+          scheduleId: schedule.id,
+          day: schedule.day,
+          startTime: schedule.starttime,
+          endTime: schedule.endtime
+        }))
+      }));
 
       return response.json({
         status: 1,
-        data: users,
+        doctors: result,
       });
     } catch (error: any) {
       response.status(400);
@@ -314,7 +341,8 @@ export default class UsersController {
       const { id } = request.params;
 
       const user = await Doctor.findOne({
-        where: [{ DoctorID: id }], // Use parsedDoctorID instead of DoctorID
+        where: [{ DoctorID: id } ],
+        relations: ['schedule'], // Use parsedDoctorID instead of DoctorID
       });
 
       if (!user) {
@@ -326,12 +354,18 @@ export default class UsersController {
       }
       
       const doctorinfo = {
-        DoctorID: user.DoctorID,
-        Fname: user.Fname,
-        Lname: user.Lname,
-        Address: user.Address,
-        Specialization: user.Specialization,
-        Department: user.Department,
+        doctorId: user.DoctorID,
+        name: `${user.Fname} ${user.Lname}`,
+        address: user.Address,
+        contact: user.Contact,
+        email: user.Email,
+        specialization: user.Specialization,
+        schedules: user.schedule.map(schedule => ({
+          scheduleId: schedule.id,
+          day: schedule.day,
+          startTime: schedule.starttime,
+          endTime: schedule.endtime
+        }))
       };
       return response.json({
         status: 1,
@@ -390,7 +424,6 @@ export default class UsersController {
         contact: patient.Contact,
         date: latestAppointment.ETA,
         appointments: patient.appointments
-          .filter(appointment => appointment.Status == false)
           .sort((a, b) => b.AppointmentID - a.AppointmentID)
           .map(appointment => ({
             appointmentId: appointment.AppointmentID,
@@ -411,7 +444,7 @@ export default class UsersController {
           .filter(appointment => appointment.Status == false)
           .sort((a, b) => b.AppointmentID - a.AppointmentID)
           .map(appointment => appointment.Prescription),
-        mydoctors: uniqueDoctors
+        mydoctors: uniqueDoctors 
       };
 
       return response.json({

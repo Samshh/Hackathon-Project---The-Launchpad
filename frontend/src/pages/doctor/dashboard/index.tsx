@@ -30,9 +30,9 @@ export default function DoctorDashboardPage() {
     <main className="h-full min-h-[480px] flex-grow flex flex-col justify-start items-stretch gap-4 pt-4">
       <div className="flex flex-col justify-start items-start">
         <p className="text-sm">Good day,</p>
-        <h5>Dr. Juan Dela Cruz</h5>
+        <h5>Dr. Ralph Kris Enrique</h5>
       </div>
-      
+
       <div className="flex-grow flex flex-row justify-start items-stretch gap-4">
         <div className="flex flex-col justify-start items-stretch gap-4 bg-white rounded-md shadow-md px-6 py-4">
           <div className="flex flex-col justify-start items-stretch gap-2">
@@ -41,7 +41,7 @@ export default function DoctorDashboardPage() {
               <h6>Maria Clara</h6>
               <p>05:30 - 06:30 PM</p>
             </div>
-            
+
             <div className="flex flex-row justify-start items-center gap-2">
               {/* TODO: Change this to appointment link */}
               <Link to="/doctor/appointments">
@@ -50,7 +50,7 @@ export default function DoctorDashboardPage() {
 
               {/* TODO: Change this to next patient's link */}
               <Button>Diagnose</Button>
-            </div>            
+            </div>
           </div>
 
           <Separator />
@@ -94,7 +94,7 @@ export default function DoctorDashboardPage() {
                   <TableCell className="p-0">
                     <Link to={`/doctor/appointments/${appointment.id}`} className="block w-full h-full py-4 cursor-pointer">
                       {appointment.time}
-                    </Link>                    
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

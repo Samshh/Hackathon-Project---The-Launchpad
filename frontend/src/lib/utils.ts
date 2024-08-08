@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { isBefore, parse } from 'date-fns';
+import { isBefore, parse, set } from 'date-fns';
 import { Appointment } from '@/components/patient/appointments/allAppointmentsColumns';
 import { parseISO } from 'date-fns';
 
@@ -32,4 +32,16 @@ export function sortAppointments(appointments: Appointment[], isAscending: boole
   });
   console.log(b);
   return b;
+}
+
+export function militaryTimeToDate(timeString: string) {
+  const parsedTime = parse(timeString, 'HH:mm', new Date());
+
+  // Get the current date
+  const now = new Date();
+
+  // Set the hours and minutes on the current date
+  const dateWithTime = set(now, { hours: parsedTime.getHours(), minutes: parsedTime.getMinutes() });
+
+  return dateWithTime;
 }

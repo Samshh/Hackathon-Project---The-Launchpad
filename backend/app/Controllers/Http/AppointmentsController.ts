@@ -54,7 +54,7 @@ export default class AppointmentsController {
                     patientName: appointment.patient.Fname + ' ' + appointment.patient.Lname,
                     reason: appointment.Reason,
                     eta: appointment.ETA,
-                    status: appointment.Status ? 1 : 0,
+                    status: appointment.Status,
                 }));
                 return response.json({
                     status: 1,
@@ -148,9 +148,27 @@ export default class AppointmentsController {
     }
 
     static async patientCreateAppointment(request: Request, response: Response) {
-        const { DoctorID, PatientID, ETA, Note, Reason, Prescription, Diagnosis } = request.body;
+        const token = request.cookies.token;
+
+        if (!token) {
+            return response.status(401).json({
+                status: 0,
+                message: "No token provided",
+            });
+        }
+        let decodedToken;
+        try {
+            decodedToken = njwt.verify(token, JWT_SECRET);
+        } catch (error) {
+            return response.status(401).json({
+                status: 0,
+                message: 'Invalid token',
+            });
+        }
+        
+        const { DoctorID, ETA, Note, Reason} = request.body;
         const parsedDoctorID = parseInt(DoctorID, 10);
-        const parsedPatientID = parseInt(PatientID, 10);
+        const id = decodedToken.body.id;
         try {
             const doctor = await Doctor.findOne({
                 where: { DoctorID: parsedDoctorID },
@@ -163,7 +181,7 @@ export default class AppointmentsController {
                 });
             }
             const patient = await Patient.findOne({
-                where: { PatientID: parsedPatientID },
+                where: { PatientID: id },
             });
             if (!patient) {
                 response.status(404);
@@ -181,8 +199,6 @@ export default class AppointmentsController {
             appointment.Note = Note;
             appointment.Status = true;
             appointment.Reason = Reason;
-            appointment.Prescription = Prescription;
-            appointment.Diagnosis = Diagnosis;
             appointment.created_at = new Date().getTime();
             appointment.updated_at = new Date().getTime();
             await appointment.save();

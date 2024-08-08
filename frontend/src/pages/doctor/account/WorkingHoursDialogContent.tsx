@@ -8,6 +8,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { AvailabilityInput } from "./types";
+import axios from "axios";
+import { useQuery, useMutation } from "react-query";
+import { queryClient } from "@/checkpoints/ProviderCheckpoint";
 
 // TODO: Handle edit working hours
 
@@ -33,11 +36,55 @@ const availabilitySchema = z.object({
   endTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/),
 });
 
+const addEditWorkingHours = async (day: number, startTime: string, endTime: string, availabilityId?: number) => {
+  let response;
+  console.log("Before axios");
+  console.log(`day: ${day}`);
+  console.log(`startTime: ${startTime}`);
+  console.log(`endTime: ${endTime}`);
+
+  if (availabilityId === undefined) {
+    response = await axios.post("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/schedule/create", {
+      day: day,
+      StartTime: startTime,
+      EndTime: endTime,
+    }, {
+      withCredentials: true
+    });
+  } else {
+    response = await axios.put("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/doctor/schedule/edit", {
+      day: day,
+      StartTime: startTime,
+      EndTime: endTime,
+      AvailabilityId: availabilityId
+    }, {
+      withCredentials: true
+    })
+  }
+
+  return response.data;
+}
+
 export default function WorkingHoursDialogContent({
   selectedAvailability,
   availabilityId,
   closeDialog,
 }: WorkingHoursDialogContentProps) {
+  const addEditMutation = useMutation(
+    async (params: { day: number, startTime: string, endTime: string, availabilityId?: number }) => await addEditWorkingHours(params.day, params.startTime, params.endTime, params.availabilityId),
+    {
+      onSuccess: (data) => {
+        console.log("SUCCESS!");
+        console.log(data);
+        queryClient.invalidateQueries("doctor-working-hours");
+      },
+      onError: (err) => {
+        console.log("ERROR!");
+        console.log(err);
+      }
+    }
+  );
+
   const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
     defaultValues: {
@@ -48,13 +95,16 @@ export default function WorkingHoursDialogContent({
   });
 
   const onSubmit = (values: z.infer<typeof availabilitySchema>) => {
-    if (availabilityId) {
-      // TODO: Edit available schedule API
-    } else {
-      // TODO: Add available schedule API
-    }
-
-    console.log("Submit");
+    console.log("FORM VALUES:");
+    console.log(values);
+    console.log("Before mutate");
+    addEditMutation.mutate({
+      day: values.day,
+      startTime: values.startTime,
+      endTime: values.endTime,
+      availabilityId
+    });
+    console.log("After mutate");
   };
 
   return (
@@ -75,8 +125,8 @@ export default function WorkingHoursDialogContent({
                   <FormItem>
                     <FormLabel>Day</FormLabel>
                     <Select
-                      value={field.value.toString()} 
-                      onValueChange={field.onChange} 
+                      value={field.value.toString()}
+                      onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -99,7 +149,7 @@ export default function WorkingHoursDialogContent({
               }}
             />
 
-            <FormField 
+            <FormField
               control={form.control}
               name="startTime"
               render={({ field }) => {
@@ -107,7 +157,7 @@ export default function WorkingHoursDialogContent({
                   <FormItem>
                     <FormLabel>Start Time</FormLabel>
                     <Input
-                      type="time" 
+                      type="time"
                       value={field.value}
                       onChange={field.onChange}
                     />
@@ -116,7 +166,7 @@ export default function WorkingHoursDialogContent({
               }}
             />
 
-            <FormField 
+            <FormField
               control={form.control}
               name="endTime"
               render={({ field }) => {
@@ -124,7 +174,7 @@ export default function WorkingHoursDialogContent({
                   <FormItem>
                     <FormLabel>End Time</FormLabel>
                     <Input
-                      type="time" 
+                      type="time"
                       value={field.value}
                       onChange={field.onChange}
                     />
@@ -136,9 +186,9 @@ export default function WorkingHoursDialogContent({
 
           <div className="self-end flex flex-row justify-end items-center gap-2">
             {selectedAvailability.availabilityId ? (
-              <Button 
-                type="button" 
-                variant="destructive" 
+              <Button
+                type="button"
+                variant="destructive"
                 className="w-20"
                 onClick={() => {
                   // TODO: Delete available schedule API
@@ -149,7 +199,7 @@ export default function WorkingHoursDialogContent({
             ) : (
               <DialogClose className="w-20">Cancel</DialogClose>
             )}
-            
+
             <Button type="submit" className="w-20" onClick={closeDialog}>Add</Button>
           </div>
         </form>

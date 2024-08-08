@@ -1,12 +1,15 @@
 import { CalendarIcon, HomeIcon, HospitalIcon, LogOutIcon, LucideProps, UserIcon } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+
+import axios from "axios";
+
 import Cookies from "js-cookie";
 
 type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
 
 interface DoctorNavLink {
   to: string;
-  icon: LucideIcon; 
+  icon: LucideIcon;
 }
 
 const primaryNavLinks: DoctorNavLink[] = [
@@ -35,7 +38,7 @@ export default function DoctorNavbar() {
     <nav className="flex flex-col justify-between items-center rounded-md shadow-md p-4 bg-white gap-6">
       <div className="flex flex-col justify-start items-center gap-10">
         <Link to="/">
-          <img src="/logoChainMed.svg" alt="" className='size-8'/>
+          <img src="/logoChainMed.svg" alt="" className='size-8' />
         </Link>
 
         <div className="flex flex-col justify-start items-center gap-6">
@@ -52,7 +55,7 @@ export default function DoctorNavbar() {
                 key={`link-${link.to}`}
               >
                 {({ isActive }) => (
-                  <NavIcon size={32} className={`${isActive ? 'text-white' : 'text-black'}`}/>
+                  <NavIcon size={32} className={`${isActive ? 'text-white' : 'text-black'}`} />
                 )}
                 {/* <div className="size-8 bg-gray-400 rounded-full" /> */}
               </NavLink>
@@ -62,11 +65,17 @@ export default function DoctorNavbar() {
       </div>
 
       <div className="flex flex-col justify-end items-center gap-6">
-        <button 
+        <button
           className="size-12 flex justify-center items-center"
-          onClick={() => {
+          onClick={async () => {
             // TODO: Implement logout
+            // await axios.post("http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943/logout", {}, {
+            //   withCredentials: true,
+            // });
+            Cookies.remove("token", { domain: 'http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943' });
+=======
             Cookies.remove("token");
+
             navigate("/");
           }}
         >

@@ -81,14 +81,14 @@ export default function WeeklyCalendarTimeBlockGrid({
                 className="border-b border-r border-gray-200"
                 {...(onCalendarClick
                   ? {
-                      onClick: () => {
-                        const selectedDateTime = new Date(activeWeekFirstDay);
-                        selectedDateTime.setDate(selectedDateTime.getDate() + weekIndex);
-                        selectedDateTime.setHours(hoveredHour);
-                        selectedDateTime.setMinutes(hoveredMinutes);
-                        onCalendarClick(selectedDateTime);
-                      },
-                    }
+                    onClick: () => {
+                      const selectedDateTime = new Date(activeWeekFirstDay);
+                      selectedDateTime.setDate(selectedDateTime.getDate() + weekIndex);
+                      selectedDateTime.setHours(hoveredHour);
+                      selectedDateTime.setMinutes(hoveredMinutes);
+                      onCalendarClick(selectedDateTime);
+                    },
+                  }
                   : {})}
               />
             ))}
@@ -162,8 +162,8 @@ export default function WeeklyCalendarTimeBlockGrid({
                 }}
               >
                 <p>{format(floatingTimeBlock.startTime, 'HH:mm')}</p>
-                {startTimeAndEndTimeSeparator && startTimeAndEndTimeSeparator}
-                {floatingTimeBlock.endTime && <p>{format(floatingTimeBlock.endTime, 'HH:mm')}</p>}
+                {/* {startTimeAndEndTimeSeparator && startTimeAndEndTimeSeparator} */}
+                {floatingTimeBlock.endTime && <p>- {format(floatingTimeBlock.endTime, 'HH:mm')}</p>}
               </button>
             );
           })}
@@ -198,13 +198,12 @@ export default function WeeklyCalendarTimeBlockGrid({
                 <div
                   className={`
                   flex-grow flex flex-col justify-between items-start text-sm rounded-md shadow-md px-2 py-1 cursor-pointer border
-                  ${
-                    appointment.status === 0
+                  ${appointment.status === 0
                       ? 'border-red-300 bg-red-50 hover:bg-red-100'
                       : isBefore
                         ? 'border-green-300 bg-green-50 hover:bg-green-100'
                         : 'border-yellow-300 bg-yellow-50 hover:bg-yellow-100'
-                  }
+                    }
                 `}
                 >
                   <div className="flex flex-col justify-start items-start">
