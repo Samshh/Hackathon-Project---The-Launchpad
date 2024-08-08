@@ -10,7 +10,7 @@ export function CreateServer() {
 
   // Configure CORS
   app.use(cors({
-    origin: 'http://127.0.0.1:4943', 
+    origin: 'https://wilfi-giaaa-aaaak-akzxa-cai.icp0.io/', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true 
