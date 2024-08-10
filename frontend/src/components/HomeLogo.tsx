@@ -28,7 +28,7 @@ export default function HomeBtn() {
           fill="#5872FF"
         />
       </svg>
-      <p className="text-black font-semibold text-xl">ChainMed Connect</p>
+      <p className="text-black font-semibold text-xl hidden sm:flex">ChainMed Connect</p>
     </button>
   );
 }

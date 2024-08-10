@@ -99,7 +99,7 @@ export default function RegistrationFormPatient() {
   };
 
   return (
-    <div className="flex flex-col flex-grow justify-between ">
+    <div className="flex flex-col flex-grow justify-between w-full">
       <div className="flex flex-col flex-grow justify-center gap-[1rem] pt-[2rem]">
         <div className="flex flex-col">
           <h6 className="font-normal">Filling up basic information</h6>

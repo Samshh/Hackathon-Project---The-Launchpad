@@ -169,7 +169,7 @@ export default function RegistrationChoice() {
   }, [currentStep, accountType, isFilled, isFilledDoctor]);
 
   return (
-    <div className="flex flex-col justify-between pl-[3.5rem] h-full">
+    <div className="flex flex-col justify-between h-full">
       <div className="flex justify-between items-center h-[3rem]">
         <p className="text-lg font-semibold">Registration</p>
         <p className="text-lg font-light">Step {currentStep + 1} of 3</p>
